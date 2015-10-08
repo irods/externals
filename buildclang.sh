@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -ex
 
 COMMITISH=release_37
 PACKAGE_NAME=clang
@@ -16,44 +16,44 @@ INSTALL_PREFIX=${BUILDDIR}/${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}
 # llvm
 mkdir -p $BUILDDIR/build
 cd $BUILDDIR
-git clone https://github.com/irods/llvm
+if [ ! -d "$BUILDDIR/llvm" ] ; then git clone https://github.com/irods/llvm; fi
 cd $BUILDDIR/llvm
-git pull
+git fetch
 git checkout $COMMITISH
 
 # clang
 cd $BUILDDIR/llvm/tools
-git clone https://github.com/irods/clang
+if [ ! -d "$BUILDDIR/llvm/tools/clang" ] ; then git clone https://github.com/irods/clang; fi
 cd $BUILDDIR/llvm/tools/clang
-git pull
+git fetch
 git checkout $COMMITISH
 
 # clang-tools-extra
 cd $BUILDDIR/llvm/tools/clang/tools
-git clone https://github.com/irods/clang-tools-extra
+if [ ! -d "$BUILDDIR/llvm/tools/clang/tools/clang-tools-extra" ] ; then git clone https://github.com/irods/clang-tools-extra; fi
 cd $BUILDDIR/llvm/tools/clang/tools/clang-tools-extra
-git pull
+git fetch
 git checkout $COMMITISH
 
 # compiler-rt
 cd $BUILDDIR/llvm/projects/
-git clone https://github.com/irods/compiler-rt
+if [ ! -d "$BUILDDIR/llvm/projects/compiler-rt" ] ; then git clone https://github.com/irods/compiler-rt; fi
 cd $BUILDDIR/llvm/projects/compiler-rt
-git pull
+git fetch
 git checkout $COMMITISH
 
 # libcxx
 cd $BUILDDIR/llvm/projects/
-git clone https://github.com/irods/libcxx
+if [ ! -d "$BUILDDIR/llvm/projects/libcxx" ] ; then git clone https://github.com/irods/libcxx; fi
 cd $BUILDDIR/llvm/projects/libcxx
-git pull
+git fetch
 git checkout $COMMITISH
 
 # libcxx
 cd $BUILDDIR/llvm/projects/
-git clone https://github.com/irods/libcxxabi
+if [ ! -d "$BUILDDIR/llvm/projects/libcxxabi" ] ; then git clone https://github.com/irods/libcxxabi; fi
 cd $BUILDDIR/llvm/projects/libcxxabi
-git pull
+git fetch
 git checkout $COMMITISH
 
 # build

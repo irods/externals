@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -ex
 
 COMMITISH=v3.1.2
 PACKAGE_NAME=libarchive
@@ -20,9 +20,9 @@ export CXX=${CLANG_BINARY}++
 # get
 mkdir -p $BUILDDIR
 cd $BUILDDIR
-git clone https://github.com/irods/$PACKAGE_NAME
+if [ ! -d "$BUILDDIR/$PACKAGE_NAME" ] ; then git clone https://github.com/irods/$PACKAGE_NAME; fi
 cd $BUILDDIR/$PACKAGE_NAME
-git pull
+git fetch
 git checkout $COMMITISH
 
 # build

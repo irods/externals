@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -ex
 
 PACKAGE_NAME=cmake
 COMMITISH=v3.3.2
@@ -20,15 +20,14 @@ export CXX=${CLANG_BINARY}++
 # get
 mkdir -p $BUILDDIR
 cd $BUILDDIR
-git clone https://github.com/irods/$PACKAGE_NAME
+if [ ! -d "$BUILDDIR/$PACKAGE_NAME" ] ; then git clone https://github.com/irods/$PACKAGE_NAME; fi
 cd $BUILDDIR/$PACKAGE_NAME
-git pull origin master
+git fetch
 git checkout $COMMITISH
 
 # build
 cd $BUILDDIR/$PACKAGE_NAME
 ./configure --prefix=$INSTALL_PREFIX
-#./bootstrap -- -DBUILD_TESTING=FALSE --prefix=$INSTALL_PREFIX
 make -j35
 make install
 

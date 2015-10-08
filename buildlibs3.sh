@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -ex
 
 COMMITISH=11a4e976
 PACKAGE_NAME=libs3
@@ -20,15 +20,15 @@ export CXX=${CLANG_BINARY}++
 # get
 mkdir -p $BUILDDIR
 cd $BUILDDIR
-git clone https://github.com/irods/$PACKAGE_NAME
+if [ ! -d "$BUILDDIR/$PACKAGE_NAME" ] ; then git clone https://github.com/irods/$PACKAGE_NAME; fi
 cd $BUILDDIR/$PACKAGE_NAME
-git pull
+git fetch
 git checkout $COMMITISH
 
 # build
 cd $BUILDDIR/$PACKAGE_NAME
 CFLAGS=-fPIC make -j35
-make -d DESTDIR=$INSTALL_PREFIX install
+make DESTDIR=$INSTALL_PREFIX install
 
 # make packages
 cd $SCRIPTPATH
