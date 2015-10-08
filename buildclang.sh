@@ -64,4 +64,15 @@ make install
 
 # make packages
 cd $SCRIPTPATH
-fpm -f -s dir -t deb -n irods-externals-${PACKAGE_SUBDIRECTORY} -m "<packages@irods.org>" --vendor "iRODS Consortium" --license $PACKAGE_LICENSE --description "iRODS Build Dependency" --url "https://irods.org" -C $BUILDDIR ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/bin ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/lib ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/share ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/include
+fpm -f -s dir -t deb \
+ -n irods-externals-${PACKAGE_SUBDIRECTORY} \
+ -m "<packages@irods.org>" \
+ --vendor "iRODS Consortium" \
+ --license $PACKAGE_LICENSE \
+ --description "iRODS Build Dependency" \
+ --url "https://irods.org" \
+ -C $BUILDDIR \
+ ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/bin \
+ ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/include \
+ ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/lib \
+ ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/share

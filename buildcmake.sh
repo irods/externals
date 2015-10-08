@@ -1,9 +1,9 @@
 #!/bin/bash -x
 
-COMMITISH=v3.1.2
-PACKAGE_NAME=libarchive
-PACKAGE_VERSION=3.1.2
-PACKAGE_LICENSE="BSD 2-Clause"
+PACKAGE_NAME=cmake
+COMMITISH=v3.3.2
+PACKAGE_VERSION=3.3.2
+PACKAGE_LICENSE="BSD 3-Clause"
 CONSORTIUM_BUILD_NUMBER=0
 EXTERNALS_ROOT=opt/irods-externals
 
@@ -22,13 +22,13 @@ mkdir -p $BUILDDIR
 cd $BUILDDIR
 git clone https://github.com/irods/$PACKAGE_NAME
 cd $BUILDDIR/$PACKAGE_NAME
-git pull
+git pull origin master
 git checkout $COMMITISH
 
 # build
 cd $BUILDDIR/$PACKAGE_NAME
-rm -f CMakeCache.txt
-cmake -DCMAKE_USER_MAKE_RULES_OVERRIDE=$SCRIPTPATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX .
+./configure --prefix=$INSTALL_PREFIX
+#./bootstrap -- -DBUILD_TESTING=FALSE --prefix=$INSTALL_PREFIX
 make -j35
 make install
 
@@ -43,6 +43,5 @@ fpm -f -s dir -t deb \
  --url 'https://irods.org' \
  -C $BUILDDIR \
  ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/bin \
- ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/lib \
- ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/share \
- ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/include
+ ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/doc \
+ ${EXTERNALS_ROOT}/${PACKAGE_SUBDIRECTORY}/share
