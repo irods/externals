@@ -1,0 +1,137 @@
+{
+    "autoconf": {
+        "commitish": "5ad3567c",
+        "version_string": "5ad3567c",
+        "license": "GPL v2",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "comment": "ubuntu couldn't build 2.69 due to 8c8522f1 fix coming since",
+        "build_steps": [
+            "autoreconf -vi",
+            "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
+            "make -jTEMPLATE_JOBS",
+            "make install"
+            ],
+        "fpm_directories": ["bin","share"]
+    },
+    "avro": {
+        "commitish": "branch-1.7",
+        "version_string": "1.7.7",
+        "license": "Apache License 2.0",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p lang/c++/build",
+            "cd lang/c++/build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT ..",
+            "cd lang/c++/build; make -jTEMPLATE_JOBS; make install"
+            ],
+        "fpm_directories": ["bin","include","lib"]
+    },
+    "boost": {
+        "commitish": "boost-1.59.0",
+        "version_string": "1.59.0",
+        "license": "Boost Software License 1.0",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "git submodule update --init",
+            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX",
+            "./b2 headers",
+            "./b2 stage -jTEMPLATE_JOBS",
+            "./b2 install --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED' -jTEMPLATE_JOBS"
+            ],
+        "fpm_directories": ["include","lib"]
+    },
+    "clang": {
+        "commitish": "release_37",
+        "version_string": "3.7",
+        "license": "LLVM",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE:FILEPATH=TEMPLATE_PYTHON_EXECUTABLE ../llvm",
+            "make -jTEMPLATE_JOBS",
+            "make -jTEMPLATE_JOBS install"
+            ],
+        "fpm_directories": ["bin","include","lib","share"]
+    },
+    "cmake": {
+        "commitish": "v3.3.2",
+        "version_string": "3.3.2",
+        "license": "BSD 3-Clause",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
+            "make -jTEMPLATE_JOBS",
+            "make install"
+            ],
+        "fpm_directories": ["bin","doc","share"]
+    },
+    "cpython": {
+        "commitish": "2.7",
+        "version_string": "2.7",
+        "license": "PSF v2",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
+            "make -jTEMPLATE_JOBS",
+            "make altinstall"
+            ],
+        "fpm_directories": ["bin","include","lib","share"]
+    },
+    "jansson": {
+        "commitish": "v2.7",
+        "version_string": "2.7",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "autoreconf -fi",
+            "./configure --prefix=TEMPLATE_INSTALL_PREFIX --with-pic",
+            "make -jTEMPLATE_JOBS",
+            "make install"
+            ],
+        "fpm_directories": ["include","lib"]
+    },
+    "libarchive": {
+        "commitish": "v3.1.2",
+        "version_string": "3.1.2",
+        "license": "BSD 2-Clause",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
+            "make -jTEMPLATE_JOBS",
+            "make install"
+            ],
+        "fpm_directories": ["bin","include","lib","share"]
+    },
+    "libs3": {
+        "commitish": "11a4e976",
+        "version_string": "11a4e976",
+        "license": "LGPL v3",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "CFLAGS=-fPIC make -jTEMPLATE_JOBS",
+            "make DESTDIR=TEMPLATE_INSTALL_PREFIX install"
+            ],
+        "fpm_directories": ["bin","include","lib"]
+    },
+    "zeromq4-1": {
+        "commitish": "v4.1.3",
+        "version_string": "4.1.3",
+        "license": "LGPL v3",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "./autogen.sh",
+            "./configure --without-libsodium --prefix=TEMPLATE_INSTALL_PREFIX",
+            "make -jTEMPLATE_JOBS",
+            "make install"
+            ],
+        "fpm_directories": ["bin","include","lib"]
+    }
+}

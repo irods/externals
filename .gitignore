@@ -1,0 +1,5 @@
+packages.mk
+*_src
+*.deb
+*.rpm
+*.log
