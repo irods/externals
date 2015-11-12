@@ -62,10 +62,13 @@ def get_package_filename(p):
     a = get_package_arch()
     t = get_package_type()
     if t == 'rpm':
-        package_filename_template = 'irods-externals-{0}{1}-{2}-1.0-1.{3}.{4}'
+        package_filename_template = 'irods-externals-{0}{1}-{2}-1.0-1.{4}.{3}'
+    elif t == 'osxpkg':
+        t = 'pkg'
+        package_filename_template = 'irods-externals-{0}{1}-{2}-1.0.{3}'
     else:
-        package_filename_template = 'irods-externals-{0}{1}-{2}_1.0_{3}.{4}'
-    f = package_filename_template.format(p, v['version_string'], v['consortium_build_number'], a, t)
+        package_filename_template = 'irods-externals-{0}{1}-{2}_1.0_{4}.{3}'
+    f = package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a)
     return f
 
 def get_versions():
@@ -86,7 +89,10 @@ def get_package_type():
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'openSUSE ', 'SUSE Linux Enterprise Server']:
         pt = 'rpm'
     else:
-        pt = 'not_detected'
+        if platform.mac_ver()[0] != '':
+            pt = 'osxpkg'
+        else:
+            pt = 'not_detected'
 #    print_debug('package type detected: {0}'.format(pt))
     return pt
 
@@ -127,6 +133,13 @@ def build_package(target):
     # prepare libraries
     boost_root = get_local_path('boost',[])
     print_debug('boost_root: [{0}]'.format(boost_root))
+
+    # prepare other strings
+    if get_package_type() == 'osxpkg':
+        libs3_makefile_string = '-f GNUmakefile.osx'
+    else:
+        libs3_makefile_string = ''
+    print_debug('libs3_makefile_string: [{0}]'.format(libs3_makefile_string))
 
     # get
     if target == 'clang':
@@ -176,7 +189,10 @@ def build_package(target):
 #       print_debug('PATH='+myenv['PATH'])
         autoconf_bindir = get_local_path('autoconf',['bin'])
         myenv['PATH'] = '{0}:{1}'.format(autoconf_bindir, myenv['PATH'])
-        print_debug('PATH='+myenv['PATH'])
+#       print_debug('PATH='+myenv['PATH'])
+    if get_package_type() == 'osxpkg' and target in ['jansson','zeromq4-1']:
+        myenv['LIBTOOLIZE'] = 'glibtoolize'
+#       print_debug('LIBTOOLIZE='+myenv['LIBTOOLIZE'])
 
     # build
     if target == 'clang':
@@ -190,7 +206,18 @@ def build_package(target):
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
+        i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
+
+    # MacOSX - after building boost
+    # libraries lack an absolute path in their install_name, so apps using them fail to load
+    # in our case, avro
+    # https://svn.boost.org/trac/boost/ticket/9141
+    if get_package_type() == 'osxpkg' and target == 'boost':
+        run_cmd('for x in {0}/lib/*.dylib; do \
+            install_name_tool -id $x $x; \
+            install_name_tool -change libboost_system.dylib {0}/lib/libboost_system.dylib $x; \
+            done'.format(boost_root), run_env=myenv, unsafe_shell=True, check_rc='osx dylib fullpath fix failed')
 
     # package
     if platform.linux_distribution()[0] == 'openSUSE ':
