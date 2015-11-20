@@ -141,6 +141,12 @@ def build_package(target):
         libs3_makefile_string = ''
     print_debug('libs3_makefile_string: [{0}]'.format(libs3_makefile_string))
 
+    # build boost install path
+    boost_info = get_versions()['boost']
+    boost_subdirectory = '{0}{1}-{2}'.format('boost', boost_info['version_string'], boost_info['consortium_build_number'])
+    boost_install_prefix = os.path.join(boost_info['externals_root'], boost_subdirectory)
+    boost_rpath = os.path.join(boost_install_prefix, 'lib')
+
     # get
     if target == 'clang':
         if not os.path.isdir(os.path.join(build_dir,"build")):
@@ -207,6 +213,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
         i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
+        i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
     # MacOSX - after building boost
