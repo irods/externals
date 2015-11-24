@@ -1,7 +1,7 @@
 .PHONY : all clean
-.PHONY : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1
+.PHONY : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq
 
-all : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1
+all : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq
 
 packages.mk : Makefile versions.json build.py
 	./build.py packagesfile
@@ -88,7 +88,15 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : autoconf_clean avro_clean boost_clean clang_clean cmake_clean cpython_clean jansson_clean libarchive_clean libs3_clean zeromq4-1_clean
+$(CPPZMQ_PACKAGE):
+	./build.py cppzmq > cppzmq.log
+cppzmq : $(CPPZMQ_PACKAGE)
+cppzmq_clean :
+	@echo "Cleaning cppzmq..."
+	@rm -rf cppzmq"
+	@rm -rf $(CPPZMQ_PACKAGE)
+
+clean : autoconf_clean avro_clean boost_clean clang_clean cmake_clean cpython_clean jansson_clean libarchive_clean libs3_clean zeromq4-1_clean cppzmq_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."

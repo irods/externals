@@ -216,6 +216,17 @@ def build_package(target):
         i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
+    for i in v['external_build_steps']:
+        i = re.sub("TEMPLATE_JOBS", str(get_jobs()), i)
+        i = re.sub("TEMPLATE_SCRIPT_PATH", script_path, i)
+        i = re.sub("TEMPLATE_INSTALL_PREFIX", install_prefix, i)
+        i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
+        i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
+        i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
+        i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
+        i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
+        run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
+
     # MacOSX - after building boost
     # libraries lack an absolute path in their install_name, so apps using them fail to load
     # in our case, avro

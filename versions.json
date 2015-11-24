@@ -12,6 +12,9 @@
             "make -jTEMPLATE_JOBS",
             "make install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","share"]
     },
     "avro": {
@@ -25,6 +28,10 @@
             "cd lang/c++/build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT ..",
             "cd lang/c++/build; make -jTEMPLATE_JOBS; make install"
             ],
+        "external_build_steps": [
+            "cd lang/c++/build",
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","include","lib"]
     },
     "boost": {
@@ -40,6 +47,9 @@
             "./b2 stage -jTEMPLATE_JOBS",
             "./b2 install --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED' -jTEMPLATE_JOBS"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["include","lib"]
     },
     "clang": {
@@ -53,6 +63,9 @@
             "make -jTEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","include","lib","share"]
     },
     "cmake": {
@@ -66,6 +79,9 @@
             "make -jTEMPLATE_JOBS",
             "make install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","doc","share"]
     },
     "cpython": {
@@ -79,6 +95,9 @@
             "make -jTEMPLATE_JOBS",
             "make altinstall"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","include","lib","share"]
     },
     "jansson": {
@@ -93,6 +112,9 @@
             "make -jTEMPLATE_JOBS",
             "make install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["include","lib"]
     },
     "libarchive": {
@@ -106,6 +128,9 @@
             "make -jTEMPLATE_JOBS",
             "make install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","include","lib","share"]
     },
     "libs3": {
@@ -121,6 +146,9 @@
             "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
             "make DESTDIR=TEMPLATE_INSTALL_PREFIX TEMPLATE_LIBS3_MAKEFILE_STRING install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","include","lib"]
     },
     "zeromq4-1": {
@@ -135,6 +163,25 @@
             "make -jTEMPLATE_JOBS",
             "make install"
             ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
         "fpm_directories": ["bin","include","lib"]
+    },
+    "cppzmq": {
+        "commitish": "master",
+        "version_string": "4.1",
+        "license": "LGPL v3",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p ../opt/irods-externals/cppzmq4.1-0/include",
+            "cp zmq.hpp ../opt/irods-externals/cppzmq4.1-0/include"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include"]
     }
+
 }
