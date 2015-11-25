@@ -96,6 +96,14 @@ cppzmq_clean :
 	@rm -rf cppzmq"
 	@rm -rf $(CPPZMQ_PACKAGE)
 
+$(EPM_PACKAGE):
+	./build.py epm > epm.log
+epm : $(EPM_PACKAGE)
+epm_clean :
+	@echo "Cleaning epm..."
+	@rm -rf epm"
+	@rm -rf $(EPM_PACKAGE)
+
 clean : autoconf_clean avro_clean boost_clean clang_clean cmake_clean cpython_clean jansson_clean libarchive_clean libs3_clean zeromq4-1_clean cppzmq_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk

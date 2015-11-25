@@ -182,6 +182,22 @@
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
         "fpm_directories": ["include"]
+    },
+    "epm": {
+        "commitish": "master",
+        "version_string": "4.2",
+        "license": "LGPL v3",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+                "make",
+                "mkdir -p TEMPLATE_INSTALL_PREFIX/bin",
+                "cp epm TEMPLATE_INSTALL_PREFIX/bin"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["bin"]
     }
 
 }
