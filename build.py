@@ -238,27 +238,34 @@ def build_package(target):
             done'.format(boost_root), run_env=myenv, unsafe_shell=True, check_rc='osx dylib fullpath fix failed')
 
     # package
-    if platform.linux_distribution()[0] == 'openSUSE ':
-        fpmbinary='fpm.ruby2.1'
+    if get_package_type() == 'osxpkg':
+        print('MacOSX Detected - Skipping Package Build')
+        # touch file to satisfy make
+        f = get_package_filename(target)
+        with open(os.path.join(script_path,f), 'a'):
+            os.utime(f, None)
     else:
-        fpmbinary='fpm'
-    run_cmd(['which', fpmbinary], check_rc='fpm not found, try "gem install fpm"')
-    os.chdir(script_path)
-    package_cmd = [fpmbinary, '-f', '-s', 'dir']
-    package_cmd.extend(['-t', get_package_type()])
-    package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
-    package_cmd.extend(['-m', '<packages@irods.org>'])
-    package_cmd.extend(['--vendor', 'iRODS Consortium'])
-    package_cmd.extend(['--license', v['license']])
-    package_cmd.extend(['--description', 'iRODS Build Dependency'])
-    package_cmd.extend(['--url', 'https://irods.org'])
-    package_cmd.extend(['-C', build_dir])
-    if platform.linux_distribution()[0] == 'openSUSE ' and target in ['jansson','zeromq4-1']:
-        v['fpm_directories'] = ['lib64' if x == 'lib' else x for x in v['fpm_directories']]
-    for i in sorted(v['fpm_directories']):
-        package_cmd.extend([os.path.join(v['externals_root'], package_subdirectory, i)])
-    run_cmd(package_cmd, check_rc='packaging failed')
-    print('Building [{0}] ... Complete'.format(target))
+        if platform.linux_distribution()[0] == 'openSUSE ':
+            fpmbinary='fpm.ruby2.1'
+        else:
+            fpmbinary='fpm'
+        run_cmd(['which', fpmbinary], check_rc='fpm not found, try "gem install fpm"')
+        os.chdir(script_path)
+        package_cmd = [fpmbinary, '-f', '-s', 'dir']
+        package_cmd.extend(['-t', get_package_type()])
+        package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
+        package_cmd.extend(['-m', '<packages@irods.org>'])
+        package_cmd.extend(['--vendor', 'iRODS Consortium'])
+        package_cmd.extend(['--license', v['license']])
+        package_cmd.extend(['--description', 'iRODS Build Dependency'])
+        package_cmd.extend(['--url', 'https://irods.org'])
+        package_cmd.extend(['-C', build_dir])
+        if platform.linux_distribution()[0] == 'openSUSE ' and target in ['jansson','zeromq4-1']:
+            v['fpm_directories'] = ['lib64' if x == 'lib' else x for x in v['fpm_directories']]
+        for i in sorted(v['fpm_directories']):
+            package_cmd.extend([os.path.join(v['externals_root'], package_subdirectory, i)])
+        run_cmd(package_cmd, check_rc='packaging failed')
+        print('Building [{0}] ... Complete'.format(target))
 
 def main(target):
     if target == 'packagesfile':
