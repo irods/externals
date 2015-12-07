@@ -30,6 +30,12 @@ def print_debug(msg):
 def print_error(msg):
     print('ERROR: {0}'.format(msg))
 
+def touch(filename):
+    try:
+        os.utime(filename, None)
+    except:
+        open(filename, 'a').close()
+
 def get_local_path(package_name, path_elements):
     p = get_versions()[package_name]
     path_name = '{0}{1}-{2}'.format(package_name, p['version_string'], p['consortium_build_number'])
@@ -122,9 +128,7 @@ def build_package(target):
         if target == 'cpython':
             print_debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
             # touch file to satisfy make
-            f = get_package_filename(target)
-            with open(f, 'a'):
-                os.utime(f, None)
+            touch(get_package_filename(target))
             return
     print_debug('python_executable: [{0}]'.format(python_executable))
     cmake_executable = get_local_path('cmake',['bin','cmake'])
@@ -241,9 +245,8 @@ def build_package(target):
     if get_package_type() == 'osxpkg':
         print('MacOSX Detected - Skipping Package Build')
         # touch file to satisfy make
-        f = get_package_filename(target)
-        with open(os.path.join(script_path,f), 'a'):
-            os.utime(f, None)
+        f = os.path.join(script_path,get_package_filename(target))
+        touch(f)
     else:
         if platform.linux_distribution()[0] == 'openSUSE ':
             fpmbinary='fpm.ruby2.1'
