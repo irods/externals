@@ -61,6 +61,7 @@
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE:FILEPATH=TEMPLATE_PYTHON_EXECUTABLE ../llvm",
             "make -jTEMPLATE_JOBS",
+            "make -jTEMPLATE_JOBS check-clang-tools",
             "make -jTEMPLATE_JOBS install"
             ],
         "external_build_steps": [

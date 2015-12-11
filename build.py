@@ -158,7 +158,7 @@ def build_package(target):
         target_dirs = [
                 ('llvm', 'llvm'),
                 ('clang', 'llvm/tools/clang'),
-                ('clang-tools-extra', 'llvm/tools/clang/tools/clang-tools-extra'),
+                ('clang-tools-extra', 'llvm/tools/clang/tools/extra'),
                 ('compiler-rt', 'llvm/projects/compiler-rt'),
                 ('libcxx', 'llvm/projects/libcxx'),
                 ('libcxxabi', 'llvm/projects/libcxxabi')
@@ -168,7 +168,7 @@ def build_package(target):
                 mkdir_p(os.path.dirname(os.path.join(build_dir,t[1])))
                 os.chdir(os.path.dirname(os.path.join(build_dir,t[1])))
                 print_debug('cwd: {0}'.format(os.getcwd()))
-                run_cmd(['git', 'clone', 'https://github.com/irods/{0}'.format(t[0])])
+                run_cmd(['git', 'clone', 'https://github.com/irods/{0}'.format(t[0]),t[1].split("/")[-1]])
             os.chdir(os.path.join(build_dir,t[1]))
             print_debug('cwd: {0}'.format(os.getcwd()))
             run_cmd(['git', 'fetch'], check_rc='git fetch failed')
