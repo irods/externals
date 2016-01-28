@@ -25,7 +25,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT ..",
+            "cd lang/c++/build; rm -f CMakeCache.txt; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT ..",
             "cd lang/c++/build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
