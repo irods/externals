@@ -1,12 +1,13 @@
-.PHONY : all clean
-.PHONY : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq epm
-
 all : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq epm
+
+.PHONY : all clean $(all)
 
 packages.mk : Makefile versions.json build.py
 	./build.py packagesfile
 
 -include packages.mk
+
+$(all) : packages.mk
 
 $(AUTOCONF_PACKAGE) :
 	./build.py autoconf > autoconf.log
@@ -72,7 +73,7 @@ libarchive_clean :
 	@rm -rf libarchive*
 	@rm -rf $(LIBARCHIVE_PACKAGE)
 
-$(LIBS3_PACKAGE): $(CLANG_PACKAGE)
+$(LIBS3_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py libs3 > libs3.log
 libs3 : $(LIBS3_PACKAGE)
 libs3_clean :
@@ -80,7 +81,7 @@ libs3_clean :
 	@rm -rf libs3*
 	@rm -rf $(LIBS3_PACKAGE)
 
-$(ZEROMQ4-1_PACKAGE): $(CLANG_PACKAGE)
+$(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py zeromq4-1 > zeromq4-1.log
 zeromq4-1 : $(ZEROMQ4-1_PACKAGE)
 zeromq4-1_clean :
@@ -88,7 +89,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-$(CPPZMQ_PACKAGE):
+$(CPPZMQ_PACKAGE) :
 	./build.py cppzmq > cppzmq.log
 cppzmq : $(CPPZMQ_PACKAGE)
 cppzmq_clean :
@@ -96,7 +97,7 @@ cppzmq_clean :
 	@rm -rf cppzmq*
 	@rm -rf $(CPPZMQ_PACKAGE)
 
-$(EPM_PACKAGE):
+$(EPM_PACKAGE) :
 	./build.py epm > epm.log
 epm : $(EPM_PACKAGE)
 epm_clean :
