@@ -2,6 +2,8 @@ all : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1
 
 .PHONY : all clean $(all)
 
+VERBOSITY=-v
+
 packages.mk : Makefile versions.json build.py
 	./build.py packagesfile
 
@@ -10,7 +12,7 @@ packages.mk : Makefile versions.json build.py
 $(all) : packages.mk
 
 $(AUTOCONF_PACKAGE) :
-	./build.py autoconf > autoconf.log
+	./build.py $(VERBOSITY) autoconf > autoconf.log 2>&1
 autoconf : $(AUTOCONF_PACKAGE)
 autoconf_clean :
 	@echo "Cleaning autoconf..."
@@ -18,7 +20,7 @@ autoconf_clean :
 	@rm -rf $(AUTOCONF_PACKAGE)
 
 $(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
-	./build.py avro > avro.log
+	./build.py $(VERBOSITY) avro > avro.log 2>&1
 avro : $(AVRO_PACKAGE)
 avro_clean :
 	@echo "Cleaning avro..."
@@ -26,7 +28,7 @@ avro_clean :
 	@rm -rf $(AVRO_PACKAGE)
 
 $(BOOST_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py boost > boost.log
+	./build.py $(VERBOSITY) boost > boost.log 2>&1
 boost : $(BOOST_PACKAGE)
 boost_clean :
 	@echo "Cleaning boost..."
@@ -34,7 +36,7 @@ boost_clean :
 	@rm -rf $(BOOST_PACKAGE)
 
 $(CLANG_PACKAGE) : $(CMAKE_PACKAGE) $(CPYTHON_PACKAGE)
-	./build.py clang > clang.log
+	./build.py $(VERBOSITY) clang > clang.log 2>&1
 clang : $(CLANG_PACKAGE)
 clang_clean :
 	@echo "Cleaning clang..."
@@ -42,7 +44,7 @@ clang_clean :
 	@rm -rf $(CLANG_PACKAGE)
 
 $(CMAKE_PACKAGE) :
-	./build.py cmake > cmake.log
+	./build.py $(VERBOSITY) cmake > cmake.log 2>&1
 cmake : $(CMAKE_PACKAGE)
 cmake_clean :
 	@echo "Cleaning cmake..."
@@ -50,7 +52,7 @@ cmake_clean :
 	@rm -rf $(CMAKE_PACKAGE)
 
 $(CPYTHON_PACKAGE) :
-	./build.py cpython > cpython.log
+	./build.py $(VERBOSITY) cpython > cpython.log 2>&1
 cpython : $(CPYTHON_PACKAGE)
 cpython_clean :
 	@echo "Cleaning cpython..."
@@ -58,7 +60,7 @@ cpython_clean :
 	@rm -rf $(CPYTHON_PACKAGE)
 
 $(JANSSON_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py jansson > jansson.log
+	./build.py $(VERBOSITY) jansson > jansson.log 2>&1
 jansson : $(JANSSON_PACKAGE)
 jansson_clean :
 	@echo "Cleaning jansson..."
@@ -66,7 +68,7 @@ jansson_clean :
 	@rm -rf $(JANSSON_PACKAGE)
 
 $(LIBARCHIVE_PACKAGE) : $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
-	./build.py libarchive > libarchive.log
+	./build.py $(VERBOSITY) libarchive > libarchive.log 2>&1
 libarchive : $(LIBARCHIVE_PACKAGE)
 libarchive_clean :
 	@echo "Cleaning libarchive..."
@@ -74,7 +76,7 @@ libarchive_clean :
 	@rm -rf $(LIBARCHIVE_PACKAGE)
 
 $(LIBS3_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py libs3 > libs3.log
+	./build.py $(VERBOSITY) libs3 > libs3.log 2>&1
 libs3 : $(LIBS3_PACKAGE)
 libs3_clean :
 	@echo "Cleaning libs3..."
@@ -82,7 +84,7 @@ libs3_clean :
 	@rm -rf $(LIBS3_PACKAGE)
 
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py zeromq4-1 > zeromq4-1.log
+	./build.py $(VERBOSITY) zeromq4-1 > zeromq4-1.log 2>&1
 zeromq4-1 : $(ZEROMQ4-1_PACKAGE)
 zeromq4-1_clean :
 	@echo "Cleaning zeromq4-1..."
@@ -90,7 +92,7 @@ zeromq4-1_clean :
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
 $(CPPZMQ_PACKAGE) :
-	./build.py cppzmq > cppzmq.log
+	./build.py $(VERBOSITY) cppzmq > cppzmq.log 2>&1
 cppzmq : $(CPPZMQ_PACKAGE)
 cppzmq_clean :
 	@echo "Cleaning cppzmq..."
@@ -98,7 +100,7 @@ cppzmq_clean :
 	@rm -rf $(CPPZMQ_PACKAGE)
 
 $(EPM_PACKAGE) :
-	./build.py epm > epm.log
+	./build.py $(VERBOSITY) epm > epm.log 2>&1
 epm : $(EPM_PACKAGE)
 epm_clean :
 	@echo "Cleaning epm..."

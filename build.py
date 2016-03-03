@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-DEBUG = False
-DEBUG = True
-
 import os
 import re
 import sys
 import json
 import errno
+import logging
+import optparse
 import platform
 import subprocess
 import multiprocessing
@@ -23,13 +22,6 @@ def mkdir_p(path):
             pass
         else: raise
 
-def print_debug(msg):
-    if DEBUG == True:
-        print('DEBUG: {0}'.format(msg))
-
-def print_error(msg):
-    print('ERROR: {0}'.format(msg))
-
 def touch(filename):
     try:
         os.utime(filename, None)
@@ -37,29 +29,31 @@ def touch(filename):
         open(filename, 'a').close()
 
 def get_local_path(package_name, path_elements):
+    log = logging.getLogger(__name__)
     p = get_versions()[package_name]
     path_name = '{0}{1}-{2}'.format(package_name, p['version_string'], p['consortium_build_number'])
     local_path = os.path.join(script_path, '{0}_src'.format(path_name), p['externals_root'], path_name, *path_elements)
-#    print_debug('local path: {0}'.format(local_path))
+    log.debug('local path: {0}'.format(local_path))
     return local_path
 
 def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False):
+    log = logging.getLogger(__name__)
     # run it
     if run_env == False:
         run_env = os.environ.copy()
-    print_debug('run_env: {0}'.format(run_env))
-    print_debug('running: {0}, unsafe_shell={1}, check_rc={2}'.format(cmd, unsafe_shell, check_rc))
+    log.debug('run_env: {0}'.format(run_env))
+    log.info('running: {0}, unsafe_shell={1}, check_rc={2}'.format(cmd, unsafe_shell, check_rc))
     if unsafe_shell == True:
         p = subprocess.Popen(cmd, env=run_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     else:
         p = subprocess.Popen(cmd, env=run_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (out, err) = p.communicate()
-    print_debug('  stdout: {0}'.format(out.strip()))
-    print_debug('  stderr: {0}'.format(err.strip()))
-    print_debug('')
+    log.info('  stdout: {0}'.format(out.strip()))
+    log.info('  stderr: {0}'.format(err.strip()))
+    log.info('')
     if check_rc != False:
         if p.returncode != 0:
-            print_error(check_rc)
+            log.error(check_rc)
             sys.exit(p.returncode)
     return p.returncode
 
@@ -88,36 +82,40 @@ def get_package_arch():
     return a
 
 def get_package_type():
+    log = logging.getLogger(__name__)
     pld = platform.linux_distribution()[0]
-#    print_debug('linux distribution detected: {0}'.format(pld))
+    log.debug('linux distribution detected: {0}'.format(pld))
     if pld in ['debian', 'Ubuntu']:
         pt = 'deb'
-    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'openSUSE ', 'SUSE Linux Enterprise Server']:
+    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'SUSE Linux Enterprise Server']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
             pt = 'osxpkg'
         else:
             pt = 'not_detected'
-#    print_debug('package type detected: {0}'.format(pt))
+    log.debug('package type detected: {0}'.format(pt))
     return pt
 
 def get_jobs():
+    log = logging.getLogger(__name__)
     detected = int(multiprocessing.cpu_count())
     if detected > 1:
         using = detected - 1
     else:
         using = detected
-    print_debug('{0} processor(s) detected, using -j{1}'.format(detected, using))
+    log.debug('{0} processor(s) detected, using -j{1}'.format(detected, using))
     return using
 
 def build_package(target):
+    log = logging.getLogger(__name__)
+    print('Building [{0}]'.format(target))
     # prepare paths
     v = get_versions()[target]
     package_subdirectory = '{0}{1}-{2}'.format(target, v['version_string'], v['consortium_build_number'])
     build_dir = os.path.join(script_path, '{0}_src'.format(package_subdirectory))
     install_prefix = os.path.join(build_dir, v['externals_root'], package_subdirectory)
-    print_debug(install_prefix)
+    log.info(install_prefix)
 
     # prepare executables
     os.chdir(os.path.join(script_path))
@@ -126,24 +124,24 @@ def build_package(target):
     else:
         python_executable = sys.executable
         if target == 'cpython':
-            print_debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
+            log.debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
             # touch file to satisfy make
             touch(get_package_filename(target))
             return
-    print_debug('python_executable: [{0}]'.format(python_executable))
+    log.debug('python_executable: [{0}]'.format(python_executable))
     cmake_executable = get_local_path('cmake',['bin','cmake'])
-    print_debug('cmake_executable: [{0}]'.format(cmake_executable))
+    log.debug('cmake_executable: [{0}]'.format(cmake_executable))
 
     # prepare libraries
     boost_root = get_local_path('boost',[])
-    print_debug('boost_root: [{0}]'.format(boost_root))
+    log.debug('boost_root: [{0}]'.format(boost_root))
 
     # prepare other strings
     if get_package_type() == 'osxpkg':
         libs3_makefile_string = '-f GNUmakefile.osx'
     else:
         libs3_makefile_string = ''
-    print_debug('libs3_makefile_string: [{0}]'.format(libs3_makefile_string))
+    log.debug('libs3_makefile_string: [{0}]'.format(libs3_makefile_string))
 
     # build boost install path
     boost_info = get_versions()['boost']
@@ -167,17 +165,17 @@ def build_package(target):
             if not os.path.isdir(os.path.join(build_dir,t[1])):
                 mkdir_p(os.path.dirname(os.path.join(build_dir,t[1])))
                 os.chdir(os.path.dirname(os.path.join(build_dir,t[1])))
-                print_debug('cwd: {0}'.format(os.getcwd()))
+                log.debug('cwd: {0}'.format(os.getcwd()))
                 run_cmd(['git', 'clone', 'https://github.com/irods/{0}'.format(t[0]),t[1].split("/")[-1]])
             os.chdir(os.path.join(build_dir,t[1]))
-            print_debug('cwd: {0}'.format(os.getcwd()))
+            log.debug('cwd: {0}'.format(os.getcwd()))
             run_cmd(['git', 'fetch'], check_rc='git fetch failed')
             run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
     else:
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(build_dir)
             os.chdir(build_dir)
-            print_debug('cwd: {0}'.format(os.getcwd()))
+            log.debug('cwd: {0}'.format(os.getcwd()))
             if target == 'boost':
                 # using boostorg namespace instead of forking 50+ relatively linked submodules
                 run_cmd(['git', 'clone', 'https://github.com/boostorg/boost'])
@@ -192,17 +190,17 @@ def build_package(target):
     if target not in ['clang','cmake','autoconf','cpython']:
         clang_bindir = get_local_path('clang',['bin'])
         myenv['CC'] = '{0}/clang'.format(clang_bindir)
-#       print_debug('CC='+myenv['CC'])
+        log.debug('CC='+myenv['CC'])
         myenv['CXX'] = '{0}/clang++'.format(clang_bindir)
-#       print_debug('CXX='+myenv['CXX'])
+        log.debug('CXX='+myenv['CXX'])
         myenv['PATH'] = '{0}:{1}'.format(clang_bindir, myenv['PATH'])
-#       print_debug('PATH='+myenv['PATH'])
+        log.debug('PATH='+myenv['PATH'])
         autoconf_bindir = get_local_path('autoconf',['bin'])
         myenv['PATH'] = '{0}:{1}'.format(autoconf_bindir, myenv['PATH'])
-#       print_debug('PATH='+myenv['PATH'])
+        log.debug('PATH='+myenv['PATH'])
     if get_package_type() == 'osxpkg' and target in ['jansson','zeromq4-1']:
         myenv['LIBTOOLIZE'] = 'glibtoolize'
-#       print_debug('LIBTOOLIZE='+myenv['LIBTOOLIZE'])
+        log.debug('LIBTOOLIZE='+myenv['LIBTOOLIZE'])
 
     # build
     if target == 'clang':
@@ -270,7 +268,38 @@ def build_package(target):
         run_cmd(package_cmd, check_rc='packaging failed')
         print('Building [{0}] ... Complete'.format(target))
 
-def main(target):
+def main():
+
+    # check parameters
+    usage = "Usage: %prog [options] <target>"
+    parser = optparse.OptionParser(usage)
+    parser.add_option('-v', '--verbose', action="count", dest='verbosity', default=1, help='print more information to stdout')
+    parser.add_option('-q', '--quiet', action='store_const', const=0, dest='verbosity', help='print less information to stdout')
+    (options, args) = parser.parse_args()
+
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(1)
+
+    if len(args) != 1:
+        parser.error("incorrect number of arguments")
+
+    # configure logging
+    log = logging.getLogger()
+    if options.verbosity >= 2:
+        log.setLevel(logging.DEBUG)
+    elif options.verbosity == 1:
+        log.setLevel(logging.INFO)
+    else:
+        log.setLevel(logging.WARNING)
+    ch = logging.StreamHandler()
+    formatter = logging.Formatter("%(levelname)s - %(message)s")
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+
+    # build the target
+    target = args[0]
+
     if target == 'packagesfile':
         v = get_versions()
         with open('packages.mk','w') as f:
@@ -279,19 +308,8 @@ def main(target):
     elif target in get_versions():
         build_package(target)
     else:
-        print_error('build target [{0}] not found in {1}'.format(target, sorted(get_versions().keys())))
+        log.error('build target [{0}] not found in {1}'.format(target, sorted(get_versions().keys())))
         return 1
 
 if __name__ == '__main__':
-    if len(sys.argv) > 2:
-        print('Usage: {0}'.format(__file__))
-        print('Usage: {0} <target>'.format(__file__))
-        sys.exit(1)
-
-    if len(sys.argv) == 2:
-        rc = main(sys.argv[1])
-    else:
-        rc = main()
-
-    sys.exit(rc)
-
+    sys.exit(main())
