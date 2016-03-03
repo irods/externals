@@ -32,7 +32,8 @@ def main():
         log.info('Detected: {0}'.format(pld))
         aptcmd = ['sudo','apt-get','install','-y']
         # get prerequisites
-        cmd = ['sudo','apt-get','install','-y','ruby-dev','texinfo','help2man','g++','libtool']
+        cmd = ['sudo','apt-get','install','-y','make','autoconf2.13','ruby','ruby-dev','texinfo','help2man','g++']
+        cmd.extend['libtool','python-dev','libbz2-dev','zlib1g-dev','libcurl4-gnutls-dev','libxml2-dev','pkg-config']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','gem','install','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
