@@ -30,10 +30,15 @@ def main():
     pld = platform.linux_distribution()[0]
     if pld in ['debian', 'Ubuntu']:
         log.info('Detected: {0}'.format(pld))
-        aptcmd = ['sudo','apt-get','install','-y']
+        cmd = ['sudo', 'apt-get', 'update', '-y']
+        build.run_cmd(cmd, check_rc='getting updates failed')
         # get prerequisites
-        cmd = ['sudo','apt-get','install','-y','make','autoconf2.13','ruby','ruby-dev','texinfo','help2man','g++']
-        cmd.extend['libtool','python-dev','libbz2-dev','zlib1g-dev','libcurl4-gnutls-dev','libxml2-dev','pkg-config']
+        cmd = ['sudo','apt-get','install','-y','make','autoconf2.13','texinfo','help2man','g++','libtool',
+               'python-dev','libbz2-dev','zlib1g-dev','libcurl4-gnutls-dev','libxml2-dev','pkg-config']
+        if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
+            cmd.extend(['ruby1.9.1','ruby1.9.1-dev',])
+        else:
+            cmd.extend(['ruby','ruby-dev',])
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','gem','install','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
@@ -41,13 +46,15 @@ def main():
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
             # ubuntu12 ships with g++ 4.6 - needs 4.8+ to build clang
             log.info('Detected: Old Ubuntu - need to get g++ 4.8 to build clang')
-            cmd = ['sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test']
+            cmd = ['sudo','apt-get','install','-y','python-software-properties']
+            build.run_cmd(cmd, check_rc='installing add-apt-repository prereq failed')
+            cmd = ['sudo', 'add-apt-repository', '-y', 'ppa:ubuntu-toolchain-r/test']
             build.run_cmd(cmd, check_rc='installing ppa failed')
-            cmd = ['sudo apt-get update -y']
+            cmd = ['sudo', 'apt-get', 'update', '-y']
             build.run_cmd(cmd, check_rc='getting updates failed')
-            cmd = ['sudo apt-get install -y g++-4.8']
+            cmd = ['sudo', 'apt-get', 'install', '-y', 'g++-4.8']
             build.run_cmd(cmd, check_rc='installing g++-4.8 failed')
-            cmd = ['sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50']
+            cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/g++', 'g++', '/usr/bin/g++-4.8', '50']
             build.run_cmd(cmd, check_rc='swapping g++-4.8 failed')
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
@@ -55,8 +62,6 @@ def main():
         cmd = ['sudo','yum','clean','all']
         build.run_cmd(cmd, check_rc='yum clean failed')
         cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
-        build.run_cmd(cmd, check_rc='yum update failed')
-        cmd = ['sudo','yum','update','-y']
         build.run_cmd(cmd, check_rc='yum update failed')
         # get prerequisites
         cmd = ['sudo','yum','install','-y','epel-release','wget']
@@ -83,7 +88,7 @@ def main():
     elif pld in ['openSUSE ', 'SUSE Linux Enterprise Server']:
         log.info('Detected: {0}'.format(pld))
         # get prerequisites
-        cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems']
+        cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems','help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','gem','install','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
