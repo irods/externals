@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-import os
-import re
-import sys
-import json
 import errno
+import itertools
+import json
 import logging
-import optparse
-import platform
-import subprocess
 import multiprocessing
+import optparse
+import os
+import platform
+import re
+import subprocess
+import sys
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -149,6 +150,11 @@ def build_package(target):
     boost_install_prefix = os.path.join(boost_info['externals_root'], boost_subdirectory)
     boost_rpath = os.path.join(boost_install_prefix, 'lib')
 
+    clang_info = get_versions()['clang']
+    clang_subdirectory = '{0}{1}-{2}'.format('clang', clang_info['version_string'], clang_info['consortium_build_number'])
+    clang_cpp_headers = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'include', 'c++', 'v1')
+    clang_cpp_libraries = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'lib')
+
     # get
     if target == 'clang':
         if not os.path.isdir(os.path.join(build_dir,"build")):
@@ -207,21 +213,13 @@ def build_package(target):
         os.chdir(os.path.join(build_dir,"build"))
     else:
         os.chdir(os.path.join(build_dir,target))
-    for i in v['build_steps']:
-        i = re.sub("TEMPLATE_JOBS", str(get_jobs()), i)
-        i = re.sub("TEMPLATE_SCRIPT_PATH", script_path, i)
-        i = re.sub("TEMPLATE_INSTALL_PREFIX", install_prefix, i)
-        i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
-        i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
-        i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
-        i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
-        i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
-        run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
-    for i in v['external_build_steps']:
+    for i in itertools.chain(v['build_steps'], v['external_build_steps']):
         i = re.sub("TEMPLATE_JOBS", str(get_jobs()), i)
         i = re.sub("TEMPLATE_SCRIPT_PATH", script_path, i)
         i = re.sub("TEMPLATE_INSTALL_PREFIX", install_prefix, i)
+        i = re.sub("TEMPLATE_CLANG_CPP_HEADERS", clang_cpp_headers, i)
+        i = re.sub("TEMPLATE_CLANG_CPP_LIBRARIES", clang_cpp_libraries, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
@@ -261,7 +259,7 @@ def build_package(target):
         package_cmd.extend(['--description', 'iRODS Build Dependency'])
         package_cmd.extend(['--url', 'https://irods.org'])
         package_cmd.extend(['-C', build_dir])
-        if platform.linux_distribution()[0] == 'openSUSE ' and target in ['jansson','zeromq4-1']:
+        if platform.linux_distribution()[0] == 'openSUSE ' and target in ['jansson']:
             v['fpm_directories'] = ['lib64' if x == 'lib' else x for x in v['fpm_directories']]
         for i in sorted(v['fpm_directories']):
             package_cmd.extend([os.path.join(v['externals_root'], package_subdirectory, i)])

@@ -25,8 +25,8 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT ..",
-            "cd lang/c++/build; make -jTEMPLATE_JOBS; make install"
+            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd lang/c++/build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
             "cd lang/c++/build",
@@ -35,8 +35,8 @@
         "fpm_directories": ["bin","include","lib"]
     },
     "boost": {
-        "commitish": "boost-1.59.0",
-        "version_string": "1.59.0",
+        "commitish": "boost-1.60.0",
+        "version_string": "1.60.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -44,8 +44,7 @@
             "git submodule update --init",
             "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX",
             "./b2 headers",
-            "./b2 stage -jTEMPLATE_JOBS",
-            "./b2 install --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED' -jTEMPLATE_JOBS"
+            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -stdlib=libc++ -std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' linkflags='-stdlib=libc++' -jTEMPLATE_JOBS"
             ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -159,10 +158,9 @@
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "./autogen.sh",
-            "./configure --without-libsodium --prefix=TEMPLATE_INSTALL_PREFIX",
-            "make -jTEMPLATE_JOBS",
-            "make install"
+            "mkdir -p build",
+            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -200,5 +198,4 @@
         ],
         "fpm_directories": ["bin"]
     }
-
 }
