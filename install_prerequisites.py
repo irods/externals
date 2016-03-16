@@ -56,6 +56,8 @@ def main():
             build.run_cmd(cmd, check_rc='installing g++-4.8 failed')
             cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/g++', 'g++', '/usr/bin/g++-4.8', '50']
             build.run_cmd(cmd, check_rc='swapping g++-4.8 failed')
+            cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/gcc', 'gcc', '/usr/bin/gcc-4.8', '50']
+            build.run_cmd(cmd, check_rc='swapping gcc-4.8 failed')
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
         # prep

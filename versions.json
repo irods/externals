@@ -53,8 +53,8 @@
         "fpm_directories": ["include","lib"]
     },
     "clang": {
-        "commitish": "release_37",
-        "version_string": "3.7",
+        "commitish": "release_38",
+        "version_string": "3.8",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
