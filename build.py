@@ -177,6 +177,9 @@ def build_package(target):
             log.debug('cwd: {0}'.format(os.getcwd()))
             run_cmd(['git', 'fetch'], check_rc='git fetch failed')
             run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
+    elif target == 'clang-runtime':
+        if not os.path.isdir(os.path.join(build_dir,target)):
+            mkdir_p(os.path.join(build_dir, target))
     else:
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(build_dir)
@@ -220,6 +223,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_INSTALL_PREFIX", install_prefix, i)
         i = re.sub("TEMPLATE_CLANG_CPP_HEADERS", clang_cpp_headers, i)
         i = re.sub("TEMPLATE_CLANG_CPP_LIBRARIES", clang_cpp_libraries, i)
+        i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)

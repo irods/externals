@@ -1,4 +1,4 @@
-all : autoconf avro boost clang cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq epm
+all : autoconf avro boost clang clang-runtime cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq epm
 
 .PHONY : all clean $(all)
 
@@ -42,6 +42,14 @@ clang_clean :
 	@echo "Cleaning clang..."
 	@rm -rf clang*
 	@rm -rf $(CLANG_PACKAGE)
+
+$(CLANG-RUNTIME_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(VERBOSITY) clang-runtime > clang-runtime.log 2>&1
+clang-runtime : $(CLANG-RUNTIME_PACKAGE)
+clang-runtime_clean :
+	@echo "Cleaning clang-runtime..."
+	@rm -rf clang-runtime*
+	@rm -rf $(CLANG-RUNTIME_PACKAGE)
 
 $(CMAKE_PACKAGE) :
 	./build.py $(VERBOSITY) cmake > cmake.log 2>&1
@@ -107,7 +115,7 @@ epm_clean :
 	@rm -rf epm*
 	@rm -rf $(EPM_PACKAGE)
 
-clean : autoconf_clean avro_clean boost_clean clang_clean cmake_clean cpython_clean jansson_clean libarchive_clean libs3_clean zeromq4-1_clean cppzmq_clean epm_clean
+clean : autoconf_clean avro_clean boost_clean clang_clean clang-runtime_clean cmake_clean cpython_clean jansson_clean libarchive_clean libs3_clean zeromq4-1_clean cppzmq_clean epm_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
