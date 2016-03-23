@@ -25,7 +25,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd lang/c++/build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [

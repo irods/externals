@@ -155,6 +155,10 @@ def build_package(target):
     clang_cpp_headers = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'include', 'c++', 'v1')
     clang_cpp_libraries = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'lib')
 
+    clang_runtime_subdirectory = '{0}{1}-{2}'.format('clang-runtime', clang_info['version_string'], clang_info['consortium_build_number'])
+    clang_runtime_install_prefix = os.path.join(clang_info['externals_root'], clang_runtime_subdirectory)
+    clang_runtime_rpath = os.path.join(clang_runtime_install_prefix, 'lib')
+
     # get
     if target == 'clang':
         if not os.path.isdir(os.path.join(build_dir,"build")):
@@ -224,6 +228,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_CLANG_CPP_HEADERS", clang_cpp_headers, i)
         i = re.sub("TEMPLATE_CLANG_CPP_LIBRARIES", clang_cpp_libraries, i)
         i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
+        i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
