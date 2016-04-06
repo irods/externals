@@ -126,7 +126,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "autoreconf -fi",
-            "./configure --prefix=TEMPLATE_INSTALL_PREFIX --with-pic",
+            "./configure --prefix=TEMPLATE_INSTALL_PREFIX --libdir=TEMPLATE_INSTALL_PREFIX/lib --with-pic",
             "make -jTEMPLATE_JOBS",
             "make install"
             ],

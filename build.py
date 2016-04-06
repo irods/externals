@@ -268,8 +268,6 @@ def build_package(target):
         package_cmd.extend(['--description', 'iRODS Build Dependency'])
         package_cmd.extend(['--url', 'https://irods.org'])
         package_cmd.extend(['-C', build_dir])
-        if platform.linux_distribution()[0] == 'openSUSE ' and target in ['jansson']:
-            v['fpm_directories'] = ['lib64' if x == 'lib' else x for x in v['fpm_directories']]
         for i in sorted(v['fpm_directories']):
             package_cmd.extend([os.path.join(v['externals_root'], package_subdirectory, i)])
         run_cmd(package_cmd, check_rc='packaging failed')
