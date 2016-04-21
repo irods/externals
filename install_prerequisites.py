@@ -40,7 +40,7 @@ def main():
         else:
             cmd.extend(['ruby','ruby-dev',])
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
-        cmd = ['sudo','gem','install','fpm']
+        cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
         # if old, bootstrap g++
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
@@ -70,7 +70,7 @@ def main():
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','gcc-c++','autoconf','automake','texinfo','help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel','bzip2-devel','libcurl-devel','libxml2-devel','libtool']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
-        cmd = ['sudo','gem','install','fpm']
+        cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
         # if old, bootstrap g++
         if platform.linux_distribution()[1] < '7':
@@ -92,7 +92,7 @@ def main():
         # get prerequisites
         cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems','help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
-        cmd = ['sudo','gem','install','fpm']
+        cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
     else:
         if platform.mac_ver()[0] != '':
