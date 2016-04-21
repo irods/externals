@@ -58,18 +58,28 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False):
             sys.exit(p.returncode)
     return p.returncode
 
+def get_distribution_name():
+    log = logging.getLogger(__name__)
+    cmd = ['lsb_release','-s','-c']
+    p = subprocess.Popen(cmd, env=os.environ.copy(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (d, err) = p.communicate()
+    log.debug('linux distribution name detected: {0}'.format(d.strip()))
+    return d.strip()
+
 def get_package_filename(p):
     v = get_versions()[p]
     a = get_package_arch()
     t = get_package_type()
+    d = ''
     if t == 'rpm':
         package_filename_template = 'irods-externals-{0}{1}-{2}-1.0-1.{4}.{3}'
     elif t == 'osxpkg':
         t = 'pkg'
         package_filename_template = 'irods-externals-{0}{1}-{2}-1.0.{3}'
     else:
-        package_filename_template = 'irods-externals-{0}{1}-{2}_1.0_{4}.{3}'
-    f = package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a)
+        d = get_distribution_name()
+        package_filename_template = 'irods-externals-{0}{1}-{2}_1.0~{5}_{4}.{3}'
+    f = package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a, d)
     return f
 
 def get_versions():
@@ -263,6 +273,11 @@ def build_package(target):
         package_cmd.extend(['-t', get_package_type()])
         package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
         package_cmd.extend(['-m', '<packages@irods.org>'])
+        if get_package_type() == 'deb':
+            d = get_distribution_name()
+            package_cmd.extend(['--version', '1.0~{0}'.format(d)])
+        else:
+            package_cmd.extend(['--version', '1.0'])
         package_cmd.extend(['--vendor', 'iRODS Consortium'])
         package_cmd.extend(['--license', v['license']])
         package_cmd.extend(['--description', 'iRODS Build Dependency'])
