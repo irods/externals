@@ -1,4 +1,4 @@
-all : autoconf avro boost clang clang-runtime cmake cpython jansson libarchive libs3 zeromq4-1 cppzmq epm
+all : autoconf avro boost clang clang-runtime cmake cpython jansson libarchive libs3 qpid zeromq4-1 cppzmq epm
 
 .PHONY : all clean $(all)
 
@@ -90,6 +90,14 @@ libs3_clean :
 	@echo "Cleaning libs3..."
 	@rm -rf libs3*
 	@rm -rf $(LIBS3_PACKAGE)
+
+$(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE)
+	./build.py $(VERBOSITY) qpid > qpid.log 2>&1
+qpid : $(QPID_PACKAGE)
+qpid_clean :
+	@echo "Cleaning qpid..."
+	@rm -rf qpid*
+	@rm -rf $(QPID_PACKAGE)
 
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) zeromq4-1 > zeromq4-1.log 2>&1
