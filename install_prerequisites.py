@@ -71,7 +71,7 @@ def main():
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','gcc-c++','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel',
-               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','uuid-devel']
+               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
