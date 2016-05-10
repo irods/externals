@@ -89,8 +89,8 @@
         "fpm_directories": ["lib"]
     },
     "cmake": {
-        "commitish": "v3.5.0",
-        "version_string": "3.5.0",
+        "commitish": "5ffa0d5d35b13b540c386995ce19aef5b66064b7",
+        "version_string": "3.5.2",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
