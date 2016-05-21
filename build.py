@@ -169,6 +169,11 @@ def build_package(target):
     clang_runtime_install_prefix = os.path.join(clang_info['externals_root'], clang_runtime_subdirectory)
     clang_runtime_rpath = os.path.join(clang_runtime_install_prefix, 'lib')
 
+    qpid_info = get_versions()['qpid']
+    qpid_subdirectory = '{0}{1}-{2}'.format('qpid', qpid_info['version_string'], qpid_info['consortium_build_number'])
+    qpidproton_info = get_versions()['qpid-proton']
+    qpidproton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpidproton_info['version_string'], qpidproton_info['consortium_build_number'])
+
     # get
     if target == 'clang':
         if not os.path.isdir(os.path.join(build_dir,"build")):
@@ -194,6 +199,9 @@ def build_package(target):
     elif target == 'clang-runtime':
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(os.path.join(build_dir, target))
+    elif target == 'qpid-with-proton':
+	if not os.path.isdir(os.path.join(build_dir,target)):
+	    mkdir_p(os.path.join(build_dir, target))
     else:
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(build_dir)
@@ -240,6 +248,8 @@ def build_package(target):
         i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
         i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
+        i = re.sub("TEMPLATE_QPID_SUBDIRECTORY", qpid_subdirectory, i)
+        i = re.sub("TEMPLATE_QPID-PROTON_SUBDIRECTORY", qpidproton_subdirectory, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
         i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
@@ -285,7 +295,10 @@ def build_package(target):
         package_cmd.extend(['-C', build_dir])
         for i in sorted(v['fpm_directories']):
             package_cmd.extend([os.path.join(v['externals_root'], package_subdirectory, i)])
-        run_cmd(package_cmd, check_rc='packaging failed')
+        if len(v['fpm_directories']) > 0:
+	    run_cmd(package_cmd, check_rc='packaging failed')
+        else:
+            touch(get_package_filename(target))
         print('Building [{0}] ... Complete'.format(target))
 
 def main():

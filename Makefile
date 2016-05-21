@@ -1,4 +1,4 @@
-all : autoconf avro boost clang clang-runtime cmake cpython jansson libarchive libs3 qpid zeromq4-1 cppzmq epm
+all : autoconf avro boost clang clang-runtime cmake cpython jansson libarchive libs3 qpid qpid-proton qpid-with-proton zeromq4-1 cppzmq epm
 
 .PHONY : all clean $(all)
 
@@ -91,13 +91,29 @@ libs3_clean :
 	@rm -rf libs3*
 	@rm -rf $(LIBS3_PACKAGE)
 
-$(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE)
+$(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
 	./build.py $(VERBOSITY) qpid > qpid.log 2>&1
 qpid : $(QPID_PACKAGE)
 qpid_clean :
 	@echo "Cleaning qpid..."
 	@rm -rf qpid*
 	@rm -rf $(QPID_PACKAGE)
+
+$(QPID-PROTON_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(VERBOSITY) qpid-proton > qpid-proton.log 2>&1
+qpid-proton : $(QPID-PROTON_PACKAGE)
+qpid-proton_clean :
+	@echo "Cleaning qpid-proton..."
+	@rm -rf qpid-proton*
+	@rm -rf $(QPID-PROTON_PACKAGE)
+
+$(QPID-WITH-PROTON_PACKAGE) : $(QPID_PACKAGE)
+	./build.py $(VERBOSITY) qpid-with-proton > qpid-with-proton.log 2>&1
+qpid-with-proton : $(QPID-WITH-PROTON_PACKAGE)
+qpid-with-proton_clean :
+	@echo "Cleaning qpid-with-proton..."
+	@rm -rf qpid-with-proton*
+	@rm -rf $(QPID-WITH-PROTON_PACKAGE)
 
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) zeromq4-1 > zeromq4-1.log 2>&1

@@ -35,7 +35,7 @@ def main():
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','make','autoconf2.13','texinfo',
                'help2man','g++','libtool','python-dev','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev']
+               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev']
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
             cmd.extend(['ruby1.9.1','ruby1.9.1-dev',])
         else:
@@ -71,7 +71,7 @@ def main():
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','gcc-c++','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel',
-               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel']
+               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
@@ -93,7 +93,7 @@ def main():
     elif pld in ['openSUSE ', 'SUSE Linux Enterprise Server']:
         log.info('Detected: {0}'.format(pld))
         # get prerequisites
-        cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems',
+        cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems','libopenssl-devel',
                'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
