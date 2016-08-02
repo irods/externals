@@ -41,6 +41,8 @@ def main():
         else:
             cmd.extend(['ruby','ruby-dev',])
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
         # if old, bootstrap g++
@@ -73,6 +75,8 @@ def main():
                'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel',
                'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
         # if old, bootstrap g++
@@ -96,6 +100,8 @@ def main():
         cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems','libopenssl-devel',
                'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
     else:
