@@ -1,4 +1,4 @@
-all : autoconf avro boost clang clang-runtime cmake cpython jansson libarchive libs3 qpid qpid-proton qpid-with-proton zeromq4-1 cppzmq epm
+all : autoconf avro boost clang clang-runtime cmake cpython imagemagick jansson libarchive libs3 qpid qpid-proton qpid-with-proton zeromq4-1 cppzmq epm
 
 .PHONY : all clean $(all)
 
@@ -66,6 +66,14 @@ cpython_clean :
 	@echo "Cleaning cpython..."
 	@rm -rf cpython*
 	@rm -rf $(CPYTHON_PACKAGE)
+
+$(IMAGEMAGICK_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(VERBOSITY) imagemagick > imagemagick.log 2>&1
+imagemagick : $(IMAGEMAGICK_PACKAGE)
+imagemagick_clean :
+	@echo "Cleaning imagemagick..."
+	@rm -rf imagemagick*
+	@rm -rf $(IMAGEMAGICK_PACKAGE)
 
 $(JANSSON_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) jansson > jansson.log 2>&1
