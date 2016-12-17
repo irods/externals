@@ -61,6 +61,11 @@ def main():
             build.run_cmd(cmd, check_rc='swapping g++-4.8 failed')
             cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/gcc', 'gcc', '/usr/bin/gcc-4.8', '50']
             build.run_cmd(cmd, check_rc='swapping gcc-4.8 failed')
+        # if new, get autoconf
+        if pld in ['Ubuntu'] and platform.linux_distribution()[1] > '16':
+            log.info('Detected: Ubuntu 16+ - need to get autoconf')
+            cmd = ['sudo','apt-get','install','-y','autoconf']
+            build.run_cmd(cmd, check_rc='installing autoconf failed')
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
         # prep
