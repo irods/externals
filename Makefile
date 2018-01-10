@@ -1,4 +1,4 @@
-all : autoconf avro boost clang clang-runtime cmake cpython imagemagick jansson libarchive libs3 qpid qpid-proton qpid-with-proton zeromq4-1 cppzmq epm
+all : autoconf avro boost clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton zeromq4-1 cppzmq epm
 
 .PHONY : all clean $(all)
 
@@ -82,6 +82,14 @@ jansson_clean :
 	@echo "Cleaning jansson..."
 	@rm -rf jansson*
 	@rm -rf $(JANSSON_PACKAGE)
+
+$(JSON_PACKAGE) :
+	./build.py $(VERBOSITY) json > json.log 2>&1
+json : $(JSON_PACKAGE)
+json_clean :
+	@echo "Cleaning json..."
+	@rm -rf json*
+	@rm -rf $(JSON_PACKAGE)
 
 $(LIBARCHIVE_PACKAGE) : $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) libarchive > libarchive.log 2>&1

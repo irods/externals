@@ -184,6 +184,21 @@
         ],
         "fpm_directories": ["include","lib"]
     },
+    "json": {
+        "commitish": "v3.0.1",
+        "version_string": "3.0.1",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
+            "cp src/json.hpp TEMPLATE_INSTALL_PREFIX/include"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include"]
+    },
     "libarchive": {
         "commitish": "v3.1.2",
         "version_string": "3.1.2",
