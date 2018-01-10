@@ -216,8 +216,8 @@
         "fpm_directories": ["bin","include","lib","share"]
     },
     "libs3": {
-        "commitish": "f6a2098e82fd65c53a9f8c8214a12b2c44c30a6d",
-        "version_string": "f6a2098e",
+        "commitish": "a30e55e84689bd6a2b9327a47dcdf4e68065a4b5",
+        "version_string": "a30e55e8",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
