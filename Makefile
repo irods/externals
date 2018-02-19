@@ -1,4 +1,4 @@
-all : autoconf avro boost clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton zeromq4-1 cppzmq epm
+all : autoconf avro boost clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
 
 .PHONY : all clean $(all)
 
@@ -130,6 +130,14 @@ qpid-with-proton_clean :
 	@echo "Cleaning qpid-with-proton..."
 	@rm -rf qpid-with-proton*
 	@rm -rf $(QPID-WITH-PROTON_PACKAGE)
+
+$(REDIS_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(VERBOSITY) redis > redis.log 2>&1
+redis : $(REDIS_PACKAGE)
+redis_clean :
+	@echo "Cleaning redis..."
+	@rm -rf redis*
+	@rm -rf $(REDIS_PACKAGE)
 
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) zeromq4-1 > zeromq4-1.log 2>&1
