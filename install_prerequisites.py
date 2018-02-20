@@ -41,10 +41,6 @@ def main():
         else:
             cmd.extend(['ruby','ruby-dev',])
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
-        cmd = ['sudo','gem','install','-v','1.8.3','json']
-        build.run_cmd(cmd, check_rc='installing json failed')
-        cmd = ['sudo','gem','install','-v','1.4.0','fpm']
-        build.run_cmd(cmd, check_rc='installing fpm failed')
         # if old, bootstrap g++
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
             # ubuntu12 ships with g++ 4.6 - needs 4.8+ to build clang
@@ -66,6 +62,12 @@ def main():
             log.info('Detected: Ubuntu 16+ - need to get autoconf')
             cmd = ['sudo','apt-get','install','-y','autoconf']
             build.run_cmd(cmd, check_rc='installing autoconf failed')
+        # get necessary ruby gems
+        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        build.run_cmd(cmd, check_rc='installing json failed')
+        cmd = ['sudo','gem','install','-v','1.4.0','fpm']
+        build.run_cmd(cmd, check_rc='installing fpm failed')
+
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
         # prep
