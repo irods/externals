@@ -63,6 +63,8 @@ def main():
             cmd = ['sudo','apt-get','install','-y','autoconf']
             build.run_cmd(cmd, check_rc='installing autoconf failed')
         # get necessary ruby gems
+        cmd = ['sudo','gem','install','-v','1.8.1','ffi']
+        build.run_cmd(cmd, check_rc='installing ffi failed')
         cmd = ['sudo','gem','install','-v','1.8.3','json']
         build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
@@ -76,12 +78,15 @@ def main():
         cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
         build.run_cmd(cmd, check_rc='yum update failed')
         # get prerequisites
-        cmd = ['sudo','yum','install','-y','epel-release','wget']
+        cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','gcc-c++','git','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel',
                'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        # get necessary ruby gems
+        cmd = ['sudo','gem','install','-v','1.8.1','ffi']
+        build.run_cmd(cmd, check_rc='installing ffi failed')
         cmd = ['sudo','gem','install','-v','1.8.3','json']
         build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
@@ -90,7 +95,7 @@ def main():
         if platform.linux_distribution()[1] < '7':
             # centos6 ships with g++ 4.4 - needs 4.8+ to build clang
             log.info('Detected: Old {0} - need to get g++ 4.8 to build clang'.format(pld))
-            cmd = ['wget','http://ftp.mirrorservice.org/sites/ftp.scientificlinux.org/linux/scientific/51/i386/RPM-GPG-KEYs/RPM-GPG-KEY-cern']
+            cmd = ['wget','https://ftp.mirrorservice.org/sites/ftp.scientificlinux.org/linux/scientific/obsolete/51/i386/RPM-GPG-KEYs/RPM-GPG-KEY-cern']
             build.run_cmd(cmd, check_rc='wget cern key failed')
             cmd = ['sudo','rpm','--import','RPM-GPG-KEY-cern']
             build.run_cmd(cmd, check_rc='importing cern key failed')
@@ -107,6 +112,9 @@ def main():
         cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems','libopenssl-devel',
                'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        # get necessary ruby gems
+        cmd = ['sudo','gem','install','-v','1.8.1','ffi']
+        build.run_cmd(cmd, check_rc='installing ffi failed')
         cmd = ['sudo','gem','install','-v','1.8.3','json']
         build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
