@@ -200,8 +200,8 @@
         "fpm_directories": ["include"]
     },
     "libarchive": {
-        "commitish": "v3.1.2",
-        "version_string": "3.1.2",
+        "commitish": "v3.3.2",
+        "version_string": "3.3.2",
         "license": "BSD 2-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
