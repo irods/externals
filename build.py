@@ -282,6 +282,12 @@ def build_package(target):
         package_cmd = [fpmbinary, '-f', '-s', 'dir']
         package_cmd.extend(['-t', get_package_type()])
         package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
+        try:
+            if get_package_type() == 'rpm' and v['rpm_dependencies']:
+                for d in v['rpm_dependencies']:
+                    package_cmd.extend(['-d', d])
+        except KeyError:
+            pass
         package_cmd.extend(['-m', '<packages@irods.org>'])
         if get_package_type() == 'deb':
             d = get_distribution_name()
