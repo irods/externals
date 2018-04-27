@@ -214,7 +214,7 @@
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
         "fpm_directories": ["bin","include","lib","share"],
-        "rpm_dependencies": ["xz-libs"]
+        "rpm_dependencies": ["xz-libs >= 5.2.2"]
     },
     "libs3": {
         "commitish": "a30e55e84689bd6a2b9327a47dcdf4e68065a4b5",
