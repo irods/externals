@@ -276,9 +276,7 @@
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX",
             "cp -r ../../TEMPLATE_QPID_SUBDIRECTORY/* TEMPLATE_INSTALL_PREFIX/",
-            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/include/* TEMPLATE_INSTALL_PREFIX/include/",
-            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/lib/* TEMPLATE_INSTALL_PREFIX/lib/",
-            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/share/* TEMPLATE_INSTALL_PREFIX/share/"
+            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/* TEMPLATE_INSTALL_PREFIX/"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
