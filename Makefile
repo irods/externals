@@ -1,4 +1,4 @@
-all : autoconf avro aws-sdk-cpp boost clang clang-runtime cmake cppzmq cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton redis zeromq4-1
+all : autoconf avro aws-sdk-cpp boost clang clang-runtime cmake cppzmq cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
 
 .PHONY : all clean $(all)
 
@@ -155,6 +155,14 @@ redis_clean :
 	@rm -rf redis*
 	@rm -rf $(REDIS_PACKAGE)
 
+$(SPDLOG_PACKAGE) :
+	./build.py $(VERBOSITY) spdlog > spdlog.log 2>&1
+spdlog : $(SPDLOG_PACKAGE)
+spdlog_clean :
+	@echo "Cleaning spdlog..."
+	@rm -rf spdlog*
+	@rm -rf $(SPDLOG_PACKAGE)
+
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) zeromq4-1 > zeromq4-1.log 2>&1
 zeromq4-1 : $(ZEROMQ4-1_PACKAGE)
@@ -163,7 +171,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpython_clean jansson_clean libarchive_clean libs3_clean redis_clean zeromq4-1_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpython_clean jansson_clean libarchive_clean libs3_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
