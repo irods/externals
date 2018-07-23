@@ -151,22 +151,6 @@
         ],
         "fpm_directories": ["bin","include","lib","share"]
     },
-    "epm": {
-        "commitish": "master",
-        "version_string": "4.2",
-        "license": "GPL v2",
-        "consortium_build_number": "0",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-                "make",
-                "mkdir -p TEMPLATE_INSTALL_PREFIX/bin",
-                "cp epm TEMPLATE_INSTALL_PREFIX/bin"
-            ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin"]
-    },
     "imagemagick": {
         "commitish": "7.0.3-2",
         "version_string": "7.0.3",
