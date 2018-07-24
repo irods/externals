@@ -31,7 +31,7 @@ After the prerequisites are in place, make sure to use the newly installed g++.
 
 ```
 ./install_prerequisites.py
-export CC=/opt/rh/devtoolset-2/root/usr/bin/gcc
-export CXX=/opt/rh/devtoolset-2/root/usr/bin/g++
+export CC=/opt/rh/devtoolset-6/root/usr/bin/gcc')
+export CXX=/opt/rh/devtoolset-6/root/usr/bin/g++')
 make
 ```

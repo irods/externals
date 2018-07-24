@@ -95,17 +95,13 @@ def main():
         if platform.linux_distribution()[1] < '7':
             # centos6 ships with g++ 4.4 - needs 4.8+ to build clang
             log.info('Detected: Old {0} - need to get g++ 4.8 to build clang'.format(pld))
-            cmd = ['wget','https://ftp.mirrorservice.org/sites/ftp.scientificlinux.org/linux/scientific/obsolete/51/i386/RPM-GPG-KEYs/RPM-GPG-KEY-cern']
-            build.run_cmd(cmd, check_rc='wget cern key failed')
-            cmd = ['sudo','rpm','--import','RPM-GPG-KEY-cern']
-            build.run_cmd(cmd, check_rc='importing cern key failed')
-            cmd = ['sudo','wget','-O','/etc/yum.repos.d/slc6-devtoolset.repo','http://linuxsoft.cern.ch/cern/devtoolset/slc6-devtoolset.repo']
-            build.run_cmd(cmd, check_rc='wget devtoolset failed')
-            cmd = ['sudo','yum','install','-y','devtoolset-2']
-            build.run_cmd(cmd, check_rc='yum install devtoolset failed')
+            cmd = ['sudo','yum','install','-y','centos-release-scl']
+            build.run_cmd(cmd, check_rc='install centos-release-scl failed')
+            cmd = ['sudo','yum','install','-y','devtoolset-6']
+            build.run_cmd(cmd, check_rc='install devtoolset-6 failed')
             print('========= set environment to use the new g++ ========= ')
-            print('export CC=/opt/rh/devtoolset-2/root/usr/bin/gcc')
-            print('export CXX=/opt/rh/devtoolset-2/root/usr/bin/g++')
+            print('export CC=/opt/rh/devtoolset-6/root/usr/bin/gcc')
+            print('export CXX=/opt/rh/devtoolset-6/root/usr/bin/g++')
     elif pld in ['openSUSE ', 'SUSE Linux Enterprise Server']:
         log.info('Detected: {0}'.format(pld))
         # get prerequisites
