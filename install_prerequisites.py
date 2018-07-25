@@ -65,7 +65,7 @@ def main():
         # get necessary ruby gems
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
         build.run_cmd(cmd, check_rc='installing ffi failed')
-        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        cmd = ['sudo','gem','install','-v','1.8.5','json']
         build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
@@ -87,7 +87,7 @@ def main():
         # get necessary ruby gems
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
         build.run_cmd(cmd, check_rc='installing ffi failed')
-        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        cmd = ['sudo','gem','install','-v','1.8.5','json']
         build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
@@ -111,7 +111,7 @@ def main():
         # get necessary ruby gems
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
         build.run_cmd(cmd, check_rc='installing ffi failed')
-        cmd = ['sudo','gem','install','-v','1.8.3','json']
+        cmd = ['sudo','gem','install','-v','1.8.5','json']
         build.run_cmd(cmd, check_rc='installing json failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
         build.run_cmd(cmd, check_rc='installing fpm failed')
