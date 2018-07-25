@@ -7,7 +7,12 @@ Currently tested on:
 - Ubuntu 16
 - CentOS 6
 - CentOS 7
-- OpenSUSE 13
+
+# Assumptions
+
+This repository is expected to build in a VM or container environment that is isolated from other software or build environments.
+
+The automated scripts run commands as `sudo` and update system libraries and compilers, etc.
 
 # Installation
 
