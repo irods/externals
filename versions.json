@@ -259,7 +259,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF",
             "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
