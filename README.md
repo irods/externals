@@ -2,10 +2,9 @@
 
 Currently tested on:
 
-- Ubuntu 12
 - Ubuntu 14
 - Ubuntu 16
-- CentOS 6
+- Ubuntu 18
 - CentOS 7
 
 # Assumptions
