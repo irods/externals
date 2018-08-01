@@ -35,7 +35,7 @@ def main():
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','make','autoconf2.13','texinfo',
                'help2man','g++','git','libtool','python-dev','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev']
+               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','lsb-release']
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
             cmd.extend(['ruby1.9.1','ruby1.9.1-dev',])
         else:
