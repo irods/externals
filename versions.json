@@ -67,6 +67,21 @@
         ],
         "fpm_directories": ["include","lib"]
     },
+    "catch2": {
+        "commitish": "v2.3.0",
+        "version_string": "2.3.0",
+        "license": "Boost Software License 1.0",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
+            "cp single_include/catch2/catch.hpp TEMPLATE_INSTALL_PREFIX/include"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include"]
+    },
     "clang": {
         "commitish": "release_38",
         "version_string": "3.8",
