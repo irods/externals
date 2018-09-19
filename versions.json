@@ -18,8 +18,8 @@
         "fpm_directories": ["bin","share"]
     },
     "avro": {
-        "commitish": "release-1.8.2",
-        "version_string": "1.8.2",
+        "commitish": "8a978855",
+        "version_string": "pre190cpp17",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
