@@ -179,7 +179,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpython_clean jansson_clean libarchive_clean libs3_clean redis_clean spdlog_clean zeromq4-1_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpython_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean qpid_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
