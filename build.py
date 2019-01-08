@@ -201,8 +201,8 @@ def build_package(target):
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(os.path.join(build_dir, target))
     elif target == 'qpid-with-proton':
-	if not os.path.isdir(os.path.join(build_dir,target)):
-	    mkdir_p(os.path.join(build_dir, target))
+        if not os.path.isdir(os.path.join(build_dir,target)):
+            mkdir_p(os.path.join(build_dir, target))
     else:
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(build_dir)
@@ -313,7 +313,7 @@ def build_package(target):
             else:
                 package_cmd.extend([addpath])
         if len(v['fpm_directories']) > 0:
-	    run_cmd(package_cmd, check_rc='packaging failed')
+            run_cmd(package_cmd, check_rc='packaging failed')
         else:
             touch(get_package_filename(target))
         print('Building [{0}] ... Complete'.format(target))
