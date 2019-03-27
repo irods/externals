@@ -313,6 +313,28 @@
         ],
         "fpm_directories": ["bin"]
     },
+    "elasticlient" : {
+        "commitish": "3adb172a26baae1a995e810e49fee1688ea44df5",
+        "version_string": "0.1.0",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "pwd && ls",
+            "git submodule update --init --recursive",
+            "pwd && ls",
+            "mkdir -p build",
+            "pwd && ls",
+            "cd build && TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBUILD_ELASTICLIENT_TESTS=NO ..",
+            "pwd && ls",
+            "cd build && make -jTEMPLATE_JOBS",
+            "cd build && make install"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include", "lib"]
+    },
     "spdlog": {
         "commitish": "v0.17.0",
         "version_string": "0.17.0",

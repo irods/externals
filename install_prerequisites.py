@@ -35,7 +35,7 @@ def main():
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','make','autoconf2.13','texinfo',
                'help2man','g++','git','libtool','python-dev','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','lsb-release']
+               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','lsb-release', 'libmicrohttpd-dev']
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
             cmd.extend(['ruby1.9.1','ruby1.9.1-dev',])
         else:
@@ -82,7 +82,7 @@ def main():
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','gcc-c++','git','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel',
-               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
+               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel', 'libmicrohttpd-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         # get necessary ruby gems
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
