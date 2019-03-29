@@ -155,7 +155,7 @@
             "cp -r ./build/lib TEMPLATE_INSTALL_PREFIX",
             "ls -l TEMPLATE_INSTALL_PREFIX"
         ],
-        "fpm_directories": ["lib", "include"]
+        "fpm_directories": ["include","lib"]
     },
 
     "cppzmq": {
@@ -198,7 +198,7 @@
         "build_steps": [
             "git submodule update --init --recursive",
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DBUILD_ELASTICLIENT_TESTS=NO  -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -D  -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd build && make -jTEMPLATE_JOBS",
             "cd build && make install"
             ],
