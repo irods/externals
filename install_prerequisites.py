@@ -2,11 +2,21 @@
 from __future__ import print_function
 
 import build
+import errno
 import logging
 import optparse
 import os
 import platform
 import sys
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
 
 def main():
     # configure parser
@@ -35,8 +45,8 @@ def main():
         build.run_cmd(cmd, check_rc='getting updates failed')
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','automake','make','autoconf2.13','texinfo',
-               'help2man','g++','git','libtool','python-dev','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','lsb-release']
+               'help2man','g++','git','lsb-release','libtool','python-dev','libbz2-dev','zlib1g-dev',
+               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev']
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
             cmd.extend(['ruby1.9.1','ruby1.9.1-dev',])
         else:
@@ -73,6 +83,7 @@ def main():
         if pld in ['debian']:
             if os.path.lexists(symlink_target):
                 os.remove(symlink_target)
+            mkdir_p(os.path.dirname(symlink_target))
             cmd = ['sudo','ln','-s','/usr/bin/rake',symlink_target]
             build.run_cmd(cmd, check_rc='preparing rake symlink failed')
         cmd = ['sudo','gem','install','-v','1.4.0','fpm']
