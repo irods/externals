@@ -6,6 +6,7 @@ Currently tested on:
 - Ubuntu 16
 - Ubuntu 18
 - CentOS 7
+- Debian 9
 
 # Assumptions
 
@@ -22,4 +23,9 @@ This is handled as automatically as possible with the `install_prerequisites.py`
 ```
 ./install_prerequisites.py
 make
+```
+
+To only build the components for the iRODS Server:
+```
+make server
 ```
