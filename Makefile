@@ -1,6 +1,8 @@
 all : autoconf avro aws-sdk-cpp boost clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
 
-.PHONY : all clean $(all)
+server : avro boost clang-runtime cppzmq jansson libarchive zeromq4-1
+
+.PHONY : all server clean $(all)
 
 VERBOSITY=-v
 
