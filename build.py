@@ -29,6 +29,38 @@ def touch(filename):
     except:
         open(filename, 'a').close()
 
+def get_rvm_path():
+    cmd = ['whereis', 'rvm']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    _out, _err = p.communicate()
+    index = len(_out.lstrip().split(': ')) - 1
+    rvm_path = _out.lstrip().split(': ')[index]
+    return rvm_path.strip()
+
+def set_environ_path(bin_path):
+    path = os.environ['PATH']
+    new_path = bin_path + ':' + path 
+    os.environ['PATH'] = new_path
+    
+def set_rvm_path():
+    rvm_path = get_rvm_path()
+    rvm_bin = os.path.join(rvm_path, 'bin')
+    set_environ_path(rvm_bin)
+
+def set_ruby_path():
+    rvm_path = '/usr/local/rvm'
+    ruby_path= os.path.join(rvm_path, 'rubies/ruby-2.6.3')
+    ruby_bin = os.path.join(ruby_path, 'bin')
+    os.environ['GEM_HOME'] = ruby_path
+    set_environ_path(ruby_bin)
+
+def set_clang_path():
+    p = get_versions()['clang']
+    path_name = '{0}{1}-{2}'.format('clang', p['version_string'], p['consortium_build_number'])
+    root_dir = os.getcwd().split('/')[1]
+    clang_binpath = '/{0}/{1}/bin'.format(root_dir, path_name)
+    set_environ_path(clang_binpath)
+
 def get_local_path(package_name, path_elements):
     log = logging.getLogger(__name__)
     p = get_versions()[package_name]
@@ -40,8 +72,10 @@ def get_local_path(package_name, path_elements):
 def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False):
     log = logging.getLogger(__name__)
     # run it
-    if run_env == False:
-        run_env = os.environ.copy()
+    if run_env == True:
+        set_rvm_path()
+
+    run_env = os.environ.copy()
     log.debug('run_env: {0}'.format(run_env))
     log.info('running: {0}, unsafe_shell={1}, check_rc={2}'.format(cmd, unsafe_shell, check_rc))
     if unsafe_shell == True:
@@ -144,6 +178,12 @@ def build_package(target):
     log.debug('cmake_executable: [{0}]'.format(cmake_executable))
 
     # prepare libraries
+    cppzmq_root = get_local_path('cppzmq',[])
+    log.debug('cppzmq_root: [{0}]'.format(cppzmq_root))
+    zmq_root = get_local_path('zeromq4-1',[])
+    log.debug('zmq_root: [{0}]'.format(zmq_root))
+    avro_root = get_local_path('avro',[])
+    log.debug('avro_root: [{0}]'.format(avro_root))
     boost_root = get_local_path('boost',[])
     log.debug('boost_root: [{0}]'.format(boost_root))
 
@@ -160,9 +200,25 @@ def build_package(target):
     boost_install_prefix = os.path.join(boost_info['externals_root'], boost_subdirectory)
     boost_rpath = os.path.join(boost_install_prefix, 'lib')
 
+    avro_info = get_versions()['avro']
+    avro_subdirectory = '{0}{1}-{2}'.format('avro', avro_info['version_string'], avro_info['consortium_build_number'])
+    avro_install_prefix = os.path.join(avro_info['externals_root'], avro_subdirectory)
+    avro_rpath = os.path.join(avro_install_prefix, 'lib')
+
+    libarchive_info = get_versions()['libarchive']
+    libarchive_subdirectory = '{0}{1}-{2}'.format('libarchive', libarchive_info['version_string'], libarchive_info['consortium_build_number'])
+    libarchive_install_prefix = os.path.join(libarchive_info['externals_root'], libarchive_subdirectory)
+    libarchive_rpath = os.path.join(libarchive_install_prefix, 'lib')
+
+    zmq_info = get_versions()['zeromq4-1']
+    zmq_subdirectory = '{0}{1}-{2}'.format('zeromq4-1', zmq_info['version_string'], zmq_info['consortium_build_number'])
+    zmq_install_prefix = os.path.join(zmq_info['externals_root'], zmq_subdirectory)
+    zmq_rpath = os.path.join(zmq_install_prefix, 'lib')
+
     clang_info = get_versions()['clang']
     clang_subdirectory = '{0}{1}-{2}'.format('clang', clang_info['version_string'], clang_info['consortium_build_number'])
-    clang_executable = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'bin', 'clang++')
+    clang_executable = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'bin', 'clang')
+    clangpp_executable = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'bin', 'clang++')
     clang_cpp_headers = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'include', 'c++', 'v1')
     clang_cpp_libraries = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'lib')
 
@@ -218,6 +274,9 @@ def build_package(target):
         run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
 
     # set environment
+    if target == 'boost':
+        set_clang_path()
+
     myenv = os.environ.copy()
     if target not in ['clang','cmake','autoconf','cpython']:
         clang_bindir = get_local_path('clang',['bin'])
@@ -248,6 +307,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_CLANG_CPP_LIBRARIES", clang_cpp_libraries, i)
         i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
         i = re.sub("TEMPLATE_CLANG_EXECUTABLE", clang_executable, i)
+        i = re.sub("TEMPLATE_CLANGPP_EXECUTABLE", clangpp_executable, i)
         i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_QPID_SUBDIRECTORY", qpid_subdirectory, i)
@@ -256,6 +316,12 @@ def build_package(target):
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
         i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
         i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
+        i = re.sub("TEMPLATE_LIBARCHIVE_RPATH", libarchive_rpath, i)
+        i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
+        i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
+        i = re.sub("TEMPLATE_ZMQ_RPATH", zmq_rpath, i)
+        i = re.sub("TEMPLATE_ZMQ_PATH", zmq_root, i)
+        i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
     # MacOSX - after building boost
@@ -357,6 +423,8 @@ def main():
             for p in v:
                 f.write('{0}_PACKAGE={1}\n'.format(p.upper(), get_package_filename(p)))
     elif target in get_versions():
+        set_rvm_path()
+        set_ruby_path()
         build_package(target)
     else:
         log.error('build target [{0}] not found in {1}'.format(target, sorted(get_versions().keys())))

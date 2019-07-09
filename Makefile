@@ -1,4 +1,4 @@
-all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
+all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpython imagemagick json libarchive libs3 mungefs qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
 
 server : avro boost catch2 clang-runtime cppzmq json libarchive spdlog zeromq4-1
 
@@ -133,6 +133,14 @@ libs3_clean :
 	@rm -rf libs3*
 	@rm -rf $(LIBS3_PACKAGE)
 
+$(MUNGEFS_PACKAGE) : $(CPPZMQ_PACKAGE) $(LIBARCHIVE_PACKAGE) $(AVRO_PACKAGE) $(CLANG-RUNTIME_PACKAGE) $(ZEROMQ4-1_PACKAGE)
+	./build.py $(VERBOSITY) mungefs > mungefs.log 2>&1
+mungefs : $(MUNGEFS_PACKAGE)
+mungefs_clean :
+	@echo "Cleaning mungefs..."
+	@rm -rf mungefs*
+	@rm -rf $(MUNGEFS_PACKAGE)
+
 $(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
 	./build.py $(VERBOSITY) qpid > qpid.log 2>&1
 qpid : $(QPID_PACKAGE)
@@ -181,7 +189,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpython_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean qpid_clean redis_clean spdlog_clean zeromq4-1_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpython_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean mungefs_clean qpid_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
