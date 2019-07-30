@@ -170,8 +170,8 @@ def build_package(target):
     clang_runtime_install_prefix = os.path.join(clang_info['externals_root'], clang_runtime_subdirectory)
     clang_runtime_rpath = os.path.join(clang_runtime_install_prefix, 'lib')
 
-    qpid_info = get_versions()['qpid']
-    qpid_subdirectory = '{0}{1}-{2}'.format('qpid', qpid_info['version_string'], qpid_info['consortium_build_number'])
+    qpidcpp_info = get_versions()['qpid-cpp']
+    qpidcpp_subdirectory = '{0}{1}-{2}'.format('qpid-cpp', qpidcpp_info['version_string'], qpidcpp_info['consortium_build_number'])
     qpidproton_info = get_versions()['qpid-proton']
     qpidproton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpidproton_info['version_string'], qpidproton_info['consortium_build_number'])
 
@@ -250,7 +250,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_CLANG_EXECUTABLE", clang_executable, i)
         i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
-        i = re.sub("TEMPLATE_QPID_SUBDIRECTORY", qpid_subdirectory, i)
+        i = re.sub("TEMPLATE_QPID-CPP_SUBDIRECTORY", qpidcpp_subdirectory, i)
         i = re.sub("TEMPLATE_QPID-PROTON_SUBDIRECTORY", qpidproton_subdirectory, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)

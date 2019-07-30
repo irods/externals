@@ -1,4 +1,4 @@
-all : autoconf avro aws-sdk-cpp boost clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
+all : autoconf avro aws-sdk-cpp boost clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 qpid-cpp qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
 
 server : avro boost clang-runtime cppzmq jansson libarchive zeromq4-1
 
@@ -117,13 +117,13 @@ libs3_clean :
 	@rm -rf libs3*
 	@rm -rf $(LIBS3_PACKAGE)
 
-$(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
-	./build.py $(VERBOSITY) qpid > qpid.log 2>&1
-qpid : $(QPID_PACKAGE)
-qpid_clean :
-	@echo "Cleaning qpid..."
-	@rm -rf qpid*
-	@rm -rf $(QPID_PACKAGE)
+$(QPID-CPP_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
+	./build.py $(VERBOSITY) qpid-cpp > qpid-cpp.log 2>&1
+qpid-cpp : $(QPID-CPP_PACKAGE)
+qpid-cpp_clean :
+	@echo "Cleaning qpid-cpp..."
+	@rm -rf qpid-cpp*
+	@rm -rf $(QPID-CPP_PACKAGE)
 
 $(QPID-PROTON_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) qpid-proton > qpid-proton.log 2>&1
@@ -133,7 +133,7 @@ qpid-proton_clean :
 	@rm -rf qpid-proton*
 	@rm -rf $(QPID-PROTON_PACKAGE)
 
-$(QPID-WITH-PROTON_PACKAGE) : $(QPID_PACKAGE)
+$(QPID-WITH-PROTON_PACKAGE) : $(QPID-CPP_PACKAGE)
 	./build.py $(VERBOSITY) qpid-with-proton > qpid-with-proton.log 2>&1
 qpid-with-proton : $(QPID-WITH-PROTON_PACKAGE)
 qpid-with-proton_clean :
@@ -173,7 +173,7 @@ epm_clean :
 	@rm -rf epm*
 	@rm -rf $(EPM_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean clang_clean clang-runtime_clean cmake_clean cpython_clean jansson_clean libarchive_clean libs3_clean zeromq4-1_clean cppzmq_clean epm_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean clang_clean clang-runtime_clean cmake_clean cpython_clean jansson_clean qpid-cpp_clean qpid-proton_clean libarchive_clean libs3_clean zeromq4-1_clean cppzmq_clean epm_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
