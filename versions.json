@@ -51,8 +51,8 @@
         "fpm_directories": ["include","lib","lib64"]
     },
     "boost": {
-        "commitish": "boost-1.60.0",
-        "version_string": "1.60.0",
+        "commitish": "boost-1.70.0",
+        "version_string": "1.70.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -68,8 +68,8 @@
         "fpm_directories": ["include","lib"]
     },
     "clang": {
-        "commitish": "release_38",
-        "version_string": "3.8",
+        "commitish": "release_80",
+        "version_string": "8.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -88,7 +88,7 @@
     },
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
-        "version_string": "3.8",
+        "version_string": "8.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -105,8 +105,8 @@
         "fpm_directories": ["lib"]
     },
     "cmake": {
-        "commitish": "5ffa0d5d35b13b540c386995ce19aef5b66064b7",
-        "version_string": "3.5.2",
+        "commitish": "v3.15.1",
+        "version_string": "3.15.1",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -268,15 +268,15 @@
         "fpm_directories": []
     },
     "qpid-proton": {
-        "commitish": "6ac7bd29e78611bacb541a8073d48f6708d65ab8",
-        "version_string": "6ac7bd29",
+        "commitish": "0.28.0",
+        "version_string": "0.28.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DBUILD_WITH_CXX=ON -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DLIB_SUFFIX:STRING='' -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS -Wno-error=reserved-id-macro -Wno-error=double-promotion -Wno-error=unused-parameter -Wno-error=missing-prototypes' -DCMAKE_CXX_LINK_EXECUTABLE='TEMPLATE_CMAKE_EXECUTABLE' -DCMAKE_EXE_LINKER_FLAGS='-v -stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi' -DSYSINSTALL_BINDINGS=OFF ..",
-            "cd build; make -jTEMPLATE_JOBS; make install"
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DLIB_SUFFIX:STRING='' -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS -Wno-error=reserved-id-macro -Wno-error=double-promotion -Wno-error=unused-parameter -Wno-error=missing-prototypes' -DCMAKE_CXX_LINK_EXECUTABLE='TEMPLATE_CMAKE_EXECUTABLE' -DCMAKE_EXE_LINKER_FLAGS='-v -stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi' -DSYSINSTALL_BINDINGS=OFF ..",
+            "cd build; make -jTEMPLATE_JOBS; make -jTEMPLATE_JOBS install"
             ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
