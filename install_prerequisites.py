@@ -74,6 +74,8 @@ def main():
             cmd = ['sudo','apt-get','install','-y','autoconf']
             build.run_cmd(cmd, check_rc='installing autoconf failed')
         # get necessary ruby gems
+        cmd = ['sudo','gem','install','rake']
+        build.run_cmd(cmd, check_rc='installing rake failed')
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
         build.run_cmd(cmd, check_rc='installing ffi failed')
         cmd = ['sudo','gem','install','-v','1.8.3','json']
@@ -104,6 +106,8 @@ def main():
                'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         # get necessary ruby gems
+        cmd = ['sudo','gem','install','rake']
+        build.run_cmd(cmd, check_rc='installing rake failed')
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
         build.run_cmd(cmd, check_rc='installing ffi failed')
         cmd = ['sudo','gem','install','-v','1.8.3','json']
@@ -132,6 +136,8 @@ def main():
                'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         # get necessary ruby gems
+        cmd = ['sudo','gem','install','rake']
+        build.run_cmd(cmd, check_rc='installing rake failed')
         cmd = ['sudo','gem','install','-v','1.8.1','ffi']
         build.run_cmd(cmd, check_rc='installing ffi failed')
         cmd = ['sudo','gem','install','-v','1.8.3','json']
