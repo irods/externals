@@ -376,11 +376,11 @@ def build_package(target):
             addpath = os.path.join(v['externals_root'], package_subdirectory, i)
             # lib and lib64 might both be necessary for cross-platform builds
             if i.startswith("lib"):
-                fullpath = os.path.abspath(os.path.join(package_subdirectory, i))
+                fullpath = os.path.abspath(os.path.join(build_dir,addpath))
                 if os.path.isdir(fullpath):
                     package_cmd.extend([addpath])
                 else:
-                    log.debug("skipped ["+addpath+"] (does not exist)")
+                    log.debug("skipped fullpath=["+fullpath+"] (does not exist)")
             else:
                 package_cmd.extend([addpath])
         if len(v['fpm_directories']) > 0:
