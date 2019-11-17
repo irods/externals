@@ -63,8 +63,8 @@ def main():
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','curl','automake','make','autoconf2.13','texinfo',
                'help2man','g++','git','lsb-release','libtool','python-dev','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev', 'fuse', 'libfuse2',
-               'libfuse-dev', 'unixodbc-dev']
+               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','fuse','libfuse2', 
+               'libfuse-dev','libmicrohttpd-dev','unixodbc-dev']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         # if old, bootstrap g++
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
@@ -103,7 +103,7 @@ def main():
         cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
-               'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel', 'fuse', 'fuse-devel',
+               'help2man','rpm-build','rubygems','ruby-devel','libmicrohttpd-devel','python-devel','zlib-devel','fuse','fuse-devel',
                'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel', 'unixODBC-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
