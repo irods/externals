@@ -120,6 +120,27 @@
         ],
         "fpm_directories": ["bin","doc","share"]
     },
+    "cpr": {
+        "commitish": "1.3.0",
+        "version_string": "1.3.0",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "git submodule update --init",
+            "rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' .",
+            "make -jTEMPLATE_JOBS"
+            ],
+        "external_build_steps": [
+            "ls -l ",
+            "mkdir -p TEMPLATE_INSTALL_PREFIX",
+            "cp -rf ./lib TEMPLATE_INSTALL_PREFIX",
+            "cp -rf ./bin TEMPLATE_INSTALL_PREFIX",
+            "cp -rf ./include TEMPLATE_INSTALL_PREFIX",
+            "ls -l TEMPLATE_INSTALL_PREFIX"
+        ],
+        "fpm_directories": ["include","lib"]
+    },
     "cppzmq": {
         "commitish": "master",
         "version_string": "4.1",
@@ -150,6 +171,24 @@
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
         "fpm_directories": ["bin","include","lib","share"]
+    },
+    "elasticlient" : {
+        "commitish": "3adb172a26baae1a995e810e49fee1688ea44df5",
+        "version_string": "0.1.0",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "git submodule update --init --recursive",
+            "mkdir -p build",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -D  -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -L/tmp/externals/elasticlient0.1.0-0_src/elasticlient/build/lib -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd build && make -jTEMPLATE_JOBS",
+            "cd build && make install"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include", "lib"]
     },
     "epm": {
         "commitish": "master",
