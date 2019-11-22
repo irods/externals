@@ -299,8 +299,12 @@ def build_package(target):
     else:
         os.chdir(os.path.join(build_dir,target))
 
+    number_of_jobs = get_jobs()
+    if target == 'elasticlient':
+        number_of_jobs = 1
+
     for i in itertools.chain(v['build_steps'], v['external_build_steps']):
-        i = re.sub("TEMPLATE_JOBS", str(get_jobs()), i)
+        i = re.sub("TEMPLATE_JOBS", str(number_of_jobs), i)
         i = re.sub("TEMPLATE_SCRIPT_PATH", script_path, i)
         i = re.sub("TEMPLATE_INSTALL_PREFIX", install_prefix, i)
         i = re.sub("TEMPLATE_CLANG_CPP_HEADERS", clang_cpp_headers, i)
