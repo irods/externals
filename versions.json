@@ -187,9 +187,9 @@
             "cd build && make install"
             ],
         "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; mv TEMPLATE_INSTALL_PREFIX/lib64/lib*.so* TEMPLATE_INSTALL_PREFIX/lib; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include", "lib"]
+        "fpm_directories": ["include","lib","lib64"]
     },
     "epm": {
         "commitish": "master",
