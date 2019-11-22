@@ -60,7 +60,8 @@ def main():
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','automake','make','autoconf2.13','texinfo',
                'help2man','g++','git','lsb-release','libtool','python-dev','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','libfuse-dev']
+               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev','libfuse-dev',
+               'libmicrohttpd-dev']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         # if new, get autoconf
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] > '16':
@@ -83,7 +84,7 @@ def main():
         cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','gcc-c++','git','autoconf','automake','texinfo',
-               'help2man','rpm-build','fuse','fuse-devel','python-devel','zlib-devel',
+               'help2man','rpm-build','fuse','fuse-devel','libmicrohttpd-devel','python-devel','zlib-devel',
                'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
