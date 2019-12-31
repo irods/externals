@@ -18,14 +18,14 @@
         "fpm_directories": ["bin","share"]
     },
     "avro": {
-        "commitish": "branch-1.7",
-        "version_string": "1.7.7",
+        "commitish": "release-1.9.0",
+        "version_string": "1.9.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd lang/c++/build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
@@ -42,7 +42,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INCLUDE_DIRECTORIES_BEFORE=ON -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS' -DBUILD_ONLY='s3;sts' ..",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INCLUDE_DIRECTORIES_BEFORE=ON -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS -nostdinc++' -DBUILD_ONLY='s3;sts' ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
@@ -51,8 +51,8 @@
         "fpm_directories": ["include","lib","lib64"]
     },
     "boost": {
-        "commitish": "boost-1.60.0",
-        "version_string": "1.60.0",
+        "commitish": "boost-1.67.0",
+        "version_string": "1.67.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -83,8 +83,8 @@
         "fpm_directories": ["include"]
     },
     "clang": {
-        "commitish": "release_38",
-        "version_string": "3.8",
+        "commitish": "release_60",
+        "version_string": "6.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -103,7 +103,7 @@
     },
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
-        "version_string": "3.8",
+        "version_string": "6.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -120,8 +120,8 @@
         "fpm_directories": ["lib"]
     },
     "cmake": {
-        "commitish": "5ffa0d5d35b13b540c386995ce19aef5b66064b7",
-        "version_string": "3.5.2",
+        "commitish": "v3.11.4",
+        "version_string": "3.11.4",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -136,8 +136,8 @@
         "fpm_directories": ["bin","doc","share"]
     },
     "cppzmq": {
-        "commitish": "master",
-        "version_string": "4.1",
+        "commitish": "v4.2.3",
+        "version_string": "4.2.3",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -183,8 +183,8 @@
         "fpm_directories": ["bin"]
     },
     "imagemagick": {
-        "commitish": "7.0.3-2",
-        "version_string": "7.0.3",
+        "commitish": "7.0.8-2",
+        "version_string": "7.0.8",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -216,14 +216,14 @@
         "fpm_directories": ["include","lib"]
     },
     "json": {
-        "commitish": "v3.0.1",
-        "version_string": "3.0.1",
+        "commitish": "v3.1.2",
+        "version_string": "3.1.2",
         "license": "MIT",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "cp src/json.hpp TEMPLATE_INSTALL_PREFIX/include"
+            "cp single_include/nlohmann/json.hpp TEMPLATE_INSTALL_PREFIX/include"
             ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -234,7 +234,7 @@
         "commitish": "v3.3.2",
         "version_string": "3.3.2",
         "license": "BSD 2-Clause",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
@@ -251,7 +251,7 @@
         "commitish": "a30e55e84689bd6a2b9327a47dcdf4e68065a4b5",
         "version_string": "a30e55e8",
         "license": "LGPL v3",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "CFLAGS=-fPIC make -jTEMPLATE_JOBS TEMPLATE_LIBS3_MAKEFILE_STRING",
@@ -266,8 +266,8 @@
         "fpm_directories": ["bin","include","lib"]
     },
     "mungefs": {
-        "commitish": "1.0.2",
-        "version_string": "1.0.2",
+        "commitish": "1.0.3",
+        "version_string": "1.0.3",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -285,12 +285,12 @@
         "commitish": "qpid-cpp-0.34",
         "version_string": "0.34",
         "license": "Apache License 2.0",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "sed -i 's/BOOST_MESSAGE/BOOST_TEST_MESSAGE/g' ./qpid/cpp/src/tests/exception_test.cpp",
             "mkdir -p build",
-            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DPKG_CONFIG_PATH=TEMPLATE_QPID-PROTON_INSTALL_PATH -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DLIB_SUFFIX:STRING='' -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DBUILD_PROBES=no -DBUILD_BINDING_PERL=no -DBUILD_BINDING_RUBY=no -DBUILD_BINDING_PYTHON=no -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ../qpid/cpp",
+            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DPKG_CONFIG_PATH=TEMPLATE_QPID-PROTON_INSTALL_PATH -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DLIB_SUFFIX:STRING='' -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DBUILD_PROBES=no -DBUILD_BINDING_PERL=no -DBUILD_BINDING_RUBY=no -DBUILD_BINDING_PYTHON=no -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ../qpid/cpp",
             "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
@@ -299,14 +299,14 @@
         "fpm_directories": []
     },
     "qpid-proton": {
-        "commitish": "6ac7bd29e78611bacb541a8073d48f6708d65ab8",
-        "version_string": "6ac7bd29",
+        "commitish": "0.23.0",
+        "version_string": "0.23.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DBUILD_WITH_CXX=ON -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DLIB_SUFFIX:STRING='' -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS -Wno-error=reserved-id-macro -Wno-error=double-promotion -Wno-error=unused-parameter -Wno-error=missing-prototypes' -DCMAKE_CXX_LINK_EXECUTABLE='TEMPLATE_CMAKE_EXECUTABLE' -DCMAKE_EXE_LINKER_FLAGS='-v -stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++ -lc++abi' -DSYSINSTALL_BINDINGS=OFF ..",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF",
             "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
@@ -318,14 +318,12 @@
         "commitish": "not-used",
         "version_string": "0.34",
         "license": "Apache License 2.0",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX",
             "cp -r ../../TEMPLATE_QPID_SUBDIRECTORY/* TEMPLATE_INSTALL_PREFIX/",
-            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/include/* TEMPLATE_INSTALL_PREFIX/include/",
-            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/lib/* TEMPLATE_INSTALL_PREFIX/lib/",
-            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/share/* TEMPLATE_INSTALL_PREFIX/share/"
+            "cp -r ../../TEMPLATE_QPID-PROTON_SUBDIRECTORY/* TEMPLATE_INSTALL_PREFIX/"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -333,8 +331,8 @@
         "fpm_directories": ["bin","etc","include","lib","libexec","sbin","share"]
     },
     "redis": {
-        "commitish": "4.0.8",
-        "version_string": "4.0.8",
+        "commitish": "4.0.10",
+        "version_string": "4.0.10",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -348,14 +346,14 @@
         "fpm_directories": ["bin"]
     },
     "zeromq4-1": {
-        "commitish": "v4.1.3",
-        "version_string": "4.1.3",
+        "commitish": "v4.1.6",
+        "version_string": "4.1.6",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ..",
+            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
