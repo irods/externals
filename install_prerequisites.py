@@ -65,6 +65,22 @@ def main():
                'help2man','g++','git','lsb-release','libtool','python-dev','libbz2-dev','zlib1g-dev',
                'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev', 'fuse', 'libfuse2', 'libfuse-dev']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        # if old, bootstrap g++
+        if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
+            # ubuntu12 ships with g++ 4.6 - needs 4.8+ to build clang
+            log.info('Detected: Old Ubuntu - need to get g++ 4.8 to build clang')
+            cmd = ['sudo','apt-get','install','-y','python-software-properties']
+            build.run_cmd(cmd, check_rc='installing add-apt-repository prereq failed')
+            cmd = ['sudo', 'add-apt-repository', '-y', 'ppa:ubuntu-toolchain-r/test']
+            build.run_cmd(cmd, check_rc='installing ppa failed')
+            cmd = ['sudo', 'apt-get', 'update', '-y']
+            build.run_cmd(cmd, check_rc='getting updates failed')
+            cmd = ['sudo', 'apt-get', 'install', '-y', 'g++-4.8']
+            build.run_cmd(cmd, check_rc='installing g++-4.8 failed')
+            cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/g++', 'g++', '/usr/bin/g++-4.8', '50']
+            build.run_cmd(cmd, check_rc='swapping g++-4.8 failed')
+            cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/gcc', 'gcc', '/usr/bin/gcc-4.8', '50']
+            build.run_cmd(cmd, check_rc='swapping gcc-4.8 failed')
         # if new, get autoconf
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] > '16':
             log.info('Detected: Ubuntu 16+ - need to get autoconf')
