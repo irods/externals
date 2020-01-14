@@ -9,6 +9,7 @@ import os
 import platform
 import sys
 
+
 def mkdir_p(path):
     try:
         os.makedirs(path)
@@ -18,6 +19,7 @@ def mkdir_p(path):
         else:
             raise
 
+
 def install_rvm_and_ruby():
     cmd = 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
     build.run_cmd(cmd, unsafe_shell=True,check_rc='gpg keys not received')
@@ -26,12 +28,13 @@ def install_rvm_and_ruby():
     cmd = 'rvm reload && rvm requirements run && rvm install 2.6'
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='rvm ruby install failed')
 
+
 def install_fpm_gem():
     build.set_ruby_path()
     cmd = 'rvm reload && rvm use 2.6 && gem install -v 1.4.0 fpm'
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='fpm gem install failed')
-    
-    
+
+
 def main():
     # configure parser
     parser = optparse.OptionParser()
@@ -58,7 +61,7 @@ def main():
         cmd = ['sudo', 'apt-get', 'update', '-y']
         build.run_cmd(cmd, check_rc='getting updates failed')
         # get prerequisites
-        cmd = ['sudo','apt-get','install','-y','automake','make','autoconf2.13','texinfo',
+        cmd = ['sudo','apt-get','install','-y','curl','automake','make','autoconf2.13','texinfo',
                'help2man','g++','git','lsb-release','libtool','python-dev','libbz2-dev','zlib1g-dev',
                'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev', 'fuse', 'libfuse2', 'libfuse-dev']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
@@ -82,7 +85,7 @@ def main():
         # get prerequisites
         cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
         build.run_cmd(cmd, check_rc='installing epel failed')
-        cmd = ['sudo','yum','install','-y','gcc-c++','git','autoconf','automake','texinfo',
+        cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel', 'fuse', 'fuse-devel',
                'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
@@ -90,7 +93,7 @@ def main():
     elif pld in ['openSUSE ', 'SUSE Linux Enterprise Server']:
         log.info('Detected: {0}'.format(pld))
         # get prerequisites
-        cmd = ['sudo','zypper','install','-y','ruby-devel','makeinfo','rubygems','libopenssl-devel',
+        cmd = ['sudo','zypper','install','-y','curl','ruby-devel','makeinfo','rubygems','libopenssl-devel',
                'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
     else:
