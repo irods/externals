@@ -14,6 +14,16 @@ This repository is expected to build in a VM or container environment that is is
 
 The automated scripts run commands as `sudo` and update system libraries and compilers, etc.
 
+In a new container, you'll probably need the following:
+
+```
+# Ubuntu 16
+apt-get install -y sudo git python
+
+# CentOS 7
+yum install -y sudo git python
+```
+
 # Installation
 
 Before building the software listed in this repository, their own prerequisites must be met.
