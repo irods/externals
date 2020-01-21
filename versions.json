@@ -241,8 +241,8 @@
         "fpm_directories": ["include","lib"]
     },
     "json": {
-        "commitish": "v3.4.0",
-        "version_string": "3.4.0",
+        "commitish": "v3.7.3",
+        "version_string": "3.7.3",
         "license": "MIT",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
