@@ -39,9 +39,9 @@ def get_rvm_path():
 
 def set_environ_path(bin_path):
     path = os.environ['PATH']
-    new_path = bin_path + ':' + path 
+    new_path = bin_path + ':' + path
     os.environ['PATH'] = new_path
-    
+
 def set_rvm_path():
     rvm_path = get_rvm_path()
     rvm_bin = os.path.join(rvm_path, 'bin')
@@ -49,7 +49,7 @@ def set_rvm_path():
 
 def set_ruby_path():
     rvm_path = '/usr/local/rvm'
-    ruby_path= os.path.join(rvm_path, 'rubies/ruby-2.6.3')
+    ruby_path = os.path.join(rvm_path, 'rubies/ruby-2.6.3')
     ruby_bin = os.path.join(ruby_path, 'bin')
     os.environ['GEM_HOME'] = ruby_path
     set_environ_path(ruby_bin)
@@ -57,8 +57,8 @@ def set_ruby_path():
 def set_clang_path():
     p = get_versions()['clang']
     path_name = '{0}{1}-{2}'.format('clang', p['version_string'], p['consortium_build_number'])
-    root_dir = os.getcwd().split('/')[1]
-    clang_binpath = '/{0}/{1}/bin'.format(root_dir, path_name)
+    externals_path = os.path.dirname(os.path.dirname(os.getcwd()))
+    clang_binpath = os.path.join(externals_path, path_name, 'bin')
     set_environ_path(clang_binpath)
 
 def get_local_path(package_name, path_elements):
