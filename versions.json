@@ -373,8 +373,8 @@
         "fpm_directories": ["bin"]
     },
     "spdlog": {
-        "commitish": "v0.17.0",
-        "version_string": "0.17.0",
+        "commitish": "v1.5.0",
+        "version_string": "1.5.0",
         "license": "MIT",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
