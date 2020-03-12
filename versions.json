@@ -322,6 +322,22 @@
         ],
         "fpm_directories": ["usr/bin"]
     },
+    "nanodbc": {
+        "commitish": "aaa3b89db6e5852756a9b6fdfdce404af73adfb6",
+        "version_string": "2.13.0",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd build; make nanodbc install"
+            ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include", "lib"]
+    },
     "qpid": {
         "commitish": "qpid-cpp-0.34",
         "version_string": "0.34",

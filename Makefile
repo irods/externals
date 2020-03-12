@@ -1,6 +1,6 @@
-all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpython fmt imagemagick json libarchive libs3 mungefs qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
+all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpython fmt imagemagick json libarchive libs3 mungefs nanodbc qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
 
-server : avro boost catch2 clang-runtime cppzmq fmt json libarchive spdlog zeromq4-1
+server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
 
 .PHONY : all server clean $(all)
 
@@ -148,6 +148,14 @@ mungefs_clean :
 	@echo "Cleaning mungefs..."
 	@rm -rf mungefs*
 	@rm -rf $(MUNGEFS_PACKAGE)
+
+$(NANODBC_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(VERBOSITY) nanodbc > nanodbc.log 2>&1
+nanodbc : $(NANODBC_PACKAGE)
+nanodbc_clean :
+	@echo "Cleaning nanodbc..."
+	@rm -rf nanodbc*
+	@rm -rf $(NANODBC_PACKAGE)
 
 $(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
 	./build.py $(VERBOSITY) qpid > qpid.log 2>&1
