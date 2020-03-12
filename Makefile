@@ -1,6 +1,6 @@
-all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cpython imagemagick jansson json libarchive libs3 mungefs qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
+all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cpython fmt imagemagick jansson json libarchive libs3 mungefs qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
 
-server : avro boost catch2 clang-runtime cppzmq json libarchive zeromq4-1
+server : avro boost catch2 clang-runtime cppzmq fmt json libarchive zeromq4-1
 
 .PHONY : all server clean $(all)
 
@@ -84,6 +84,14 @@ cpython_clean :
 	@echo "Cleaning cpython..."
 	@rm -rf cpython*
 	@rm -rf $(CPYTHON_PACKAGE)
+
+$(FMT_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(VERBOSITY) fmt > fmt.log 2>&1
+fmt : $(FMT_PACKAGE)
+fmt_clean :
+	@echo "Cleaning fmt..."
+	@rm -rf fmt*
+	@rm -rf $(FMT_PACKAGE)
 
 $(IMAGEMAGICK_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(VERBOSITY) imagemagick > imagemagick.log 2>&1
