@@ -85,7 +85,7 @@ def main():
         # if new, get autoconf
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] > '16':
             log.info('Detected: Ubuntu 16+ - need to get autoconf')
-            cmd = ['sudo','apt-get','install','-y','autoconf']
+            cmd = ['sudo','apt-get','install','-y','autoconf','rsync']
             build.run_cmd(cmd, check_rc='installing autoconf failed')
 
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
