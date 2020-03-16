@@ -69,7 +69,7 @@ def get_local_path(package_name, path_elements):
     log.debug('local path: {0}'.format(local_path))
     return local_path
 
-def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False):
+def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False, retries=0):
     log = logging.getLogger(__name__)
     # run it
     if run_env == True:
@@ -77,7 +77,7 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False):
 
     run_env = os.environ.copy()
     log.debug('run_env: {0}'.format(run_env))
-    log.info('running: {0}, unsafe_shell={1}, check_rc={2}'.format(cmd, unsafe_shell, check_rc))
+    log.info('running: {0}, unsafe_shell={1}, check_rc={2}, retries={3}'.format(cmd, unsafe_shell, check_rc, retries))
     if unsafe_shell == True:
         p = subprocess.Popen(cmd, env=run_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     else:
@@ -89,7 +89,12 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False):
     if check_rc != False:
         if p.returncode != 0:
             log.error(check_rc)
-            sys.exit(p.returncode)
+            if retries > 0:
+                reduced_retries = retries - 1
+                log.info('trying again with retries={0}'.format(reduced_retries))
+                run_cmd(cmd, run_env=run_env, unsafe_shell=unsafe_shell, check_rc=check_rc, retries=reduced_retries)
+            else:
+                sys.exit(p.returncode)
     return p.returncode
 
 def get_distribution_name():
