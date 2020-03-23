@@ -303,10 +303,10 @@
         "rpm_dependencies": ["xz-libs >= 5.2.2"]
     },
     "libs3": {
-        "commitish": "a30e55e84689bd6a2b9327a47dcdf4e68065a4b5",
-        "version_string": "a30e55e8",
+        "commitish": "59b6237135126e53690a41a2baba74c092304c21",
+        "version_string": "59b62371",
         "license": "LGPL v3",
-        "consortium_build_number": "1",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "CFLAGS=-fPIC make -jTEMPLATE_JOBS TEMPLATE_LIBS3_MAKEFILE_STRING",
