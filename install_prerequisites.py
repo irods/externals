@@ -9,6 +9,8 @@ import os
 import platform
 import sys
 
+RVM_VERSION = build.ruby_requirements['rvm']
+
 def mkdir_p(path):
     try:
         os.makedirs(path)
@@ -23,12 +25,12 @@ def install_rvm_and_ruby():
     build.run_cmd(cmd, unsafe_shell=True, check_rc='gpg keys not received', retries=10)
     cmd = 'curl -sSL https://get.rvm.io | bash -s stable'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
-    cmd = 'rvm reload && rvm requirements run && rvm install 2.6'
+    cmd = 'rvm reload && rvm requirements run && rvm install {rvm_version}'.format(rvm_version = RVM_VERSION)
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='rvm ruby install failed')
 
 def install_fpm_gem():
     build.set_ruby_path()
-    cmd = 'rvm reload && rvm use 2.6 && gem install -v 1.4.0 fpm'
+    cmd = 'rvm reload && rvm use {rvm_version} && gem install -v 1.4.0 fpm'.format(rvm_version = RVM_VERSION)
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='fpm gem install failed')
 
 
