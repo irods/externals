@@ -38,11 +38,11 @@
         "commitish": "1.4.89",
         "version_string": "1.4.89",
         "license": "Apache License 2.0",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INCLUDE_DIRECTORIES_BEFORE=ON -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS -nostdinc++' -DBUILD_ONLY='s3;sts' ..",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INCLUDE_DIRECTORIES_BEFORE=ON -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS -nostdinc++' -DBUILD_ONLY='s3;sts' ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
