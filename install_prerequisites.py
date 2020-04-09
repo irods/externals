@@ -22,7 +22,7 @@ def mkdir_p(path):
 
 
 def install_rvm_and_ruby():
-    cmd = 'gpg --keyserver hkp://na.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+    cmd = 'gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='gpg keys not received', retries=10)
     cmd = 'curl -sSL https://get.rvm.io | bash -s stable'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
