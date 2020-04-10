@@ -410,7 +410,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "cp -r include/spdlog/* TEMPLATE_INSTALL_PREFIX/include"
+            "cp -r include/spdlog TEMPLATE_INSTALL_PREFIX/include"
             ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
