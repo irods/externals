@@ -1,9 +1,7 @@
+#!/usr/bin/python
 from __future__ import print_function
-
-import multiprocessing
 import optparse
 import os
-import tempfile
 
 import irods_python_ci_utilities
 
