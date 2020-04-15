@@ -10,6 +10,7 @@ import platform
 import sys
 
 RVM_VERSION = build.ruby_requirements['rvm']
+RVM_PATH = build.ruby_requirements['path']
 
 def mkdir_p(path):
     try:
@@ -22,17 +23,22 @@ def mkdir_p(path):
 
 
 def install_rvm_and_ruby():
-    cmd = 'gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+    cmd = 'sudo gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='gpg keys not received', retries=10)
-    cmd = 'curl -sSL https://get.rvm.io | bash -s stable'
+    cmd = 'curl -sSL https://get.rvm.io | sudo bash -s stable'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
-    cmd = 'rvm reload && rvm requirements run && rvm install {rvm_version}'.format(rvm_version = RVM_VERSION)
+    cmd = "sudo -E su -c '{rvm_path}/rvm reload && {rvm_path}/rvm requirements run && {rvm_path}/rvm install {rvm_version}'".format(
+        rvm_version = RVM_VERSION,
+        rvm_path = RVM_PATH )
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='rvm ruby install failed')
 
 
 def install_fpm_gem():
     build.set_ruby_path()
-    cmd = 'rvm reload && rvm use {rvm_version} && gem install -v 1.4.0 fpm'.format(rvm_version = RVM_VERSION)
+    cmd = """sudo -E su -c 'PATH="{PATH}"; export PATH; {rvm_path}/rvm reload && {rvm_path}/rvm use {rvm_version} && gem install -v 1.4.0 fpm'""".format(
+        rvm_version = RVM_VERSION,
+        rvm_path = RVM_PATH,
+        PATH = os.environ['PATH'] )
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='fpm gem install failed')
 
 
