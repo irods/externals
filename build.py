@@ -226,6 +226,11 @@ def build_package(target):
     zmq_install_prefix = os.path.join(zmq_info['externals_root'], zmq_subdirectory)
     zmq_rpath = os.path.join(zmq_install_prefix, 'lib')
 
+    cpr_info = get_versions()['cpr']
+    cpr_subdirectory = '{0}{1}-{2}'.format('cpr', cpr_info['version_string'], cpr_info['consortium_build_number'])
+    cpr_install_prefix = os.path.join(cpr_info['externals_root'], cpr_subdirectory)
+    cpr_rpath = os.path.join(cpr_install_prefix, 'lib')
+
     clang_info = get_versions()['clang']
     clang_subdirectory = '{0}{1}-{2}'.format('clang', clang_info['version_string'], clang_info['consortium_build_number'])
     clang_executable = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'bin', 'clang')
@@ -330,6 +335,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_LIBARCHIVE_RPATH", libarchive_rpath, i)
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
+        i = re.sub("TEMPLATE_CPR_RPATH", cpr_rpath, i)
         i = re.sub("TEMPLATE_ZMQ_RPATH", zmq_rpath, i)
         i = re.sub("TEMPLATE_ZMQ_PATH", zmq_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
