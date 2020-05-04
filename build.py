@@ -244,9 +244,12 @@ def build_package(target):
 
     qpid_info = get_versions()['qpid']
     qpid_subdirectory = '{0}{1}-{2}'.format('qpid', qpid_info['version_string'], qpid_info['consortium_build_number'])
+    qpid_install_prefix = os.path.join(qpid_info['externals_root'], qpid_subdirectory)
+    qpid_rpath = os.path.join(qpid_install_prefix, 'lib')
+
     qpidproton_info = get_versions()['qpid-proton']
     qpidproton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpidproton_info['version_string'], qpidproton_info['consortium_build_number'])
-
+   
     # get
     if target == 'clang':
         if not os.path.isdir(os.path.join(build_dir,"build")):
@@ -336,6 +339,7 @@ def build_package(target):
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_CPR_RPATH", cpr_rpath, i)
+        i = re.sub("TEMPLATE_QPID_RPATH", qpid_rpath, i)
         i = re.sub("TEMPLATE_ZMQ_RPATH", zmq_rpath, i)
         i = re.sub("TEMPLATE_ZMQ_PATH", zmq_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
