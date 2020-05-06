@@ -94,6 +94,9 @@ def main():
             log.info('Detected: Ubuntu 16+ - need to get autoconf')
             cmd = ['sudo','apt-get','install','-y','autoconf','rsync']
             build.run_cmd(cmd, check_rc='installing autoconf failed')
+        if pld in ['Ubuntu'] and platform.linux_distribution()[1] >= '16':
+            cmd = ['sudo','apt-get','install','-y','patchelf']
+            build.run_cmd(cmd, check_rc='installing patchelf failed')
 
     elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
@@ -111,14 +114,14 @@ def main():
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','libmicrohttpd-devel','python-devel','zlib-devel','fuse','fuse-devel',
-               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel', 'unixODBC-devel']
+               'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel', 'unixODBC-devel', 'patchelf']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
     elif pld in ['openSUSE ', 'SUSE Linux Enterprise Server']:
         log.info('Detected: {0}'.format(pld))
         # get prerequisites
         cmd = ['sudo','zypper','install','-y','curl','ruby-devel','makeinfo','rubygems','libopenssl-devel',
-               'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel']
+               'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel','patchelf']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
     else:
         if platform.mac_ver()[0] != '':
