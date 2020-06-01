@@ -61,6 +61,10 @@ def main():
     log.addHandler(ch)
 
     pld = platform.linux_distribution()[0]
+    if pld == '':
+        import distro
+        pld = distro.linux_distribution()[0]
+
     if pld in ['debian', 'Ubuntu']:
         log.info('Detected: {0}'.format(pld))
         cmd = ['sudo', 'apt-get', 'update', '-y']
@@ -115,11 +119,12 @@ def main():
                'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
-    elif pld in ['openSUSE ', 'SUSE Linux Enterprise Server']:
+    elif pld in ['openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
         log.info('Detected: {0}'.format(pld))
         # get prerequisites
-        cmd = ['sudo','zypper','install','-y','curl','ruby-devel','makeinfo','rubygems','libopenssl-devel',
-               'help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','uuid-devel','patchelf']
+        cmd = ['sudo','zypper','install','-y','curl','tar','gzip','git','ruby-devel','libmicrohttpd-devel','makeinfo','rubygems',
+               'libopenssl-devel','rpm-build','help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','libtool',
+               'libuuid-devel','uuid-devel','unixODBC-devel','cyrus-sasl','patchelf']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
     else:
         if platform.mac_ver()[0] != '':
