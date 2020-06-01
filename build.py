@@ -140,10 +140,14 @@ def get_package_arch():
 def get_package_type():
     log = logging.getLogger(__name__)
     pld = platform.linux_distribution()[0]
+    if pld == '':
+        import distro
+        pld = distro.linux_distribution()[0]
+
     log.debug('linux distribution detected: {0}'.format(pld))
     if pld in ['debian', 'Ubuntu']:
         pt = 'deb'
-    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'SUSE Linux Enterprise Server']:
+    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
@@ -383,7 +387,7 @@ def build_package(target, build_native_package):
         package_cmd.extend(['-t', get_package_type()])
         package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
         try:
-            if get_package_type() == 'rpm' and v['rpm_dependencies']:
+            if get_package_type() == 'rpm' and v['rpm_dependencies'] and 'Centos' in platform.linux_distribution()[0].capitalize():
                 for d in v['rpm_dependencies']:
                     package_cmd.extend(['-d', d])
         except KeyError:
