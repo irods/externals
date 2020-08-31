@@ -163,7 +163,7 @@ def get_jobs():
     log.debug('{0} processor(s) detected, using -j{1}'.format(detected, using))
     return using
 
-def build_package(target):
+def build_package(target, build_native_package):
     log = logging.getLogger(__name__)
     print('Building [{0}]'.format(target))
     # prepare paths
@@ -182,7 +182,8 @@ def build_package(target):
         if target == 'cpython':
             log.debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
             # touch file to satisfy make
-            touch(get_package_filename(target))
+            if build_native_package:
+                touch(get_package_filename(target))
             return
     log.debug('python_executable: [{0}]'.format(python_executable))
     cmake_executable = get_local_path('cmake',['bin','cmake'])
@@ -361,7 +362,11 @@ def build_package(target):
             install_name_tool -change libboost_system.dylib {0}/lib/libboost_system.dylib $x; \
             done'.format(boost_root), run_env=myenv, unsafe_shell=True, check_rc='osx dylib fullpath fix failed')
 
+
     # package
+    if not build_native_package:
+        return
+
     if get_package_type() == 'osxpkg':
         print('MacOSX Detected - Skipping Package Build')
         # touch file to satisfy make
@@ -412,12 +417,13 @@ def build_package(target):
         print('Building [{0}] ... Complete'.format(target))
 
 def main():
-
     # check parameters
     usage = "Usage: %prog [options] <target>"
     parser = optparse.OptionParser(usage)
     parser.add_option('-v', '--verbose', action="count", dest='verbosity', default=1, help='print more information to stdout')
     parser.add_option('-q', '--quiet', action='store_const', const=0, dest='verbosity', help='print less information to stdout')
+    parser.add_option('-p', '--package', action='store_true', dest='package', default=True)
+    parser.add_option('-n', '--no-package', action='store_false', dest='package')
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
@@ -451,7 +457,7 @@ def main():
     elif target in get_versions():
         set_rvm_path()
         set_ruby_path()
-        build_package(target)
+        build_package(target, options.package )
     else:
         log.error('build target [{0}] not found in {1}'.format(target, sorted(get_versions().keys())))
         return 1
