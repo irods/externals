@@ -110,9 +110,9 @@
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
             "cp ../../TEMPLATE_CLANG_SUBDIRECTORY/lib/libc++.so.1.0 TEMPLATE_INSTALL_PREFIX/lib/",
-            "cd TEMPLATE_INSTALL_PREFIX/lib; ln -s libc++.so.1.0 libc++.so.1",
+            "cd TEMPLATE_INSTALL_PREFIX/lib; ln -sf libc++.so.1.0 libc++.so.1",
             "cp ../../TEMPLATE_CLANG_SUBDIRECTORY/lib/libc++abi.so.1.0 TEMPLATE_INSTALL_PREFIX/lib/",
-            "cd TEMPLATE_INSTALL_PREFIX/lib; ln -s libc++abi.so.1.0 libc++abi.so.1"
+            "cd TEMPLATE_INSTALL_PREFIX/lib; ln -sf libc++abi.so.1.0 libc++abi.so.1"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
