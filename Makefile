@@ -4,7 +4,7 @@ server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc spdl
 
 .PHONY : all server clean $(all)
 
-VERBOSITY=-v
+BUILD_OPTIONS=-v
 
 packages.mk : Makefile versions.json build.py
 	./build.py packagesfile
@@ -14,7 +14,7 @@ packages.mk : Makefile versions.json build.py
 $(all) : packages.mk
 
 $(AUTOCONF_PACKAGE) :
-	./build.py $(VERBOSITY) autoconf > autoconf.log 2>&1
+	./build.py $(BUILD_OPTIONS) autoconf > autoconf.log 2>&1
 autoconf : $(AUTOCONF_PACKAGE)
 autoconf_clean :
 	@echo "Cleaning autoconf..."
@@ -22,7 +22,7 @@ autoconf_clean :
 	@rm -rf $(AUTOCONF_PACKAGE)
 
 $(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) avro > avro.log 2>&1
+	./build.py $(BUILD_OPTIONS) avro > avro.log 2>&1
 avro : $(AVRO_PACKAGE)
 avro_clean :
 	@echo "Cleaning avro..."
@@ -30,7 +30,7 @@ avro_clean :
 	@rm -rf $(AVRO_PACKAGE)
 
 $(AWS-SDK-CPP_PACKAGE) : $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) aws-sdk-cpp > aws-sdk-cpp.log 2>&1
+	./build.py $(BUILD_OPTIONS) aws-sdk-cpp > aws-sdk-cpp.log 2>&1
 aws-sdk-cpp : $(AWS-SDK-CPP_PACKAGE)
 aws-sdk-cpp_clean :
 	@echo "Cleaning aws-sdk-cpp..."
@@ -38,7 +38,7 @@ aws-sdk-cpp_clean :
 	@rm -rf $(AWS-SDK-CPP_PACKAGE)
 
 $(BOOST_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) boost > boost.log 2>&1
+	./build.py $(BUILD_OPTIONS) boost > boost.log 2>&1
 boost : $(BOOST_PACKAGE)
 boost_clean :
 	@echo "Cleaning boost..."
@@ -46,7 +46,7 @@ boost_clean :
 	@rm -rf $(BOOST_PACKAGE)
 
 $(CATCH2_PACKAGE) :
-	./build.py $(VERBOSITY) catch2 > catch2.log 2>&1
+	./build.py $(BUILD_OPTIONS) catch2 > catch2.log 2>&1
 catch2 : $(CATCH2_PACKAGE)
 catch2_clean :
 	@echo "Cleaning catch2..."
@@ -54,7 +54,7 @@ catch2_clean :
 	@rm -rf $(CATCH2_PACKAGE)
 
 $(CLANG_PACKAGE) : $(CMAKE_PACKAGE) $(CPYTHON_PACKAGE)
-	./build.py $(VERBOSITY) clang > clang.log 2>&1
+	./build.py $(BUILD_OPTIONS) clang > clang.log 2>&1
 clang : $(CLANG_PACKAGE)
 clang_clean :
 	@echo "Cleaning clang..."
@@ -62,7 +62,7 @@ clang_clean :
 	@rm -rf $(CLANG_PACKAGE)
 
 $(CLANG-RUNTIME_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) clang-runtime > clang-runtime.log 2>&1
+	./build.py $(BUILD_OPTIONS) clang-runtime > clang-runtime.log 2>&1
 clang-runtime : $(CLANG-RUNTIME_PACKAGE)
 clang-runtime_clean :
 	@echo "Cleaning clang-runtime..."
@@ -70,7 +70,7 @@ clang-runtime_clean :
 	@rm -rf $(CLANG-RUNTIME_PACKAGE)
 
 $(CMAKE_PACKAGE) :
-	./build.py $(VERBOSITY) cmake > cmake.log 2>&1
+	./build.py $(BUILD_OPTIONS) cmake > cmake.log 2>&1
 cmake : $(CMAKE_PACKAGE)
 cmake_clean :
 	@echo "Cleaning cmake..."
@@ -78,7 +78,7 @@ cmake_clean :
 	@rm -rf $(CMAKE_PACKAGE)
 
 $(CPPZMQ_PACKAGE) :
-	./build.py $(VERBOSITY) cppzmq > cppzmq.log 2>&1
+	./build.py $(BUILD_OPTIONS) cppzmq > cppzmq.log 2>&1
 cppzmq : $(CPPZMQ_PACKAGE)
 cppzmq_clean :
 	@echo "Cleaning cppzmq..."
@@ -86,7 +86,7 @@ cppzmq_clean :
 	@rm -rf $(CPPZMQ_PACKAGE)
 
 $(CPR_PACKAGE) : $(ELASTICLIENT_PACKAGE)
-	./build.py $(VERBOSITY) cpr > cpr.log 2>&1
+	./build.py $(BUILD_OPTIONS) cpr > cpr.log 2>&1
 cpr : $(CPR_PACKAGE)
 cpr_clean :
 	@echo "Cleaning cpr..."
@@ -94,7 +94,7 @@ cpr_clean :
 	@rm -rf $(CPR_PACKAGE)
 
 $(CPYTHON_PACKAGE) :
-	./build.py $(VERBOSITY) cpython > cpython.log 2>&1
+	./build.py $(BUILD_OPTIONS) cpython > cpython.log 2>&1
 cpython : $(CPYTHON_PACKAGE)
 cpython_clean :
 	@echo "Cleaning cpython..."
@@ -102,7 +102,7 @@ cpython_clean :
 	@rm -rf $(CPYTHON_PACKAGE)
 
 $(ELASTICLIENT_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE)
-	./build.py $(VERBOSITY) elasticlient > elasticlient.log 2>&1
+	./build.py $(BUILD_OPTIONS) elasticlient > elasticlient.log 2>&1
 elasticlient : $(ELASTICLIENT_PACKAGE)
 elasticlient_clean :
 	@echo "Cleaning elasticlient..."
@@ -110,7 +110,7 @@ elasticlient_clean :
 	@rm -rf $(ELASTICLIENT_PACKAGE)
 
 $(FMT_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) fmt > fmt.log 2>&1
+	./build.py $(BUILD_OPTIONS) fmt > fmt.log 2>&1
 fmt : $(FMT_PACKAGE)
 fmt_clean :
 	@echo "Cleaning fmt..."
@@ -118,7 +118,7 @@ fmt_clean :
 	@rm -rf $(FMT_PACKAGE)
 
 $(IMAGEMAGICK_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) imagemagick > imagemagick.log 2>&1
+	./build.py $(BUILD_OPTIONS) imagemagick > imagemagick.log 2>&1
 imagemagick : $(IMAGEMAGICK_PACKAGE)
 imagemagick_clean :
 	@echo "Cleaning imagemagick..."
@@ -126,7 +126,7 @@ imagemagick_clean :
 	@rm -rf $(IMAGEMAGICK_PACKAGE)
 
 $(JANSSON_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) jansson > jansson.log 2>&1
+	./build.py $(BUILD_OPTIONS) jansson > jansson.log 2>&1
 jansson : $(JANSSON_PACKAGE)
 jansson_clean :
 	@echo "Cleaning jansson..."
@@ -134,7 +134,7 @@ jansson_clean :
 	@rm -rf $(JANSSON_PACKAGE)
 
 $(JSON_PACKAGE) :
-	./build.py $(VERBOSITY) json > json.log 2>&1
+	./build.py $(BUILD_OPTIONS) json > json.log 2>&1
 json : $(JSON_PACKAGE)
 json_clean :
 	@echo "Cleaning json..."
@@ -142,7 +142,7 @@ json_clean :
 	@rm -rf $(JSON_PACKAGE)
 
 $(LIBARCHIVE_PACKAGE) : $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) libarchive > libarchive.log 2>&1
+	./build.py $(BUILD_OPTIONS) libarchive > libarchive.log 2>&1
 libarchive : $(LIBARCHIVE_PACKAGE)
 libarchive_clean :
 	@echo "Cleaning libarchive..."
@@ -150,7 +150,7 @@ libarchive_clean :
 	@rm -rf $(LIBARCHIVE_PACKAGE)
 
 $(LIBS3_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) libs3 > libs3.log 2>&1
+	./build.py $(BUILD_OPTIONS) libs3 > libs3.log 2>&1
 libs3 : $(LIBS3_PACKAGE)
 libs3_clean :
 	@echo "Cleaning libs3..."
@@ -158,7 +158,7 @@ libs3_clean :
 	@rm -rf $(LIBS3_PACKAGE)
 
 $(MUNGEFS_PACKAGE) : $(CPPZMQ_PACKAGE) $(LIBARCHIVE_PACKAGE) $(AVRO_PACKAGE) $(CLANG-RUNTIME_PACKAGE) $(ZEROMQ4-1_PACKAGE)
-	./build.py $(VERBOSITY) mungefs > mungefs.log 2>&1
+	./build.py $(BUILD_OPTIONS) mungefs > mungefs.log 2>&1
 mungefs : $(MUNGEFS_PACKAGE)
 mungefs_clean :
 	@echo "Cleaning mungefs..."
@@ -166,7 +166,7 @@ mungefs_clean :
 	@rm -rf $(MUNGEFS_PACKAGE)
 
 $(NANODBC_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) nanodbc > nanodbc.log 2>&1
+	./build.py $(BUILD_OPTIONS) nanodbc > nanodbc.log 2>&1
 nanodbc : $(NANODBC_PACKAGE)
 nanodbc_clean :
 	@echo "Cleaning nanodbc..."
@@ -174,7 +174,7 @@ nanodbc_clean :
 	@rm -rf $(NANODBC_PACKAGE)
 
 $(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
-	./build.py $(VERBOSITY) qpid > qpid.log 2>&1
+	./build.py $(BUILD_OPTIONS) qpid > qpid.log 2>&1
 qpid : $(QPID_PACKAGE)
 qpid_clean :
 	@echo "Cleaning qpid..."
@@ -182,7 +182,7 @@ qpid_clean :
 	@rm -rf $(QPID_PACKAGE)
 
 $(QPID-PROTON_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) qpid-proton > qpid-proton.log 2>&1
+	./build.py $(BUILD_OPTIONS) qpid-proton > qpid-proton.log 2>&1
 qpid-proton : $(QPID-PROTON_PACKAGE)
 qpid-proton_clean :
 	@echo "Cleaning qpid-proton..."
@@ -190,7 +190,7 @@ qpid-proton_clean :
 	@rm -rf $(QPID-PROTON_PACKAGE)
 
 $(QPID-WITH-PROTON_PACKAGE) : $(QPID_PACKAGE)
-	./build.py $(VERBOSITY) qpid-with-proton > qpid-with-proton.log 2>&1
+	./build.py $(BUILD_OPTIONS) qpid-with-proton > qpid-with-proton.log 2>&1
 qpid-with-proton : $(QPID-WITH-PROTON_PACKAGE)
 qpid-with-proton_clean :
 	@echo "Cleaning qpid-with-proton..."
@@ -198,7 +198,7 @@ qpid-with-proton_clean :
 	@rm -rf $(QPID-WITH-PROTON_PACKAGE)
 
 $(REDIS_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) redis > redis.log 2>&1
+	./build.py $(BUILD_OPTIONS) redis > redis.log 2>&1
 redis : $(REDIS_PACKAGE)
 redis_clean :
 	@echo "Cleaning redis..."
@@ -206,7 +206,7 @@ redis_clean :
 	@rm -rf $(REDIS_PACKAGE)
 
 $(SPDLOG_PACKAGE) :
-	./build.py $(VERBOSITY) spdlog > spdlog.log 2>&1
+	./build.py $(BUILD_OPTIONS) spdlog > spdlog.log 2>&1
 spdlog : $(SPDLOG_PACKAGE)
 spdlog_clean :
 	@echo "Cleaning spdlog..."
@@ -214,7 +214,7 @@ spdlog_clean :
 	@rm -rf $(SPDLOG_PACKAGE)
 
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(VERBOSITY) zeromq4-1 > zeromq4-1.log 2>&1
+	./build.py $(BUILD_OPTIONS) zeromq4-1 > zeromq4-1.log 2>&1
 zeromq4-1 : $(ZEROMQ4-1_PACKAGE)
 zeromq4-1_clean :
 	@echo "Cleaning zeromq4-1..."
