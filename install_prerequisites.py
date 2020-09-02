@@ -48,7 +48,7 @@ def main():
     parser.add_option('-v', '--verbose', action="count", dest='verbosity', default=1, help='print more information to stdout')
     parser.add_option('-q', '--quiet', action='store_const', const=0, dest='verbosity', help='print less information to stdout')
     parser.add_option('-p', '--package', action='store_true', dest='package', default=True)
-    parser.add_option('-n', '--no-package', action='store_false', dest='package')    
+    parser.add_option('-n', '--no-package', action='store_false', dest='package')
     (options, args) = parser.parse_args()
 
     # configure logging
