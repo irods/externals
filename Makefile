@@ -1,4 +1,5 @@
-all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpr cpython elasticlient fmt imagemagick json libarchive libs3 mungefs nanodbc qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
+all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpr cpython elasticlient fmt imagemagick json libarchive libs3 mungefs nanodbc qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1 pistache
+
 
 server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
 
@@ -172,6 +173,14 @@ nanodbc_clean :
 	@echo "Cleaning nanodbc..."
 	@rm -rf nanodbc*
 	@rm -rf $(NANODBC_PACKAGE)
+
+$(PISTACHE_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) pistache > pistache.log 2>&1
+pistache : $(PISTACHE_PACKAGE)
+pistache_clean :
+	@echo "Cleaning pistache..."
+	@rm -rf pistache*
+	@rm -rf $(PISTACHE_PACKAGE)
 
 $(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
 	./build.py $(BUILD_OPTIONS) qpid > qpid.log 2>&1
