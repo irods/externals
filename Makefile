@@ -1,4 +1,4 @@
-all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cpr cpython elasticlient fmt imagemagick jansson json libarchive libs3 mungefs nanodbc qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
+all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cpr cpython elasticlient fmt imagemagick jansson json libarchive libs3 mungefs nanodbc pistache qpid qpid-proton qpid-with-proton redis zeromq4-1 cppzmq epm
 
 server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc zeromq4-1
 
@@ -165,6 +165,14 @@ nanodbc_clean :
 	@rm -rf nanodbc*
 	@rm -rf $(NANODBC_PACKAGE)
 
+$(PISTACHE_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) pistache > pistache.log 2>&1
+pistache : $(PISTACHE_PACKAGE)
+pistache_clean :
+	@echo "Cleaning pistache..."
+	@rm -rf pistache*
+	@rm -rf $(PISTACHE_PACKAGE)
+
 $(QPID_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE) $(QPID-PROTON_PACKAGE)
 	./build.py $(BUILD_OPTIONS) qpid > qpid.log 2>&1
 qpid : $(QPID_PACKAGE)
@@ -221,7 +229,7 @@ epm_clean :
 	@rm -rf epm*
 	@rm -rf $(EPM_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cpr_clean cpython_clean elasticlient_clean jansson_clean libarchive_clean libs3_clean mungefs_clean zeromq4-1_clean cppzmq_clean epm_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cpr_clean cpython_clean elasticlient_clean jansson_clean libarchive_clean libs3_clean mungefs_clean pistache_clean zeromq4-1_clean cppzmq_clean epm_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
