@@ -352,6 +352,20 @@
         ],
         "fpm_directories": ["include", "lib"]
     },
+    "pistache": {
+        "commitish": "master",
+        "version_string": "0.0.2",
+        "license": "Apache 2.0",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; rm -f CMakeCache.txt; TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' ..",
+            "cd build; make -j"
+            ],
+        "external_build_steps": [],
+        "fpm_directories": []
+    },
     "qpid": {
         "commitish": "qpid-cpp-0.34",
         "version_string": "0.34",
