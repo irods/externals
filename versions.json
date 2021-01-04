@@ -359,9 +359,10 @@
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
+            "sed -i 's,\"pistache/string_view.h\",<string_view>,' ./include/pistache/router.h",
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt; TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' ..",
-            "cd build; make -j"
+            "cd build; rm -f CMakeCache.txt; TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS -Wno-sign-conversion' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ..",
+            "cd build; make -jTEMPLATE_JOBS"
             ],
         "external_build_steps": [],
         "fpm_directories": []
