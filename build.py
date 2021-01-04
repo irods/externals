@@ -16,7 +16,6 @@ import sys
 script_path = os.path.dirname(os.path.realpath(__file__))
 
 ruby_requirements = {
-    'rvm': '2.6',
     'ruby': '2.6.5',
     'path': '/usr/local/rvm/bin'
 }
