@@ -321,10 +321,10 @@
         "fpm_directories": ["usr/bin"]
     },
     "nanodbc": {
-        "commitish": "aaa3b89db6e5852756a9b6fdfdce404af73adfb6",
+        "commitish": "v2.13.0",
         "version_string": "2.13.0",
         "license": "MIT",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
