@@ -229,7 +229,7 @@ epm_clean :
 	@rm -rf epm*
 	@rm -rf $(EPM_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cpr_clean cpython_clean elasticlient_clean jansson_clean libarchive_clean libs3_clean mungefs_clean pistache_clean zeromq4-1_clean cppzmq_clean epm_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cpr_clean cpython_clean elasticlient_clean jansson_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean zeromq4-1_clean cppzmq_clean epm_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
