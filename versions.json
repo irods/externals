@@ -350,7 +350,9 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include", "lib"]
+        "fpm_directories": ["include", "lib"],
+        "deb_dependencies": ["libodbc1"],
+        "rpm_dependencies": ["unixODBC"]
     },
     "pistache": {
         "commitish": "master",
