@@ -389,6 +389,9 @@ def build_package(target, build_native_package):
             if get_package_type() == 'rpm' and v['rpm_dependencies'] and 'Centos' in platform.linux_distribution()[0].capitalize():
                 for d in v['rpm_dependencies']:
                     package_cmd.extend(['-d', d])
+            if get_package_type() == 'deb' and v['deb_dependencies']:
+                for d in v['deb_dependencies']:
+                    package_cmd.extend(['-d', d])
         except KeyError:
             pass
         package_cmd.extend(['-m', '<packages@irods.org>'])
