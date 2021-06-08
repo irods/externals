@@ -40,6 +40,19 @@ def install_fpm_gem():
     build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='fpm gem install failed')
 
 
+def get_platform():
+    # linux_distribution() is removed in Python 3.8+, so distro is used as a backup
+    try:
+        pld = platform.linux_distribution()[0]
+        if pld != '':
+            return pld
+    except AttributeError:
+        pass
+    import distro
+    pld = distro.linux_distribution()[0]
+    return pld
+
+
 def main():
     # configure parser
     parser = optparse.OptionParser()
@@ -62,10 +75,7 @@ def main():
     ch.setFormatter(formatter)
     log.addHandler(ch)
 
-    pld = platform.linux_distribution()[0]
-    if pld == '':
-        import distro
-        pld = distro.linux_distribution()[0]
+    pld = get_platform()
 
     if pld in ['debian', 'Ubuntu']:
         log.info('Detected: {0}'.format(pld))
@@ -128,6 +138,15 @@ def main():
                'libopenssl-devel','rpm-build','help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','libtool',
                'libuuid-devel','uuid-devel','unixODBC-devel','cyrus-sasl','patchelf']
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
+
+    elif pld in ['arch', 'Arch', 'Arch Linux', 'Manjaro Linux']:
+        log.info('Detected: {0}'.format(pld))
+        # get prerequisites
+        cmd = ['sudo', 'pacman', '-Sy', '--noconfirm', 'autoconf', 'automake', 'bzip2', 'curl', 'cyrus-sasl', 'fuse2', 'git', 'gzip', 'help2man',
+               'libmicrohttpd', 'libtool', 'libxml2', 'openssl', 'patchelf', 'ruby', 'rubygems', 'tar', 'texinfo', 'unixodbc',
+               'util-linux-libs']
+        build.run_cmd(cmd, check_rc='installing prerequisites failed')
+
     else:
         if platform.mac_ver()[0] != '':
             log.info('Detected: {0}'.format(platform.mac_ver()[0]))
