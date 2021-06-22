@@ -22,8 +22,10 @@ def mkdir_p(path):
             raise
 
 def install_rvm_and_ruby():
-    cmd = 'sudo gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
-    build.run_cmd(cmd, unsafe_shell=True, check_rc='gpg keys not received', retries=10)
+    cmd = 'curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -'
+    build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
+    cmd = 'curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg --import -'
+    build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
     cmd = 'curl -sSL https://get.rvm.io | sudo bash -s stable'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
     cmd = "sudo -E su -c '{rvm_path}/rvm reload && {rvm_path}/rvm requirements run && {rvm_path}/rvm install {ruby_version}'".format(
