@@ -134,6 +134,8 @@ def main():
                 build.run_cmd(cmd, check_rc='installing prerequisites failed')
                 cmd = ['sudo', 'dnf', 'install', '-y', 'python2-devel']
                 build.run_cmd(cmd, check_rc='installing prerequisites failed')
+                cmd = ['dnf', '-y', 'install', 'pam-devel']
+                build.run_cmd(cmd, check_rc='installing prerequisites failed')
             else:
                 cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
                         'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel','fuse','fuse-devel',
