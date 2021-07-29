@@ -130,7 +130,7 @@ def main():
                         'rpm-build','rubygems','ruby-devel','zlib-devel','fuse','fuse-devel',
                         'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
                 build.run_cmd(cmd, check_rc='installing prerequisites failed')
-                cmd = ['dnf', '--enablerepo=powertools', 'install', 'texinfo','help2man','libmicrohttpd-devel']
+                cmd = ['dnf', '--enablerepo=powertools', '-y', 'install', 'texinfo','help2man','libmicrohttpd-devel']
                 build.run_cmd(cmd, check_rc='installing prerequisites failed')
                 cmd = ['sudo', 'dnf', 'install', '-y', 'python2-devel']
                 build.run_cmd(cmd, check_rc='installing prerequisites failed')
