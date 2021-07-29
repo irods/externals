@@ -111,17 +111,34 @@ def main():
         build.run_cmd(cmd, check_rc='rpm rebuild failed')
         cmd = ['sudo','yum','clean','all']
         build.run_cmd(cmd, check_rc='yum clean failed')
-        cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
-        build.run_cmd(cmd, check_rc='yum install failed')
+        #check 'centos 8' or 'rocky 8.4'
+        if os.path.isfile('/etc/redhat-release'):
+            if (platform.linux_distribution()[0] == 'CentOS Linux' or platform.linux_distribution()[0] == 'Rocky Linux' ) and platform.linux_distribution()[1].find('8.4') != -1:
+                pass
+            else:
+                cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
+                build.run_cmd(cmd, check_rc='yum install failed')
         cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
         build.run_cmd(cmd, check_rc='yum update failed')
         # get prerequisites
         cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
         build.run_cmd(cmd, check_rc='installing epel failed')
-        cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
-               'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel','fuse','fuse-devel',
-               'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
-        build.run_cmd(cmd, check_rc='installing prerequisites failed')
+        #check 'centos 8' or 'rocky 8.4'
+        if os.path.isfile('/etc/redhat-release'):
+            if (platform.linux_distribution()[0] == 'CentOS Linux' or platform.linux_distribution()[0] == 'Rocky Linux' ) and platform.linux_distribution()[1].find('8.4') != -1:
+                cmd = ['sudo','dnf','install','-y','curl','gcc-c++','git','autoconf','automake',
+                        'rpm-build','rubygems','ruby-devel','zlib-devel','fuse','fuse-devel',
+                        'bzip2-devel','libcurl-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
+                build.run_cmd(cmd, check_rc='installing prerequisites failed')
+                cmd = ['dnf', '--enablerepo=powertools', 'install', 'texinfo','help2man','libmicrohttpd-devel']
+                build.run_cmd(cmd, check_rc='installing prerequisites failed')
+                cmd = ['sudo', 'dnf', 'install', '-y', 'python2-devel']
+                build.run_cmd(cmd, check_rc='installing prerequisites failed')
+            else:
+                cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
+                        'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel','fuse','fuse-devel',
+                        'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
+                build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
     elif pld in ['openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
         log.info('Detected: {0}'.format(pld))
