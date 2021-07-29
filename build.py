@@ -146,7 +146,7 @@ def get_package_type():
     log.debug('linux distribution detected: {0}'.format(pld))
     if pld in ['debian', 'Ubuntu']:
         pt = 'deb'
-    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
+    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES', ,'Rocky Linux']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
