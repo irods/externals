@@ -287,8 +287,8 @@
         "rpm_dependencies": ["xz-libs >= 5.2.2"]
     },
     "libs3": {
-        "commitish": "4e6840770ad82e0037ac2a3f2825d2fbd70a5ec8",
-        "version_string": "4e684077",
+        "commitish": "e467477444fd40511a63d13c221bdd8e0c19973f",
+        "version_string": "e4674774",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
