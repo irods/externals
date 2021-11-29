@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 from __future__ import print_function
 
 import build
@@ -35,7 +35,7 @@ def install_rvm_and_ruby():
 
 def install_fpm_gem():
     build.set_ruby_path()
-    cmd = """sudo -E su -c 'PATH="{PATH}"; export PATH; {rvm_path}/rvm reload && {rvm_path}/rvm use {ruby_version} && gem install -v 1.4.0 fpm'""".format(
+    cmd = """sudo -E su -c 'PATH="{PATH}"; export PATH; {rvm_path}/rvm reload && {rvm_path}/rvm use {ruby_version} && gem install -v 1.14.1 fpm'""".format(
         ruby_version = RUBY_VERSION,
         rvm_path = RVM_PATH,
         PATH = os.environ['PATH'] )
@@ -104,23 +104,36 @@ def main():
             cmd = ['sudo','apt-get','install','-y','patchelf']
             build.run_cmd(cmd, check_rc='installing patchelf failed')
 
-    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
+    elif pld in ['AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
         # prep
-        cmd = ['sudo', 'rpm', '--rebuilddb']
-        build.run_cmd(cmd, check_rc='rpm rebuild failed')
+        if pld in ['AlmaLinux']:
+            cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
+            build.run_cmd(cmd, check_rc='rpm dnf install failed')
+            cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', 'powertools']
+            build.run_cmd(cmd, check_rc='rpm dnf config-manager failed')
+            cmd = ['sudo', 'dnf', 'install', '-y', 'procps', 'redhat-lsb-core', 'rsync'] # For ps, lsb_release, and rsync.
+            build.run_cmd(cmd, check_rc='yum install failed')
+        else:
+            cmd = ['sudo', 'rpm', '--rebuilddb']
+            build.run_cmd(cmd, check_rc='rpm rebuild failed')
         cmd = ['sudo','yum','clean','all']
         build.run_cmd(cmd, check_rc='yum clean failed')
-        cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
-        build.run_cmd(cmd, check_rc='yum install failed')
+        if pld not in ['AlmaLinux']:
+            cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
+            build.run_cmd(cmd, check_rc='yum install failed')
         cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
         build.run_cmd(cmd, check_rc='yum update failed')
         # get prerequisites
         cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
         build.run_cmd(cmd, check_rc='installing epel failed')
         cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
-               'help2man','rpm-build','rubygems','ruby-devel','python-devel','zlib-devel','fuse','fuse-devel',
+               'help2man','rpm-build','rubygems','ruby-devel','zlib-devel','fuse','fuse-devel',
                'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
+        if pld in ['AlmaLinux']:
+            cmd.append('python2-devel') # This would need to be changed to python36-devel for Python 3.
+        else:
+            cmd.append('python-devel')
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
     elif pld in ['openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:

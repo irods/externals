@@ -305,8 +305,8 @@
         "fpm_directories": ["bin","include","lib"]
     },
     "mungefs": {
-        "commitish": "1.0.3",
-        "version_string": "1.0.3",
+        "commitish": "1.0.4",
+        "version_string": "1.0.4",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
