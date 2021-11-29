@@ -6,6 +6,7 @@ Currently tested on:
 - Ubuntu 16
 - Ubuntu 18
 - CentOS 7
+- AlmaLinux 8
 - Debian 9
 
 # Assumptions
@@ -18,10 +19,13 @@ In a new container, you'll probably need the following:
 
 ```
 # Ubuntu 16
-apt-get install -y sudo git python
+apt-get update -y && apt-get install -y sudo git python
 
 # CentOS 7
-yum install -y sudo git python
+yum update -y && yum install -y sudo git python
+
+# AlmaLinux 8
+dnf update -y && dnf install -y sudo git python2
 ```
 
 # Installation

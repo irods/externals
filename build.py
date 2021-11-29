@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 from __future__ import print_function
 
 import errno
@@ -38,8 +38,8 @@ def get_rvm_path():
     cmd = ['whereis', 'rvm']
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     _out, _err = p.communicate()
-    index = len(_out.lstrip().split(': ')) - 1
-    rvm_path = _out.lstrip().split(': ')[index]
+    index = len(_out.lstrip().split(': ')) - 1      # b': ' for Python 3
+    rvm_path = _out.lstrip().split(': ')[index]     # b': ' for Python 3
     return rvm_path.strip()
 
 def set_environ_path(bin_path):
@@ -146,7 +146,7 @@ def get_package_type():
     log.debug('linux distribution detected: {0}'.format(pld))
     if pld in ['debian', 'Ubuntu']:
         pt = 'deb'
-    elif pld in ['CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
+    elif pld in ['AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
@@ -386,12 +386,18 @@ def build_package(target, build_native_package):
         package_cmd.extend(['-t', get_package_type()])
         package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
         try:
-            if get_package_type() == 'rpm' and v['rpm_dependencies'] and 'Centos' in platform.linux_distribution()[0].capitalize():
-                for d in v['rpm_dependencies']:
-                    package_cmd.extend(['-d', d])
-            if get_package_type() == 'deb' and v['deb_dependencies']:
+            if get_package_type() == 'rpm':
+                pld = platform.linux_distribution()[0].lower()
+                if any(x in pld for x in ['almalinux']):
+                    # Do not include .build-id links in the package. These links will cause package
+                    # conflicts between the clang and clang-runtime packages being produced.
+                    package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
+                if v['rpm_dependencies'] and any(x in pld for x in ['centos', 'almalinux']):
+                    for d in v['rpm_dependencies']:
+                        package_cmd.extend(['-d', d]) # Package dependencies for RPM being prepared.
+            elif get_package_type() == 'deb' and v['deb_dependencies']:
                 for d in v['deb_dependencies']:
-                    package_cmd.extend(['-d', d])
+                    package_cmd.extend(['-d', d]) # Package dependencies for DEB being prepared.
         except KeyError:
             pass
         package_cmd.extend(['-m', '<packages@irods.org>'])
