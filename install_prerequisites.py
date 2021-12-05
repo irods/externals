@@ -75,9 +75,14 @@ def main():
         build.run_cmd(cmd, check_rc='getting updates failed')
         # get prerequisites
         cmd = ['sudo','apt-get','install','-y','curl','automake','make','autoconf2.13','texinfo',
-               'help2man','g++','git','lsb-release','libtool','python-dev','libbz2-dev','zlib1g-dev',
+               'help2man','g++','git','lsb-release','libtool','libbz2-dev','zlib1g-dev',
                'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev', 'fuse', 'libfuse2',
                'libfuse-dev', 'libmicrohttpd-dev', 'unixodbc-dev']
+        if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '20':
+            cmd.append('python-dev')
+        else:
+            cmd.insert(1, 'DEBIAN_FRONTEND=noninteractive') # Avoids hanging on tzdata configuration.
+            cmd.extend(['python2-dev', 'gpg'])
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         # if old, bootstrap g++
         if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':

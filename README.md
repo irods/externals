@@ -5,6 +5,7 @@ Currently tested on:
 - Ubuntu 14
 - Ubuntu 16
 - Ubuntu 18
+- Ubuntu 20
 - CentOS 7
 - AlmaLinux 8
 - Rocky Linux 8
@@ -19,8 +20,11 @@ The automated scripts run commands as `sudo` and update system libraries and com
 In a new container, you'll probably need the following:
 
 ```
-# Ubuntu 16
+# Ubuntu 16+
 apt-get update -y && apt-get install -y sudo git python
+
+# Ubuntu 20
+apt-get update -y && apt-get install -y sudo git python2
 
 # CentOS 7
 yum update -y && yum install -y sudo git python
