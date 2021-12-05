@@ -104,10 +104,10 @@ def main():
             cmd = ['sudo','apt-get','install','-y','patchelf']
             build.run_cmd(cmd, check_rc='installing patchelf failed')
 
-    elif pld in ['AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
+    elif pld in ['Rocky Linux', 'AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
         log.info('Detected: {0}'.format(pld))
         # prep
-        if pld in ['AlmaLinux']:
+        if pld in ['Rocky Linux', 'AlmaLinux']:
             cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
             build.run_cmd(cmd, check_rc='rpm dnf install failed')
             cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', 'powertools']
@@ -119,7 +119,7 @@ def main():
             build.run_cmd(cmd, check_rc='rpm rebuild failed')
         cmd = ['sudo','yum','clean','all']
         build.run_cmd(cmd, check_rc='yum clean failed')
-        if pld not in ['AlmaLinux']:
+        if pld not in ['Rocky Linux', 'AlmaLinux']:
             cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
             build.run_cmd(cmd, check_rc='yum install failed')
         cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
@@ -130,7 +130,7 @@ def main():
         cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','zlib-devel','fuse','fuse-devel',
                'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
-        if pld in ['AlmaLinux']:
+        if pld in ['Rocky Linux', 'AlmaLinux']:
             cmd.append('python2-devel') # This would need to be changed to python36-devel for Python 3.
         else:
             cmd.append('python-devel')
