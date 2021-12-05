@@ -18,15 +18,15 @@
         "fpm_directories": ["bin","share"]
     },
     "avro": {
-        "commitish": "release-1.9.0",
-        "version_string": "1.9.0",
+        "commitish": "release-1.11.0",
+        "version_string": "1.11.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
             "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
-            "cd lang/c++/build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES make -jTEMPLATE_JOBS; make install"
+            "cd lang/c++/build; env LD_LIBRARY_PATH='TEMPLATE_CLANG_CPP_LIBRARIES:/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
             "cd lang/c++/build",
@@ -51,8 +51,8 @@
         "fpm_directories": ["include","lib","lib64"]
     },
     "boost": {
-        "commitish": "boost-1.67.0",
-        "version_string": "1.67.0",
+        "commitish": "boost-1.77.0",
+        "version_string": "1.77.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -68,8 +68,8 @@
         "fpm_directories": ["include","lib"]
     },
     "catch2": {
-        "commitish": "v2.3.0",
-        "version_string": "2.3.0",
+        "commitish": "v2.13.7",
+        "version_string": "2.13.7",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -83,19 +83,19 @@
         "fpm_directories": ["include"]
     },
     "clang": {
-        "commitish": "release_60",
-        "version_string": "6.0",
+        "commitish": "llvmorg-11.1.0",
+        "version_string": "11.1.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE:FILEPATH=TEMPLATE_PYTHON_EXECUTABLE ../llvm",
+            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE:FILEPATH=TEMPLATE_PYTHON_EXECUTABLE -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' ../llvm-project/llvm",
             "make -jTEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS check-clang-tools",
             "make -jTEMPLATE_JOBS install",
             "cp ./libexec/c++-analyzer TEMPLATE_INSTALL_PREFIX/bin",
             "cp ./libexec/ccc-analyzer TEMPLATE_INSTALL_PREFIX/bin"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -103,7 +103,7 @@
     },
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
-        "version_string": "6.0",
+        "version_string": "11.1.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -136,8 +136,8 @@
         "fpm_directories": ["bin","doc","share"]
     },
     "cppzmq": {
-        "commitish": "v4.2.3",
-        "version_string": "4.2.3",
+        "commitish": "v4.8.1",
+        "version_string": "4.8.1",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -206,10 +206,10 @@
         "fpm_directories": ["include","lib"]
     },
     "fmt": {
-        "commitish": "6.1.2",
-        "version_string": "6.1.2",
+        "commitish": "8.0.1",
+        "version_string": "8.0.1",
         "license": "MIT",
-        "consortium_build_number": "1",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -271,10 +271,10 @@
         "fpm_directories": ["include","lib"]
     },
     "libarchive": {
-        "commitish": "v3.3.2",
-        "version_string": "3.3.2",
+        "commitish": "v3.5.2",
+        "version_string": "3.5.2",
         "license": "BSD 2-Clause",
-        "consortium_build_number": "1",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
@@ -424,10 +424,10 @@
         "fpm_directories": ["bin"]
     },
     "spdlog": {
-        "commitish": "v1.5.0",
-        "version_string": "1.5.0",
+        "commitish": "v1.9.2",
+        "version_string": "1.9.2",
         "license": "MIT",
-        "consortium_build_number": "1",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
@@ -439,8 +439,8 @@
         "fpm_directories": ["include"]
     },
     "zeromq4-1": {
-        "commitish": "v4.1.6",
-        "version_string": "4.1.6",
+        "commitish": "v4.1.8",
+        "version_string": "4.1.8",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",

@@ -261,26 +261,16 @@ def build_package(target, build_native_package):
 
     # get
     if target == 'clang':
-        if not os.path.isdir(os.path.join(build_dir,"build")):
-            mkdir_p(os.path.join(build_dir,"build"))
-        target_dirs = [
-                ('llvm', 'llvm'),
-                ('clang', 'llvm/tools/clang'),
-                ('clang-tools-extra', 'llvm/tools/clang/tools/extra'),
-                ('compiler-rt', 'llvm/projects/compiler-rt'),
-                ('libcxx', 'llvm/projects/libcxx'),
-                ('libcxxabi', 'llvm/projects/libcxxabi')
-            ]
-        for t in target_dirs:
-            if not os.path.isdir(os.path.join(build_dir,t[1])):
-                mkdir_p(os.path.dirname(os.path.join(build_dir,t[1])))
-                os.chdir(os.path.dirname(os.path.join(build_dir,t[1])))
-                log.debug('cwd: {0}'.format(os.getcwd()))
-                run_cmd(['git', 'clone', 'https://github.com/irods/{0}'.format(t[0]),t[1].split("/")[-1]])
-            os.chdir(os.path.join(build_dir,t[1]))
-            log.debug('cwd: {0}'.format(os.getcwd()))
-            run_cmd(['git', 'fetch'], check_rc='git fetch failed')
-            run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
+        if not os.path.isdir(os.path.join(build_dir, "build")):
+            mkdir_p(os.path.join(build_dir, "build"))
+        os.chdir(build_dir)
+        log.debug('cwd: {0}'.format(os.getcwd()))
+        # Clone only the version we want! It would take too long to download all of LLVM.
+        run_cmd(['git', 'clone', '--depth', '1', '--branch', v['commitish'], 'https://github.com/irods/llvm-project'])
+        os.chdir('llvm-project')
+        log.debug('cwd: {0}'.format(os.getcwd()))
+        run_cmd(['git', 'fetch'], check_rc='git fetch failed')
+        run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
     elif target == 'clang-runtime':
         if not os.path.isdir(os.path.join(build_dir,target)):
             mkdir_p(os.path.join(build_dir, target))
@@ -323,7 +313,7 @@ def build_package(target, build_native_package):
 
     # build
     if target == 'clang':
-        os.chdir(os.path.join(build_dir,"build"))
+        os.chdir(os.path.join(build_dir, "llvm-project"))
     else:
         os.chdir(os.path.join(build_dir,target))
 
