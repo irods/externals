@@ -7,6 +7,7 @@ Currently tested on:
 - Ubuntu 18
 - CentOS 7
 - AlmaLinux 8
+- Rocky Linux 8
 - Debian 9
 
 # Assumptions
@@ -24,7 +25,7 @@ apt-get update -y && apt-get install -y sudo git python
 # CentOS 7
 yum update -y && yum install -y sudo git python
 
-# AlmaLinux 8
+# AlmaLinux 8 and Rocky Linux 8
 dnf update -y && dnf install -y sudo git python2
 ```
 

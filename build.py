@@ -146,7 +146,7 @@ def get_package_type():
     log.debug('linux distribution detected: {0}'.format(pld))
     if pld in ['debian', 'Ubuntu']:
         pt = 'deb'
-    elif pld in ['AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
+    elif pld in ['Rocky Linux', 'AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
@@ -388,11 +388,11 @@ def build_package(target, build_native_package):
         try:
             if get_package_type() == 'rpm':
                 pld = platform.linux_distribution()[0].lower()
-                if any(x in pld for x in ['almalinux']):
+                if any(x in pld for x in ['rocky linux', 'almalinux']):
                     # Do not include .build-id links in the package. These links will cause package
                     # conflicts between the clang and clang-runtime packages being produced.
                     package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
-                if v['rpm_dependencies'] and any(x in pld for x in ['centos', 'almalinux']):
+                if v['rpm_dependencies'] and any(x in pld for x in ['centos', 'rocky linux', 'almalinux']):
                     for d in v['rpm_dependencies']:
                         package_cmd.extend(['-d', d]) # Package dependencies for RPM being prepared.
             elif get_package_type() == 'deb' and v['deb_dependencies']:
