@@ -255,19 +255,20 @@
         "fpm_directories": ["include","lib"]
     },
     "json": {
-        "commitish": "v3.7.3",
-        "version_string": "3.7.3",
+        "commitish": "v3.10.4",
+        "version_string": "3.10.4",
         "license": "MIT",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "cp single_include/nlohmann/json.hpp TEMPLATE_INSTALL_PREFIX/include"
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJSON_MultipleHeaders=ON",
+            "cd build; make -jTEMPLATE_JOBS; make install"
             ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include"]
+        "fpm_directories": ["include","lib"]
     },
     "libarchive": {
         "commitish": "v3.3.2",
