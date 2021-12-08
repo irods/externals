@@ -2,14 +2,12 @@
 
 Currently tested on:
 
-- Ubuntu 14
-- Ubuntu 16
 - Ubuntu 18
 - Ubuntu 20
 - CentOS 7
 - AlmaLinux 8
 - Rocky Linux 8
-- Debian 9
+- Debian 11
 
 # Assumptions
 
@@ -17,34 +15,41 @@ This repository is expected to build in a VM or container environment that is is
 
 The automated scripts run commands as `sudo` and update system libraries and compilers, etc.
 
-In a new container, you'll probably need the following:
+In a new container, run the following:
 
-```
-# Ubuntu 16+
-apt-get update -y && apt-get install -y sudo git python
+## Ubuntu 18, Ubuntu 20, and Debian 11
 
-# Ubuntu 20
-apt-get update -y && apt-get install -y sudo git python2
-
-# CentOS 7
-yum update -y && yum install -y sudo git python
-
-# AlmaLinux 8 and Rocky Linux 8
-dnf update -y && dnf install -y sudo git python2
-```
-
-# Installation
-
-Before building the software listed in this repository, their own prerequisites must be met.
-
-This is handled as automatically as possible with the `install_prerequisites.py` script.
-
-```
+```bash
+apt-get update -y && apt-get install -y sudo git python3 python3-distro
 ./install_prerequisites.py
-make
+make # or "make server" for packages specific to building the iRODS server.
 ```
 
-To only build the components for the iRODS Server:
+## CentOS 7
+
+```bash
+yum update -y && yum install -y sudo git python3 centos-release-scl
+yum install -y devtoolset-10-gcc devtoolset-10-gcc-c++
+
+# Installing the prerequistes must be done before enabling the GCC compiler
+# environment.
+python3 -m venv build_env
+source build_env/bin/activate
+python -m pip install distro
+./install_prerequisites.py
+
+# Enable the GCC 10 compiler tools.
+scl enable devtoolset-10 bash
+
+# Although it appears that the python virtual environment has been deactivated,
+# trust and believe it is still active.
+make # or "make server" for packages specific to building the iRODS server.
 ```
-make server
+
+## AlmaLinux 8 and Rocky Linux 8
+
+```bash
+dnf update -y && dnf install -y sudo git python3 python3-distro
+./install_prerequisites.py
+make # or "make server" for packages specific to building the iRODS server.
 ```

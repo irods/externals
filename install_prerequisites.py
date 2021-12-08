@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 from __future__ import print_function
 
 import build
@@ -6,7 +6,7 @@ import errno
 import logging
 import optparse
 import os
-import platform
+import distro
 import sys
 
 RUBY_VERSION = build.ruby_requirements['ruby']
@@ -64,55 +64,30 @@ def main():
     ch.setFormatter(formatter)
     log.addHandler(ch)
 
-    pld = platform.linux_distribution()[0]
-    if pld == '':
-        import distro
-        pld = distro.linux_distribution()[0]
+    distro_id = distro.id()
+    distro_major_version = distro.major_version()
 
-    if pld in ['debian', 'Ubuntu']:
-        log.info('Detected: {0}'.format(pld))
+    if distro_id in ['debian', 'ubuntu']:
+        log.info('Detected: {0}'.format(distro_id))
         cmd = ['sudo', 'apt-get', 'update', '-y']
         build.run_cmd(cmd, check_rc='getting updates failed')
         # get prerequisites
-        cmd = ['sudo','apt-get','install','-y','curl','automake','make','autoconf2.13','texinfo',
-               'help2man','g++','git','lsb-release','libtool','libbz2-dev','zlib1g-dev',
-               'libcurl4-gnutls-dev','libxml2-dev','pkg-config','uuid-dev','libssl-dev', 'fuse', 'libfuse2',
-               'libfuse-dev', 'libmicrohttpd-dev', 'unixodbc-dev']
-        if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '20':
-            cmd.append('python-dev')
-        else:
-            cmd.insert(1, 'DEBIAN_FRONTEND=noninteractive') # Avoids hanging on tzdata configuration.
-            cmd.extend(['python2-dev', 'gpg'])
+        cmd = ['sudo','DEBIAN_FRONTEND=noninteractive','apt-get','install','-y','curl','automake','make',
+               'autoconf2.13','texinfo','help2man','g++','git','gpg','lsb-release','libtool','libbz2-dev',
+               'zlib1g-dev','libcurl4-gnutls-dev','libxml2-dev','pkg-config','python3-dev','uuid-dev',
+               'libssl-dev','fuse','libfuse2','libfuse-dev', 'libmicrohttpd-dev', 'unixodbc-dev']
+        if distro_id in ['debian']:
+            cmd.append('procps') # Debian containers do not have "ps" command by default.
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
-        # if old, bootstrap g++
-        if pld in ['Ubuntu'] and platform.linux_distribution()[1] < '14':
-            # ubuntu12 ships with g++ 4.6 - needs 4.8+ to build clang
-            log.info('Detected: Old Ubuntu - need to get g++ 4.8 to build clang')
-            cmd = ['sudo','apt-get','install','-y','python-software-properties']
-            build.run_cmd(cmd, check_rc='installing add-apt-repository prereq failed')
-            cmd = ['sudo', 'add-apt-repository', '-y', 'ppa:ubuntu-toolchain-r/test']
-            build.run_cmd(cmd, check_rc='installing ppa failed')
-            cmd = ['sudo', 'apt-get', 'update', '-y']
-            build.run_cmd(cmd, check_rc='getting updates failed')
-            cmd = ['sudo', 'apt-get', 'install', '-y', 'g++-4.8']
-            build.run_cmd(cmd, check_rc='installing g++-4.8 failed')
-            cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/g++', 'g++', '/usr/bin/g++-4.8', '50']
-            build.run_cmd(cmd, check_rc='swapping g++-4.8 failed')
-            cmd = ['sudo', 'update-alternatives', '--install', '/usr/bin/gcc', 'gcc', '/usr/bin/gcc-4.8', '50']
-            build.run_cmd(cmd, check_rc='swapping gcc-4.8 failed')
-        # if new, get autoconf
-        if pld in ['Ubuntu'] and platform.linux_distribution()[1] > '16':
-            log.info('Detected: Ubuntu 16+ - need to get autoconf')
-            cmd = ['sudo','apt-get','install','-y','autoconf','rsync']
-            build.run_cmd(cmd, check_rc='installing autoconf failed')
-        if pld in ['Ubuntu'] and platform.linux_distribution()[1] >= '16':
-            cmd = ['sudo','apt-get','install','-y','patchelf']
-            build.run_cmd(cmd, check_rc='installing patchelf failed')
+        cmd = ['sudo','apt-get','install','-y','autoconf','rsync']
+        build.run_cmd(cmd, check_rc='installing autoconf failed')
+        cmd = ['sudo','apt-get','install','-y','patchelf']
+        build.run_cmd(cmd, check_rc='installing patchelf failed')
 
-    elif pld in ['Rocky Linux', 'AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux']:
-        log.info('Detected: {0}'.format(pld))
+    elif distro_id in ['rocky', 'almalinux', 'centos', 'rhel', 'scientific']:
+        log.info('Detected: {0}'.format(distro_id))
         # prep
-        if pld in ['Rocky Linux', 'AlmaLinux']:
+        if distro_id in ['rocky', 'almalinux']:
             cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
             build.run_cmd(cmd, check_rc='rpm dnf install failed')
             cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', 'powertools']
@@ -124,7 +99,7 @@ def main():
             build.run_cmd(cmd, check_rc='rpm rebuild failed')
         cmd = ['sudo','yum','clean','all']
         build.run_cmd(cmd, check_rc='yum clean failed')
-        if pld not in ['Rocky Linux', 'AlmaLinux']:
+        if distro_id not in ['rocky', 'almalinux']:
             cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
             build.run_cmd(cmd, check_rc='yum install failed')
         cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
@@ -135,14 +110,14 @@ def main():
         cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
                'help2man','rpm-build','rubygems','ruby-devel','zlib-devel','fuse','fuse-devel',
                'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
-        if pld in ['Rocky Linux', 'AlmaLinux']:
-            cmd.append('python2-devel') # This would need to be changed to python36-devel for Python 3.
+        if distro_id in ['rocky', 'almalinux']:
+            cmd.append('python36-devel') # python39-devel also available.
         else:
-            cmd.append('python-devel')
+            cmd.append('python3-devel')
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
 
-    elif pld in ['openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
-        log.info('Detected: {0}'.format(pld))
+    elif distro_id in ['opensuse ', 'sles']:
+        log.info('Detected: {0}'.format(distro_id))
         # get prerequisites
         cmd = ['sudo','zypper','install','-y','curl','tar','gzip','git','ruby-devel','libmicrohttpd-devel','makeinfo','rubygems',
                'libopenssl-devel','rpm-build','help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','libtool',
@@ -157,14 +132,13 @@ def main():
             cmd = ['brew','link','texinfo','--force']
             build.run_cmd(cmd, check_rc='linking texinfo failed')
         else:
-            log.error('Cannot determine prerequisites for platform [{0}]'.format(pld))
+            log.error('Cannot determine prerequisites for platform [{0}]'.format(distro_id))
             return 1
 
     # get necessary ruby gems
     if options.package:
         install_rvm_and_ruby()
         install_fpm_gem()
-
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -11,7 +11,7 @@
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
             "make -jTEMPLATE_JOBS",
             "make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -27,7 +27,7 @@
             "mkdir -p lang/c++/build",
             "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd lang/c++/build; env LD_LIBRARY_PATH='TEMPLATE_CLANG_CPP_LIBRARIES:/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "cd lang/c++/build",
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -44,7 +44,7 @@
             "mkdir -p build",
             "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INCLUDE_DIRECTORIES_BEFORE=ON -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS -nostdinc++' -DBUILD_ONLY='s3;sts' ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -58,10 +58,10 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "git submodule update --init",
-            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX",
+            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
             "./b2 headers",
             "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -stdlib=libc++ -std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' linkflags='-stdlib=libc++ -Wl,-rpath,/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_RPATH' -jTEMPLATE_JOBS"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -76,7 +76,7 @@
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
             "cp single_include/catch2/catch.hpp TEMPLATE_INSTALL_PREFIX/include"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -89,7 +89,7 @@
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE:FILEPATH=TEMPLATE_PYTHON_EXECUTABLE -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' ../llvm-project/llvm",
+            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' ../llvm-project/llvm",
             "make -jTEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS check-clang-tools",
             "make -jTEMPLATE_JOBS install",
@@ -129,7 +129,7 @@
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS",
             "make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -144,7 +144,7 @@
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
             "cp zmq.hpp TEMPLATE_INSTALL_PREFIX/include"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -160,7 +160,7 @@
             "git submodule update --init",
             "rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DBUILD_SHARED_LIBS=True -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_RPATH=/TEMPLATE_CPR_RPATH\\;/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' .",
             "make -jTEMPLATE_JOBS"
-            ],
+        ],
         "external_build_steps": [
             "ls -l ",
             "mkdir -p TEMPLATE_INSTALL_PREFIX",
@@ -180,7 +180,7 @@
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
             "make -jTEMPLATE_JOBS",
             "make altinstall"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -199,7 +199,7 @@
             "cd build && make",
             "cd build && cp external/httpmockserver/libhttpmockserver.pc ./",
             "cd build && make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -215,7 +215,7 @@
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd build; make fmt install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -231,7 +231,7 @@
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --exec-prefix=TEMPLATE_INSTALL_PREFIX --libdir=TEMPLATE_INSTALL_PREFIX/lib",
             "make -jTEMPLATE_JOBS",
             "make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -248,7 +248,7 @@
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --libdir=TEMPLATE_INSTALL_PREFIX/lib --with-pic",
             "make -jTEMPLATE_JOBS",
             "make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -264,7 +264,7 @@
             "mkdir -p build",
             "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJSON_MultipleHeaders=ON",
             "cd build; make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -280,7 +280,7 @@
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
             "make -jTEMPLATE_JOBS",
             "make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -299,7 +299,7 @@
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
             "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
             "make DESTDIR=TEMPLATE_INSTALL_PREFIX TEMPLATE_LIBS3_MAKEFILE_STRING install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -315,7 +315,7 @@
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCPPZMQ_PATH=TEMPLATE_CPPZMQ_PATH -DZMQ_PATH=TEMPLATE_ZMQ_PATH -DAVRO_PATH=TEMPLATE_AVRO_PATH -DCLANG_LIBS=TEMPLATE_CLANG_CPP_LIBRARIES -DBOOST_PATH=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DIRODS_EXTERNALS_PACKAGE_ROOT=TEMPLATE_SCRIPT_PATH -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH\\;/TEMPLATE_ZMQ_RPATH\\;/TEMPLATE_LIBARCHIVE_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH ..",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -331,7 +331,7 @@
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd build; make nanodbc install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -350,7 +350,7 @@
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt; TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS -Wno-sign-conversion' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ..",
             "cd build; make -jTEMPLATE_JOBS install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -367,7 +367,7 @@
             "mkdir -p build",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DPKG_CONFIG_PATH=TEMPLATE_QPID-PROTON_INSTALL_PATH -DCMAKE_INSTALL_RPATH=/TEMPLATE_QPID_RPATH\\;/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DLIB_SUFFIX:STRING='' -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DBUILD_PROBES=no -DBUILD_BINDING_PERL=no -DBUILD_BINDING_RUBY=no -DBUILD_BINDING_PYTHON=no -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ../qpid/cpp",
             "cd build; make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -383,7 +383,7 @@
             "mkdir -p build",
             "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF",
             "cd build; make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -417,7 +417,7 @@
         "build_steps": [
             "make -jTEMPLATE_JOBS",
             "make install PREFIX=TEMPLATE_INSTALL_PREFIX"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -432,7 +432,7 @@
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
             "cp -r include/spdlog TEMPLATE_INSTALL_PREFIX/include"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
@@ -448,7 +448,7 @@
             "mkdir -p build",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
-            ],
+        ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],

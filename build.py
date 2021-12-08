@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 from __future__ import print_function
 
 import errno
@@ -8,6 +8,7 @@ import logging
 import multiprocessing
 import optparse
 import os
+import distro
 import platform
 import re
 import subprocess
@@ -38,9 +39,9 @@ def get_rvm_path():
     cmd = ['whereis', 'rvm']
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     _out, _err = p.communicate()
-    index = len(_out.lstrip().split(': ')) - 1      # b': ' for Python 3
-    rvm_path = _out.lstrip().split(': ')[index]     # b': ' for Python 3
-    return rvm_path.strip()
+    index = len(_out.lstrip().split(b': ')) - 1
+    rvm_path = _out.lstrip().split(b': ')[index]
+    return rvm_path.strip().decode('utf-8')
 
 def set_environ_path(bin_path):
     path = os.environ['PATH']
@@ -88,8 +89,8 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False, retries=0):
     else:
         p = subprocess.Popen(cmd, env=run_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (out, err) = p.communicate()
-    log.info('  stdout: {0}'.format(out.strip()))
-    log.info('  stderr: {0}'.format(err.strip()))
+    log.info('  stdout: {0}'.format(out.strip().decode('utf-8')))
+    log.info('  stderr: {0}'.format(err.strip().decode('utf-8')))
     log.info('')
     if check_rc != False:
         if p.returncode != 0:
@@ -108,7 +109,7 @@ def get_distribution_name():
     p = subprocess.Popen(cmd, env=os.environ.copy(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (d, err) = p.communicate()
     log.debug('linux distribution name detected: {0}'.format(d.strip()))
-    return d.strip()
+    return d.strip().decode('utf-8')
 
 def get_package_filename(p):
     v = get_versions()[p]
@@ -123,30 +124,25 @@ def get_package_filename(p):
     else:
         d = get_distribution_name()
         package_filename_template = 'irods-externals-{0}{1}-{2}_1.0~{5}_{4}.{3}'
-    f = package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a, d)
-    return f
+    return package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a, d)
 
 def get_versions():
-    with open(script_path+'/versions.json','r') as f:
+    with open(script_path + '/versions.json', 'r') as f:
         return json.load(f)
 
 def get_package_arch():
-    a = platform.uname()[4]
-    if get_package_type() == 'deb' and a == 'x86_64':
+    machine_type = platform.machine()
+    if get_package_type() == 'deb' and machine_type == 'x86_64':
         return 'amd64'
-    return a
+    return machine_type
 
 def get_package_type():
     log = logging.getLogger(__name__)
-    pld = platform.linux_distribution()[0]
-    if pld == '':
-        import distro
-        pld = distro.linux_distribution()[0]
-
-    log.debug('linux distribution detected: {0}'.format(pld))
-    if pld in ['debian', 'Ubuntu']:
+    distro_id = distro.id()
+    log.debug('linux distribution detected: {0}'.format(distro_id))
+    if distro_id in ['debian', 'ubuntu']:
         pt = 'deb'
-    elif pld in ['Rocky Linux', 'AlmaLinux', 'CentOS', 'CentOS Linux', 'Red Hat Enterprise Linux Server', 'Scientific Linux', 'openSUSE ', 'openSUSE Leap', 'SUSE Linux Enterprise Server', 'SLES']:
+    elif distro_id in ['rocky', 'almalinux', 'centos', 'rhel', 'scientific', 'opensuse', 'sles']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
@@ -178,16 +174,13 @@ def build_package(target, build_native_package):
 
     # prepare executables
     os.chdir(os.path.join(script_path))
-    if sys.version_info < (2, 7):
-        python_executable = get_local_path('cpython',['bin','python2.7'])
-    else:
-        python_executable = sys.executable
-        if target == 'cpython':
-            log.debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
-            # touch file to satisfy make
-            if build_native_package:
-                touch(get_package_filename(target))
-            return
+    python_executable = sys.executable
+    if target == 'cpython':
+        log.debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
+        # touch file to satisfy make
+        if build_native_package:
+            touch(get_package_filename(target))
+        return
     log.debug('python_executable: [{0}]'.format(python_executable))
     cmake_executable = get_local_path('cmake',['bin','cmake'])
     log.debug('cmake_executable: [{0}]'.format(cmake_executable))
@@ -366,7 +359,7 @@ def build_package(target, build_native_package):
         f = os.path.join(script_path,get_package_filename(target))
         touch(f)
     else:
-        if platform.linux_distribution()[0] == 'openSUSE ':
+        if distro.id() == 'opensuse ':
             fpmbinary='fpm.ruby2.1'
         else:
             fpmbinary='fpm'
@@ -377,12 +370,12 @@ def build_package(target, build_native_package):
         package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
         try:
             if get_package_type() == 'rpm':
-                pld = platform.linux_distribution()[0].lower()
-                if any(x in pld for x in ['rocky linux', 'almalinux']):
+                distro_id = distro.id()
+                if any(x in distro_id for x in ['rocky', 'almalinux']):
                     # Do not include .build-id links in the package. These links will cause package
                     # conflicts between the clang and clang-runtime packages being produced.
                     package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
-                if v['rpm_dependencies'] and any(x in pld for x in ['centos', 'rocky linux', 'almalinux']):
+                if v['rpm_dependencies'] and any(x in distro_id for x in ['centos', 'rocky', 'almalinux']):
                     for d in v['rpm_dependencies']:
                         package_cmd.extend(['-d', d]) # Package dependencies for RPM being prepared.
             elif get_package_type() == 'deb' and v['deb_dependencies']:
