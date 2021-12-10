@@ -175,12 +175,6 @@ def build_package(target, build_native_package):
     # prepare executables
     os.chdir(os.path.join(script_path))
     python_executable = sys.executable
-    if target == 'cpython':
-        log.debug('skipping cpython ... current python version {0} >= 2.7'.format(platform.python_version()))
-        # touch file to satisfy make
-        if build_native_package:
-            touch(get_package_filename(target))
-        return
     log.debug('python_executable: [{0}]'.format(python_executable))
     cmake_executable = get_local_path('cmake',['bin','cmake'])
     log.debug('cmake_executable: [{0}]'.format(cmake_executable))
@@ -289,7 +283,7 @@ def build_package(target, build_native_package):
         set_clang_path()
 
     myenv = os.environ.copy()
-    if target not in ['clang','cmake','autoconf','cpython']:
+    if target not in ['clang','cmake','autoconf']:
         clang_bindir = get_local_path('clang',['bin'])
         myenv['CC'] = '{0}/clang'.format(clang_bindir)
         log.debug('CC='+myenv['CC'])

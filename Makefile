@@ -1,4 +1,4 @@
-all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpr cpython elasticlient fmt imagemagick json libarchive libs3 mungefs nanodbc pistache qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
+all : autoconf avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpr elasticlient fmt imagemagick json libarchive libs3 mungefs nanodbc pistache qpid qpid-proton qpid-with-proton redis spdlog zeromq4-1
 
 
 server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
@@ -54,7 +54,7 @@ catch2_clean :
 	@rm -rf catch2*
 	@rm -rf $(CATCH2_PACKAGE)
 
-$(CLANG_PACKAGE) : $(CMAKE_PACKAGE) $(CPYTHON_PACKAGE)
+$(CLANG_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) clang > clang.log 2>&1
 clang : $(CLANG_PACKAGE)
 clang_clean :
@@ -93,14 +93,6 @@ cpr_clean :
 	@echo "Cleaning cpr..."
 	@rm -rf cpr*
 	@rm -rf $(CPR_PACKAGE)
-
-$(CPYTHON_PACKAGE) :
-	./build.py $(BUILD_OPTIONS) cpython > cpython.log 2>&1
-cpython : $(CPYTHON_PACKAGE)
-cpython_clean :
-	@echo "Cleaning cpython..."
-	@rm -rf cpython*
-	@rm -rf $(CPYTHON_PACKAGE)
 
 $(ELASTICLIENT_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE)
 	./build.py $(BUILD_OPTIONS) elasticlient > elasticlient.log 2>&1
@@ -230,7 +222,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpr_clean cpython_clean elasticlient_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean qpid_clean redis_clean spdlog_clean zeromq4-1_clean
+clean : autoconf_clean avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpr_clean elasticlient_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean qpid_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
