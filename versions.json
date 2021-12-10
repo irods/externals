@@ -170,22 +170,6 @@
         ],
         "fpm_directories": ["include","lib"]
     },
-    "cpython": {
-        "commitish": "2.7",
-        "version_string": "2.7",
-        "license": "PSF v2",
-        "consortium_build_number": "0",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-            "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
-            "make -jTEMPLATE_JOBS",
-            "make altinstall"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin","include","lib","share"]
-    },
     "elasticlient" : {
         "commitish": "3adb172a26baae1a995e810e49fee1688ea44df5",
         "version_string": "0.1.0",
