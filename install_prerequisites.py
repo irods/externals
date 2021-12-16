@@ -73,11 +73,21 @@ def main():
         build.run_cmd(cmd, check_rc='getting updates failed')
         # get prerequisites
         cmd = ['sudo','DEBIAN_FRONTEND=noninteractive','apt-get','install','-y','curl','automake','make',
-               'autoconf2.13','texinfo','help2man','g++','git','gpg','lsb-release','libtool','libbz2-dev',
+               'autoconf2.13','texinfo','help2man','git','gpg','lsb-release','libtool','libbz2-dev',
                'zlib1g-dev','libcurl4-gnutls-dev','libxml2-dev','pkg-config','python3-dev','uuid-dev',
                'libssl-dev','fuse','libfuse2','libfuse-dev', 'libmicrohttpd-dev', 'unixodbc-dev']
         if distro_id in ['debian']:
-            cmd.append('procps') # Debian containers do not have "ps" command by default.
+            # Debian 11's default GCC is version 10.2.
+            # Debian containers do not have "ps" command by default.
+            cmd.extend(['g++', 'procps']) 
+        # At this point, we know we're dealing with some version of Ubuntu.
+        elif distro_major_version == '20':
+            # Compiling LLVM 13's libcxx requires at least GCC 10.
+            cmd.extend(['gcc-10', 'g++-10']) 
+        else:
+            # Ubuntu 18 does not have any issues compiling LLVM 13's libcxx
+            # because it is using GCC 7 which does not support any C++20 features.
+            cmd.append('g++')
         build.run_cmd(cmd, check_rc='installing prerequisites failed')
         cmd = ['sudo','apt-get','install','-y','autoconf','rsync']
         build.run_cmd(cmd, check_rc='installing autoconf failed')

@@ -22,6 +22,12 @@ In a new container, run the following:
 ```bash
 apt-get update -y && apt-get install -y sudo git python3 python3-distro
 ./install_prerequisites.py
+
+# The following lines apply to Ubuntu 20 only!!!
+update-alternatives --install /usr/local/bin/gcc gcc /usr/bin/gcc-10 1
+update-alternatives --install /usr/local/bin/g++ g++ /usr/bin/g++-10 1
+hash -r
+
 make # or "make server" for packages specific to building the iRODS server.
 ```
 
@@ -49,7 +55,8 @@ make # or "make server" for packages specific to building the iRODS server.
 ## AlmaLinux 8 and Rocky Linux 8
 
 ```bash
-dnf update -y && dnf install -y sudo git python3 python3-distro
+dnf update -y && dnf install -y sudo git python3 python3-distro gcc-toolset-11
 ./install_prerequisites.py
+scl enable gcc-toolset-11 bash
 make # or "make server" for packages specific to building the iRODS server.
 ```
