@@ -134,7 +134,7 @@ jansson_clean :
 	@rm -rf jansson*
 	@rm -rf $(JANSSON_PACKAGE)
 
-$(JSON_PACKAGE) :
+$(JSON_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) json > json.log 2>&1
 json : $(JSON_PACKAGE)
 json_clean :
