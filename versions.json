@@ -120,13 +120,13 @@
         "fpm_directories": ["lib"]
     },
     "cmake": {
-        "commitish": "v3.11.4",
-        "version_string": "3.11.4",
+        "commitish": "v3.21.4",
+        "version_string": "3.21.4",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
+            "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS",
             "make install"
             ],
