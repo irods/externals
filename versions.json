@@ -103,7 +103,7 @@
     },
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
-        "version_string": "11.1.0",
+        "version_string": "13.0.0",
         "license": "LLVM",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
