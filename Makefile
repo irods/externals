@@ -46,7 +46,7 @@ boost_clean :
 	@rm -rf boost*
 	@rm -rf $(BOOST_PACKAGE)
 
-$(CATCH2_PACKAGE) :
+$(CATCH2_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) catch2 > catch2.log 2>&1
 catch2 : $(CATCH2_PACKAGE)
 catch2_clean :
