@@ -78,7 +78,7 @@ cmake_clean :
 	@rm -rf cmake*
 	@rm -rf $(CMAKE_PACKAGE)
 
-$(CPPZMQ_PACKAGE) :
+$(CPPZMQ_PACKAGE) : $(ZEROMQ4-1_PACKAGE)
 	./build.py $(BUILD_OPTIONS) cppzmq > cppzmq.log 2>&1
 cppzmq : $(CPPZMQ_PACKAGE)
 cppzmq_clean :

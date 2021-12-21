@@ -140,16 +140,17 @@
         "commitish": "v4.8.1",
         "version_string": "4.8.1",
         "license": "LGPL v3",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "cp zmq.hpp TEMPLATE_INSTALL_PREFIX/include"
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -Dpkgcfg_lib_PC_LIBZMQ_zmq=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DCPPZMQ_BUILD_TESTS=OFF -DCPPZMQ_CMAKECONFIG_INSTALL_DIR=lib/cmake/cppzmq",
+            "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include"]
+        "fpm_directories": ["include","lib"]
     },
     "cpr": {
         "commitish": "1.3.0",
