@@ -414,13 +414,14 @@
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "cp -r include/spdlog TEMPLATE_INSTALL_PREFIX/include"
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
+            "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include"]
+        "fpm_directories": ["include","lib"]
     },
     "zeromq4-1": {
         "commitish": "v4.1.8",
