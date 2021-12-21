@@ -71,16 +71,17 @@
         "commitish": "v2.13.7",
         "version_string": "2.13.7",
         "license": "Boost Software License 1.0",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "cp single_include/catch2/catch.hpp TEMPLATE_INSTALL_PREFIX/include"
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCATCH_USE_VALGRIND=OFF -DCATCH_BUILD_EXAMPLES=OFF -DCATCH_ENABLE_COVERAGE=OFF -DCATCH_ENABLE_WERROR=OFF -DCATCH_BUILD_TESTING=OFF -DBUILD_TESTING=OFF",
+            "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include"]
+        "fpm_directories": ["include","lib","share"]
     },
     "clang": {
         "commitish": "llvmorg-13.0.0",
