@@ -206,7 +206,7 @@ redis_clean :
 	@rm -rf redis*
 	@rm -rf $(REDIS_PACKAGE)
 
-$(SPDLOG_PACKAGE) :
+$(SPDLOG_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) spdlog > spdlog.log 2>&1
 spdlog : $(SPDLOG_PACKAGE)
 spdlog_clean :
