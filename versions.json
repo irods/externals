@@ -411,11 +411,11 @@
         "commitish": "v1.9.2",
         "version_string": "1.9.2",
         "license": "MIT",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -Dfmt_DIR=TEMPLATE_FMT_PATH/lib/cmake/fmt -DSPDLOG_FMT_EXTERNAL=ON -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
