@@ -59,6 +59,8 @@
         "_comment": "The git cherry-picks are backports from 1.78 and can be removed once we advance to 1.78+",
         "build_steps": [
             "git submodule update --init",
+            "cd tools/boost_install; if [ ! $(git config user.email) ]; then git config user.email 'irods-externals@example.org'; fi",
+            "cd tools/boost_install; if [ ! $(git config user.name) ]; then git config user.name 'iRODS'; fi",
             "cd tools/boost_install; git cherry-pick 4009ed07e7da3fc4236b736a4860a7d3d1a6d330",
             "cd tools/boost_install; git cherry-pick e193f080c7d209516ac9b712fa0c50bb08026fa2",
             "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
