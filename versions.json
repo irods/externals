@@ -73,10 +73,10 @@
         "fpm_directories": ["include","lib"]
     },
     "catch2": {
-        "commitish": "v2.13.7",
-        "version_string": "2.13.7",
+        "commitish": "v2.13.8",
+        "version_string": "2.13.8",
         "license": "Boost Software License 1.0",
-        "consortium_build_number": "1",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
