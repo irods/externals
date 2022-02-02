@@ -35,8 +35,8 @@
         "fpm_directories": ["bin","include","lib"]
     },
     "aws-sdk-cpp": {
-        "commitish": "1.4.89",
-        "version_string": "1.4.89",
+        "commitish": "1.9.185",
+        "version_string": "1.9.185",
         "license": "Apache License 2.0",
         "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
