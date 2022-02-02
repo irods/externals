@@ -51,6 +51,7 @@
         "fpm_directories": ["include","lib","lib64"]
     },
     "boost": {
+        "git_repository": "https://github.com/boostorg/boost",
         "commitish": "boost-1.78.0",
         "version_string": "1.78.0",
         "license": "Boost Software License 1.0",
