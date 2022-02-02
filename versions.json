@@ -174,13 +174,15 @@
         "fpm_directories": ["include","lib"]
     },
     "elasticlient" : {
-        "commitish": "3adb172a26baae1a995e810e49fee1688ea44df5",
-        "version_string": "0.1.0",
+        "enable_sha": true,
+        "commitish": "d68e30e382b5f2817be8cd901494736b26d4896e",
+        "version_string": "d68e30e3",
         "license": "MIT",
-        "consortium_build_number": "2",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "git submodule update --init --recursive",
+            "cd external/cpr; git checkout 1.7.2 # Updates Git submodule to compatibile version.",
+            "cd external/jsoncpp; git checkout 1.9.5 # Updates Git submodule to compatibile version.",
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH\\;\\$ORIGIN\\;/TEMPLATE_CPR_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi -lpthread' -DCMAKE_SHARED_LINKER_FLAGS='-Wl,--enable-new-dtags -Wl,-z,origin -stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd build && make",
