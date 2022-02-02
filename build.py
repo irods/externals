@@ -261,24 +261,34 @@ def build_package(target, build_native_package):
         run_cmd(['git', 'fetch'], check_rc='git fetch failed')
         run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
     elif target == 'clang-runtime':
-        if not os.path.isdir(os.path.join(build_dir,target)):
-            mkdir_p(os.path.join(build_dir, target))
-    elif target == 'qpid-with-proton':
-        if not os.path.isdir(os.path.join(build_dir,target)):
+        if not os.path.isdir(os.path.join(build_dir, target)):
             mkdir_p(os.path.join(build_dir, target))
     else:
-        if not os.path.isdir(os.path.join(build_dir,target)):
+        target_dir = os.path.join(build_dir, target)
+
+        # Because cloning is disabled when the target directory exists, users who want to rebuild
+        # a package using a different repository or commit must run "make <target>_clean" first.
+        if not os.path.isdir(target_dir):
             mkdir_p(build_dir)
             os.chdir(build_dir)
             log.debug('cwd: {0}'.format(os.getcwd()))
-            if target == 'boost':
-                # using boostorg namespace instead of forking 50+ relatively linked submodules
-                run_cmd(['git', 'clone', 'https://github.com/boostorg/boost'])
+
+            git_repository = v['git_repository'] if 'git_repository' in v else 'https://github.com/irods/{0}'.format(target)
+            git_cmd = ['git', 'clone', '--recurse-submodules']
+
+            # If the user defined "enable_sha" as true, clone the repository and then fetch/checkout
+            # the commit of interest.
+            if 'enable_sha' in v and v['enable_sha'] == True:
+                git_cmd.append(git_repository)
+                run_cmd(git_cmd, check_rc='git clone failed')
+                os.chdir(target_dir)
+                run_cmd(['git', 'fetch'], check_rc='git fetch failed')
+                run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
             else:
-                run_cmd(['git', 'clone', 'https://github.com/irods/{0}'.format(target)])
-        os.chdir(os.path.join(build_dir,target))
-        run_cmd(['git', 'fetch'], check_rc='git fetch failed')
-        run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
+                git_cmd.extend(['--depth', '1', '--branch', v['commitish']])
+                git_cmd.append(git_repository)
+                run_cmd(git_cmd, check_rc='git clone failed')
+                os.chdir(target_dir)
 
     # set environment
     if target == 'boost':
