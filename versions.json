@@ -21,7 +21,7 @@
         "commitish": "release-1.11.0",
         "version_string": "1.11.0",
         "license": "Apache License 2.0",
-        "consortium_build_number": "0",
+        "consortium_build_number": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
