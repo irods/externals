@@ -235,18 +235,8 @@ def build_package(target, build_native_package):
     clang_runtime_install_prefix = os.path.join(clang_info['externals_root'], clang_runtime_subdirectory)
     clang_runtime_rpath = os.path.join(clang_runtime_install_prefix, 'lib')
 
-    qpid_with_proton_info = get_versions()['qpid-with-proton']
-    qpid_with_proton_subdirectory = '{0}{1}-{2}'.format('qpid-with-proton', qpid_with_proton_info['version_string'], qpid_with_proton_info['consortium_build_number'])
-    qpid_with_proton_index = os.path.join( qpid_with_proton_info['externals_root'], qpid_with_proton_subdirectory)
-    qpid_with_proton_rpath = os.path.join( qpid_with_proton_index, 'lib')
-
-    qpid_info = get_versions()['qpid']
-    qpid_subdirectory = '{0}{1}-{2}'.format('qpid', qpid_info['version_string'], qpid_info['consortium_build_number'])
-    qpid_install_prefix = os.path.join(qpid_info['externals_root'], qpid_subdirectory)
-    qpid_rpath = os.path.join(qpid_install_prefix, 'lib')
-
-    qpidproton_info = get_versions()['qpid-proton']
-    qpidproton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpidproton_info['version_string'], qpidproton_info['consortium_build_number'])
+    qpid_proton_info = get_versions()['qpid-proton']
+    qpid_proton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpid_proton_info['version_string'], qpid_proton_info['consortium_build_number'])
 
     # get
     if target == 'clang':
@@ -327,9 +317,7 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_CLANGPP_EXECUTABLE", clangpp_executable, i)
         i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
-        i = re.sub("TEMPLATE_QPID_WITH_PROTON_RPATH", qpid_with_proton_rpath, i)
-        i = re.sub("TEMPLATE_QPID_SUBDIRECTORY", qpid_subdirectory, i)
-        i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpidproton_subdirectory, i)
+        i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpid_proton_subdirectory, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
         i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
@@ -338,7 +326,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_CPR_RPATH", cpr_rpath, i)
-        i = re.sub("TEMPLATE_QPID_RPATH", qpid_rpath, i)
         i = re.sub("TEMPLATE_ZMQ_RPATH", zmq_rpath, i)
         i = re.sub("TEMPLATE_ZMQ_PATH", zmq_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
