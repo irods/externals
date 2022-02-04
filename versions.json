@@ -1,5 +1,6 @@
 {
     "autoconf": {
+        "enable_sha": true,
         "commitish": "5ad3567c",
         "version_string": "5ad3567c",
         "license": "GPL v2",
@@ -277,6 +278,7 @@
         "rpm_dependencies": ["xz-libs >= 5.2.2"]
     },
     "libs3": {
+        "enable_sha": true,
         "commitish": "e467477444fd40511a63d13c221bdd8e0c19973f",
         "version_string": "e4674774",
         "license": "LGPL v3",
