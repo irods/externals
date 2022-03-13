@@ -303,8 +303,8 @@
         "rpm_dependencies": ["xz-libs >= 5.2.2"]
     },
     "libs3": {
-        "commitish": "e467477444fd40511a63d13c221bdd8e0c19973f",
-        "version_string": "e4674774",
+        "commitish": "e4197a5e02f03059c48ecac9ed240c66d55e15f6",
+        "version_string": "e4197a5e",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
