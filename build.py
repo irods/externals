@@ -237,6 +237,8 @@ def build_package(target, build_native_package):
 
     qpid_proton_info = get_versions()['qpid-proton']
     qpid_proton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpid_proton_info['version_string'], qpid_proton_info['consortium_build_number'])
+    qpid_proton_install_prefix = os.path.join(qpid_proton_info['externals_root'], qpid_proton_subdirectory)
+    qpid_proton_rpath = os.path.join(qpid_proton_install_prefix, 'lib')
 
     # get
     if target == 'clang':
@@ -318,6 +320,7 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpid_proton_subdirectory, i)
+        i = re.sub("TEMPLATE_QPID_PROTON_RPATH", qpid_proton_rpath, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
         i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
