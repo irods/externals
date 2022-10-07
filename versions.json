@@ -1,23 +1,4 @@
 {
-    "autoconf": {
-        "enable_sha": true,
-        "commitish": "5ad3567c",
-        "version_string": "5ad3567c",
-        "license": "GPL v2",
-        "consortium_build_number": "0",
-        "externals_root": "opt/irods-externals",
-        "comment": "ubuntu couldn't build 2.69 due to 8c8522f1 fix coming since",
-        "build_steps": [
-            "autoreconf -vi",
-            "./configure --prefix=TEMPLATE_INSTALL_PREFIX",
-            "make -jTEMPLATE_JOBS",
-            "make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin","share"]
-    },
     "avro": {
         "commitish": "release-1.11.0",
         "version_string": "1.11.0",

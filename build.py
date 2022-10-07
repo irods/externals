@@ -287,16 +287,13 @@ def build_package(target, build_native_package):
         set_clang_path()
 
     myenv = os.environ.copy()
-    if target not in ['clang','cmake','autoconf']:
+    if target not in ['clang','cmake']:
         clang_bindir = get_local_path('clang',['bin'])
         myenv['CC'] = '{0}/clang'.format(clang_bindir)
         log.debug('CC='+myenv['CC'])
         myenv['CXX'] = '{0}/clang++'.format(clang_bindir)
         log.debug('CXX='+myenv['CXX'])
         myenv['PATH'] = '{0}:{1}'.format(clang_bindir, myenv['PATH'])
-        log.debug('PATH='+myenv['PATH'])
-        autoconf_bindir = get_local_path('autoconf',['bin'])
-        myenv['PATH'] = '{0}:{1}'.format(autoconf_bindir, myenv['PATH'])
         log.debug('PATH='+myenv['PATH'])
     if get_package_type() == 'osxpkg' and target in ['jansson','zeromq4-1']:
         myenv['LIBTOOLIZE'] = 'glibtoolize'
