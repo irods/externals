@@ -17,10 +17,10 @@
         "fpm_directories": ["bin","include","lib"]
     },
     "aws-sdk-cpp": {
-        "commitish": "1.9.185",
-        "version_string": "1.9.185",
+        "commitish": "1.9.323",
+        "version_string": "1.9.323",
         "license": "Apache License 2.0",
-        "consortium_build_number": "1",
+        "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -260,8 +260,8 @@
     },
     "libs3": {
         "enable_sha": true,
-        "commitish": "d24477a9eb8a2a57fd5ccce5bc74cff468004152",
-        "version_string": "d24477a9",
+        "commitish": "00d2dbe355b78b507f890458b3d656f162384799",
+        "version_string": "00d2dbe3",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -336,7 +336,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH\\;/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH\\;/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
