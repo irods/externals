@@ -304,7 +304,7 @@
     },
     "libs3": {
         "commitish": "c0e278d280cde08fb588d82dcb125198852f2bc9",
-        "version_string": "c0e278d28",
+        "version_string": "c0e278d2",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
