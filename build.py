@@ -104,12 +104,7 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False, retries=0):
     return p.returncode
 
 def get_distribution_name():
-    log = logging.getLogger(__name__)
-    cmd = ['lsb_release','-s','-c']
-    p = subprocess.Popen(cmd, env=os.environ.copy(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (d, err) = p.communicate()
-    log.debug('linux distribution name detected: {0}'.format(d.strip()))
-    return d.strip().decode('utf-8')
+    return distro.codename()
 
 def get_package_filename(p):
     v = get_versions()[p]
