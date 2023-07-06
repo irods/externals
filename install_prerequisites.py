@@ -96,35 +96,70 @@ def main():
 
     elif distro_id in ['rocky', 'almalinux', 'centos', 'rhel', 'scientific']:
         log.info('Detected: {0}'.format(distro_id))
-        # prep
+
+        main_package_list = [
+            'autoconf',
+            'automake',
+            'bzip2-devel',
+            'curl',
+            'fuse',
+            'fuse-devel',
+            'gcc-c++',
+            'git',
+            'help2man',
+            'libcurl-devel',
+            'libmicrohttpd-devel',
+            'libtool',
+            'libuuid-devel',
+            'libxml2-devel',
+            'openssl-devel',
+            'patchelf',
+            'python3-devel',
+            'rpm-build',
+            'ruby-devel',
+            'rubygems',
+            'texinfo',
+            'unixODBC-devel',
+            'zlib-devel'
+        ]
+
         if distro_id in ['rocky', 'almalinux']:
             cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
             build.run_cmd(cmd, check_rc='rpm dnf install failed')
-            cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', 'powertools']
+            codeready_repo_name = 'powertools' if int(distro_major_version) < 9 else 'crb'
+            cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
             build.run_cmd(cmd, check_rc='rpm dnf config-manager failed')
-            cmd = ['sudo', 'dnf', 'install', '-y', 'procps', 'redhat-lsb-core', 'rsync'] # For ps, lsb_release, and rsync.
-            build.run_cmd(cmd, check_rc='yum install failed')
+            cmd = ['sudo', 'dnf', 'install', '-y', 'procps', 'rsync'] # For ps and rsync.
+            # lsb_release package appears to not be available in versions of EL 9 and on(?).
+            if int(distro_major_version) < 9:
+                cmd.append('redhat-lsb-core')
+            build.run_cmd(cmd, check_rc='dnf install failed')
+            cmd = ['sudo','dnf','clean','all']
+            build.run_cmd(cmd, check_rc='dnf clean failed')
+            cmd = ['sudo','dnf','update','-y','glibc*','yum*','rpm*','python*']
+            build.run_cmd(cmd, check_rc='dnf update failed')
+            cmd = ['sudo','dnf','install','-y','epel-release','wget','openssl','ca-certificates']
+            build.run_cmd(cmd, check_rc='installing epel failed')
+            cmd = ['sudo','dnf','install','-y']
+            if int(distro_major_version) == 9:
+                # For version 9, curl is installed by another step of this process and manually installing the package
+                # here creates a conflict. Just delete curl from the list of packages to install.
+                main_package_list.remove('curl')
+            build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
+
         else:
             cmd = ['sudo', 'rpm', '--rebuilddb']
             build.run_cmd(cmd, check_rc='rpm rebuild failed')
-        cmd = ['sudo','yum','clean','all']
-        build.run_cmd(cmd, check_rc='yum clean failed')
-        if distro_id not in ['rocky', 'almalinux']:
+            cmd = ['sudo','yum','clean','all']
+            build.run_cmd(cmd, check_rc='yum clean failed')
             cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
             build.run_cmd(cmd, check_rc='yum install failed')
-        cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
-        build.run_cmd(cmd, check_rc='yum update failed')
-        # get prerequisites
-        cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
-        build.run_cmd(cmd, check_rc='installing epel failed')
-        cmd = ['sudo','yum','install','-y','curl','gcc-c++','git','autoconf','automake','texinfo',
-               'help2man','rpm-build','rubygems','ruby-devel','zlib-devel','fuse','fuse-devel',
-               'bzip2-devel','libcurl-devel','libmicrohttpd-devel','libxml2-devel','libtool','libuuid-devel','openssl-devel','unixODBC-devel','patchelf']
-        if distro_id in ['rocky', 'almalinux']:
-            cmd.append('python36-devel') # python39-devel also available.
-        else:
-            cmd.append('python3-devel')
-        build.run_cmd(cmd, check_rc='installing prerequisites failed')
+            cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
+            build.run_cmd(cmd, check_rc='yum update failed')
+            cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
+            build.run_cmd(cmd, check_rc='installing epel failed')
+            cmd = ['sudo','yum','install','-y']
+            build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
 
     elif distro_id in ['opensuse ', 'sles']:
         log.info('Detected: {0}'.format(distro_id))
