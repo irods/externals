@@ -3,13 +3,13 @@
         "commitish": "release-1.11.0",
         "version_string": "1.11.0",
         "license": "Apache License 2.0",
-        "consortium_build_number": "2",
-        "package_revision": "3",
+        "consortium_build_number": "3",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
-            "cd lang/c++/build; env LD_LIBRARY_PATH='TEMPLATE_CLANG_CPP_LIBRARIES:/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
+            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE ..",
+            "cd lang/c++/build; env LD_LIBRARY_PATH='/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
             "cd lang/c++/build",
@@ -17,23 +17,208 @@
         ],
         "fpm_directories": ["bin","include","lib"],
         "interdependencies": [
-            "boost",
+            "boost"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            }
+        }
+    },
+    "avro-libcxx": {
+        "git_repository": "https://github.com/irods/avro",
+        "commitish": "release-1.11.0",
+        "version_string": "1.11.0",
+        "license": "Apache License 2.0",
+        "consortium_build_number": "3",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p lang/c++/build",
+            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_LIBCXX_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_LIBCXX_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd lang/c++/build; env LD_LIBRARY_PATH='TEMPLATE_CLANG_CPP_LIBRARIES:/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_LIBCXX_ROOT/lib' make -jTEMPLATE_JOBS; make install"
+        ],
+        "external_build_steps": [
+            "cd lang/c++/build",
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["bin","include","lib"],
+        "interdependencies": [
+            "boost-libcxx",
             "clang-runtime"
-        ]
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            }
+        }
     },
     "boost": {
         "git_repository": "https://github.com/boostorg/boost",
         "commitish": "boost-1.81.0",
         "version_string": "1.81.0",
         "license": "Boost Software License 1.0",
-        "consortium_build_number": "0",
-        "package_revision": "3",
+        "consortium_build_number": "1",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "git submodule update --init",
             "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
             "./b2 headers",
-            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -stdlib=libc++ -std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' linkflags='-stdlib=libc++ -Wl,-rpath,/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_RPATH' -jTEMPLATE_JOBS"
+            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED' linkflags='-Wl,-rpath,/TEMPLATE_BOOST_RPATH' -jTEMPLATE_JOBS"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include","lib"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "zlib",
+                    "libstdc++",
+                    "bzip2-libs",
+                    "xz-libs"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "zlib",
+                    "libstdc++",
+                    "bzip2-libs",
+                    "xz-libs",
+                    "libzstd"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "zlib",
+                    "libstdc++",
+                    "bzip2-libs",
+                    "xz-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libz1",
+                    "libstdc++6",
+                    "libbz2-1.0",
+                    "libicu67"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libz1",
+                    "libstdc++6",
+                    "libbz2-1.0",
+                    "libicu72"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libz1",
+                    "libstdc++6",
+                    "libbz2-1.0",
+                    "libicu66"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libz1",
+                    "libstdc++6",
+                    "libbz2-1.0",
+                    "libicu70"
+                ]
+            }
+        }
+    },
+    "boost-libcxx": {
+        "git_repository": "https://github.com/boostorg/boost",
+        "commitish": "boost-1.81.0",
+        "version_string": "1.81.0",
+        "license": "Boost Software License 1.0",
+        "consortium_build_number": "1",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "git submodule update --init",
+            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
+            "./b2 headers",
+            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -stdlib=libc++ -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' linkflags='-stdlib=libc++ -Wl,-rpath,/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_LIBCXX_RPATH' -jTEMPLATE_JOBS"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -45,17 +230,23 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
+                    "libgcc",
                     "zlib",
                     "bzip2-libs",
                     "xz-libs"
                 ],
                 "8": [
+                    "glibc",
+                    "libgcc",
                     "zlib",
                     "bzip2-libs",
                     "xz-libs",
                     "libzstd"
                 ],
                 "9": [
+                    "glibc",
+                    "libgcc",
                     "zlib",
                     "bzip2-libs",
                     "xz-libs"
@@ -63,11 +254,15 @@
             },
             "debian": {
                 "11": [
+                    "libc6",
+                    "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
                     "libicu67"
                 ],
                 "12": [
+                    "libc6",
+                    "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
                     "libicu72"
@@ -75,11 +270,15 @@
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
                     "libicu66"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
                     "libicu70"
@@ -109,10 +308,10 @@
         "version_string": "13.0.0",
         "license": "LLVM",
         "consortium_build_number": "0",
-        "package_revision": "3",
+        "package_revision": "4",
         "externals_root": "opt/irods-externals",
         "build_steps": [
-            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' ../llvm-project/llvm",
+            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' -DLLVM_TARGETS_TO_BUILD='X86' ../llvm-project/llvm",
             "make -jTEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS check-clang-tools",
             "make -jTEMPLATE_JOBS install",
@@ -126,48 +325,86 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
+                    "glibc-devel",
+                    "libgcc",
                     "zlib",
                     "libstdc++",
                     "ncurses-libs",
-                    "libxml2"
+                    "libxml2",
+                    "devtoolset-10-gcc",
+                    "devtoolset-10-gcc-c++",
+                    "devtoolset-10-libstdc++-devel"
                 ],
                 "8": [
+                    "glibc",
+                    "glibc-devel",
+                    "libgcc",
                     "zlib",
                     "libstdc++",
                     "ncurses-libs",
-                    "libxml2"
+                    "libxml2",
+                    "gcc-toolset-11-gcc",
+                    "gcc-toolset-11-gcc-c++",
+                    "gcc-toolset-11-libstdc++-devel"
                 ],
                 "9": [
+                    "glibc",
+                    "glibc-devel",
+                    "libgcc",
                     "zlib",
                     "libstdc++",
+                    "libstdc++-devel",
                     "ncurses-libs",
-                    "libxml2"
+                    "libxml2",
+                    "gcc",
+                    "gcc-c++"
                 ]
             },
             "debian": {
                 "11": [
+                    "libc6",
+                    "libc6-dev",
+                    "libgcc-s1",
+                    "libgcc-10-dev",
                     "libz1",
                     "libstdc++6",
+                    "libstdc++-10-dev",
                     "libtinfo6",
                     "libxml2"
                 ],
                 "12": [
+                    "libc6",
+                    "libc6-dev",
+                    "libgcc-s1",
+                    "libgcc-12-dev",
                     "libz1",
                     "libstdc++6",
+                    "libstdc++-12-dev",
                     "libtinfo6",
                     "libxml2"
                 ]
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
+                    "libc6-dev",
+                    "libgcc-s1",
+                    "libgcc-10-dev",
                     "libz1",
                     "libstdc++6",
+                    "libstdc++-10-dev",
                     "libtinfo6",
                     "libxml2"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libc6-dev",
+                    "libgcc-s1",
+                    "libgcc-11-dev",
                     "libz1",
                     "libstdc++6",
+                    "libstdc++-11-dev",
                     "libtinfo6",
                     "libxml2"
                 ]
@@ -191,7 +428,43 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["lib"]
+        "fpm_directories": ["lib"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            }
+        }
     },
     "cmake": {
         "commitish": "v3.21.4",
@@ -212,16 +485,22 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
+                    "libgcc",
                     "libstdc++",
                     "ncurses-libs",
                     "openssl-libs"
                 ],
                 "8": [
+                    "glibc",
+                    "libgcc",
                     "libstdc++",
                     "ncurses-libs",
                     "openssl-libs"
                 ],
                 "9": [
+                    "glibc",
+                    "libgcc",
                     "libstdc++",
                     "ncurses-libs",
                     "openssl-libs"
@@ -229,12 +508,16 @@
             },
             "debian": {
                 "11": [
+                    "libc6",
+                    "libgcc-s1",
                     "libncurses6",
                     "libstdc++6",
                     "libssl1.1",
                     "libtinfo6"
                 ],
                 "12": [
+                    "libc6",
+                    "libgcc-s1",
                     "libncurses6",
                     "libstdc++6",
                     "libssl3",
@@ -243,12 +526,16 @@
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libncurses6",
                     "libstdc++6",
                     "libssl1.1",
                     "libtinfo6"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libncurses6",
                     "libstdc++6",
                     "libssl3",
@@ -272,21 +559,79 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include","lib"],
-        "interdependencies": [
-            "zeromq4-1"
-        ]
+        "fpm_directories": ["include","lib"]
     },
     "fmt": {
         "commitish": "8.1.1",
         "version_string": "8.1.1",
         "license": "MIT",
-        "consortium_build_number": "0",
-        "package_revision": "3",
+        "consortium_build_number": "1",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++17 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DFMT_DOC=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX ..",
+            "cd build; make fmt install"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include", "lib"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            }
+        }
+    },
+    "fmt-libcxx": {
+        "git_repository": "https://github.com/irods/fmt",
+        "commitish": "8.1.1",
+        "version_string": "8.1.1",
+        "license": "MIT",
+        "consortium_build_number": "1",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DFMT_DOC=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd build; make fmt install"
         ],
         "external_build_steps": [
@@ -295,7 +640,43 @@
         "fpm_directories": ["include", "lib"],
         "interdependencies": [
             "clang-runtime"
-        ]
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            }
+        }
     },
     "json": {
         "commitish": "v3.10.4",
@@ -354,6 +735,7 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
                     "zlib",
                     "bzip2-libs",
                     "openssl-libs",
@@ -361,6 +743,7 @@
                     "xz-libs >= 5.2.2"
                 ],
                 "8": [
+                    "glibc",
                     "zlib",
                     "bzip2-libs",
                     "openssl-libs",
@@ -369,6 +752,7 @@
                     "libzstd"
                 ],
                 "9": [
+                    "glibc",
                     "zlib",
                     "bzip2-libs",
                     "openssl-libs",
@@ -378,12 +762,14 @@
             },
             "debian": {
                 "11": [
+                    "libc6",
                     "libz1",
                     "libbz2-1.0",
                     "libssl1.1",
                     "libxml2"
                 ],
                 "12": [
+                    "libc6",
                     "libz1",
                     "libbz2-1.0",
                     "libssl3",
@@ -392,12 +778,14 @@
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
                     "libz1",
                     "libbz2-1.0",
                     "libssl1.1",
                     "libxml2"
                 ],
                 "22.04": [
+                    "libc6",
                     "libz1",
                     "libbz2-1.0",
                     "libssl3",
@@ -410,20 +798,19 @@
         "commitish": "1.0.7",
         "version_string": "1.0.7",
         "license": "BSD 3-Clause",
-        "consortium_build_number": "0",
-        "package_revision": "3",
+        "consortium_build_number": "1",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DLibArchive_INCLUDE_DIRS=TEMPLATE_LIBARCHIVE_PATH/include -DLibArchive_LIBRARIES=TEMPLATE_LIBARCHIVE_PATH/lib/libarchive.so -DLibArchive_INCLUDE_DIR=TEMPLATE_LIBARCHIVE_PATH/include -DLibArchive_LIBRARY=TEMPLATE_LIBARCHIVE_PATH/lib/libarchive.so -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-nostdinc++ -Wno-deprecated-declarations -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH\\;/TEMPLATE_ZMQ_RPATH\\;/TEMPLATE_LIBARCHIVE_RPATH\\;/TEMPLATE_CLANG_RUNTIME_RPATH ..",
-            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES:TEMPLATE_BOOST_ROOT/lib make -jTEMPLATE_JOBS; make install"
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DLibArchive_INCLUDE_DIRS=TEMPLATE_LIBARCHIVE_PATH/include -DLibArchive_LIBRARIES=TEMPLATE_LIBARCHIVE_PATH/lib/libarchive.so -DLibArchive_INCLUDE_DIR=TEMPLATE_LIBARCHIVE_PATH/include -DLibArchive_LIBRARY=TEMPLATE_LIBARCHIVE_PATH/lib/libarchive.so -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH\\;/TEMPLATE_ZMQ_RPATH\\;/TEMPLATE_LIBARCHIVE_RPATH ..",
+            "cd build; env LD_LIBRARY_PATH=TEMPLATE_BOOST_ROOT/lib make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
         "fpm_directories": ["bin"],
         "interdependencies": [
-            "clang-runtime",
             "boost",
             "libarchive",
             "avro",
@@ -432,28 +819,49 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
                     "fuse-libs"
                 ],
                 "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
                     "fuse-libs"
                 ],
                 "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
                     "fuse-libs"
                 ]
             },
             "debian": {
                 "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
                     "libfuse2"
                 ],
                 "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
                     "libfuse2"
                 ]
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
                     "libfuse2"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
                     "libfuse2"
                 ]
             }
@@ -463,12 +871,81 @@
         "commitish": "v2.13.0",
         "version_string": "2.13.0",
         "license": "MIT",
-        "consortium_build_number": "1",
-        "package_revision": "3",
+        "consortium_build_number": "2",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "sed -i '26i #include <limits>' nanodbc/nanodbc.cpp",
+            "mkdir -p build",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DNANODBC_FORCE_LIBCXX=OFF -DNANODBC_DISABLE_LIBCXX=ON ..",
+            "cd build; make nanodbc install"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include", "lib"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "unixODBC"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "unixODBC"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "unixODBC"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libodbc1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libodbc2"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libodbc1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libodbc2"
+                ]
+            }
+        }
+    },
+    "nanodbc-libcxx": {
+        "git_repository": "https://github.com/irods/nanodbc",
+        "commitish": "v2.13.0",
+        "version_string": "2.13.0",
+        "license": "MIT",
+        "consortium_build_number": "2",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-std=c++14 -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
             "cd build; make nanodbc install"
         ],
         "external_build_steps": [
@@ -481,28 +958,42 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
+                    "libgcc",
                     "unixODBC"
                 ],
                 "8": [
+                    "glibc",
+                    "libgcc",
                     "unixODBC"
                 ],
                 "9": [
+                    "glibc",
+                    "libgcc",
                     "unixODBC"
                 ]
             },
             "debian": {
-                "1": [
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
                     "libodbc1"
                 ],
                 "12": [
+                    "libc6",
+                    "libgcc-s1",
                     "libodbc2"
                 ]
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libodbc1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libodbc2"
                 ]
             }
@@ -512,12 +1003,80 @@
         "commitish": "0.36.0",
         "version_string": "0.36.0",
         "license": "Apache License 2.0",
-        "consortium_build_number": "1",
-        "package_revision": "3",
+        "consortium_build_number": "2",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH\\;/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DBUILD_GO=OFF -DBUILD_CPP=ON -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_BENCHMARKS=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
+            "cd build; make -jTEMPLATE_JOBS; make install"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include", "lib"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "openssl-libs"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "openssl-libs"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "openssl-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libssl1.1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libssl3"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libssl1.1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libssl3"
+                ]
+            }
+        }
+    },
+    "qpid-proton-libcxx": {
+        "git_repository": "https://github.com/irods/qpid-proton",
+        "commitish": "0.36.0",
+        "version_string": "0.36.0",
+        "license": "Apache License 2.0",
+        "consortium_build_number": "2",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH\\;/TEMPLATE_QPID_PROTON_LIBCXX_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DBUILD_GO=OFF -DBUILD_CPP=ON -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_BENCHMARKS=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -530,28 +1089,42 @@
         "distro_dependencies": {
             "rhel": {
                 "7": [
+                    "glibc",
+                    "libgcc",
                     "openssl-libs"
                 ],
                 "8": [
+                    "glibc",
+                    "libgcc",
                     "openssl-libs"
                 ],
                 "9": [
+                    "glibc",
+                    "libgcc",
                     "openssl-libs"
                 ]
             },
             "debian": {
                 "11": [
+                    "libc6",
+                    "libgcc-s1",
                     "libssl1.1"
                 ],
                 "12": [
+                    "libc6",
+                    "libgcc-s1",
                     "libssl3"
                 ]
             },
             "ubuntu": {
                 "20.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libssl1.1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
                     "libssl3"
                 ]
             }
@@ -571,18 +1144,47 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["bin"]
+        "fpm_directories": ["bin"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc"
+                ],
+                "8": [
+                    "glibc"
+                ],
+                "9": [
+                    "glibc"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6"
+                ],
+                "12": [
+                    "libc6"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6"
+                ],
+                "22.04": [
+                    "libc6"
+                ]
+            }
+        }
     },
     "spdlog": {
         "commitish": "v1.9.2",
         "version_string": "1.9.2",
         "license": "MIT",
-        "consortium_build_number": "1",
-        "package_revision": "3",
+        "consortium_build_number": "2",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -Dfmt_DIR=TEMPLATE_FMT_PATH/lib/cmake/fmt -DSPDLOG_FMT_EXTERNAL=ON -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_INSTALL_RPATH=/TEMPLATE_FMT_LIBCXX_RPATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -Dfmt_DIR=TEMPLATE_FMT_PATH/lib/cmake/fmt -DSPDLOG_FMT_EXTERNAL=ON -DSPDLOG_BUILD_SHARED=ON -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -591,18 +1193,180 @@
         "fpm_directories": ["include","lib"],
         "interdependencies": [
             "fmt"
-        ]
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            }
+        }
+    },
+    "spdlog-libcxx": {
+        "git_repository": "https://github.com/irods/spdlog",
+        "commitish": "v1.9.2",
+        "version_string": "1.9.2",
+        "license": "MIT",
+        "consortium_build_number": "2",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH\\;/TEMPLATE_FMT_LIBCXX_RPATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -Dfmt_DIR=TEMPLATE_FMT_LIBCXX_PATH/lib/cmake/fmt -DSPDLOG_FMT_EXTERNAL=ON -DSPDLOG_BUILD_SHARED=ON -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
+            "cd build; make -jTEMPLATE_JOBS; make install"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include","lib"],
+        "interdependencies": [
+            "clang-runtime",
+            "fmt-libcxx"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            }
+        }
     },
     "zeromq4-1": {
         "commitish": "v4.1.8",
         "version_string": "4.1.8",
         "license": "LGPL v3",
-        "consortium_build_number": "0",
-        "package_revision": "3",
+        "consortium_build_number": "1",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-std=c++14 -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH ..",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DZMQ_BUILD_TESTS=OFF ..",
+            "cd build; make -jTEMPLATE_JOBS; make install"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["bin","include","lib"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
+                ]
+            }
+        }
+    },
+    "zeromq4-1-libcxx": {
+        "git_repository": "https://github.com/irods/zeromq4-1",
+        "commitish": "v4.1.8",
+        "version_string": "4.1.8",
+        "license": "LGPL v3",
+        "consortium_build_number": "1",
+        "package_revision": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; env LD_LIBRARY_PATH=TEMPLATE_CLANG_CPP_LIBRARIES TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH -DZMQ_BUILD_TESTS=OFF ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -611,6 +1375,42 @@
         "fpm_directories": ["bin","include","lib"],
         "interdependencies": [
             "clang-runtime"
-        ]
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "8": [
+                    "glibc",
+                    "libgcc"
+                ],
+                "9": [
+                    "glibc",
+                    "libgcc"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "12": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ]
+            }
+        }
     }
 }

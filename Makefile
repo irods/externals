@@ -1,9 +1,13 @@
-all : avro boost catch2 clang clang-runtime cmake cppzmq fmt json jwt-cpp libarchive mungefs nanodbc qpid-proton redis spdlog zeromq4-1
+all : avro avro-libcxx boost boost-libcxx catch2 clang clang-runtime cmake cppzmq fmt fmt-libcxx json jwt-cpp libarchive mungefs nanodbc nanodbc-libcxx qpid-proton qpid-proton-libcxx redis spdlog spdlog-libcxx zeromq4-1 zeromq4-1-libcxx
 
 
-server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
+server-libstdcxx : avro boost catch2 clang cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
 
-.PHONY : all server clean $(all)
+server-libcxx : avro-libcxx boost-libcxx catch2 clang clang-runtime cppzmq fmt-libcxx json libarchive nanodbc-libcxx spdlog-libcxx zeromq4-1-libcxx
+
+server : server-libstdcxx server-libcxx
+
+.PHONY : all server-libstdcxx server-libcxx server clean $(all)
 
 BUILD_OPTIONS=-v
 
@@ -17,18 +21,24 @@ $(all) : packages.mk
 $(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) avro > avro.log 2>&1
 avro : $(AVRO_PACKAGE)
+$(AVRO-LIBCXX_PACKAGE) : $(BOOST-LIBCXX_PACKAGE) $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) avro-libcxx > avro-libcxx.log 2>&1
+avro-libcxx : $(AVRO-LIBCXX_PACKAGE)
 avro_clean :
 	@echo "Cleaning avro..."
 	@rm -rf avro*
-	@rm -rf $(AVRO_PACKAGE)
+	@rm -rf $(AVRO_PACKAGE) $(AVRO-LIBCXX_PACKAGE)
 
 $(BOOST_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) boost > boost.log 2>&1
 boost : $(BOOST_PACKAGE)
+$(BOOST-LIBCXX_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) boost-libcxx > boost-libcxx.log 2>&1
+boost-libcxx : $(BOOST-LIBCXX_PACKAGE)
 boost_clean :
 	@echo "Cleaning boost..."
 	@rm -rf boost*
-	@rm -rf $(BOOST_PACKAGE)
+	@rm -rf $(BOOST_PACKAGE) $(BOOST-LIBCXX_PACKAGE)
 
 $(CATCH2_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) catch2 > catch2.log 2>&1
@@ -73,10 +83,13 @@ cppzmq_clean :
 $(FMT_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) fmt > fmt.log 2>&1
 fmt : $(FMT_PACKAGE)
+$(FMT-LIBCXX_PACKAGE) : $(CLANG_P*/6*/0ACKAGE)
+	./build.py $(BUILD_OPTIONS) fmt-libcxx > fmt-libcxx.log 2>&1
+fmt-libcxx : $(FMT-LIBCXX_PACKAGE)
 fmt_clean :
 	@echo "Cleaning fmt..."
 	@rm -rf fmt*
-	@rm -rf $(FMT_PACKAGE)
+	@rm -rf $(FMT_PACKAGE) $(FMT-LIBCXX_PACKAGE)
 
 $(JSON_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) json > json.log 2>&1
@@ -113,18 +126,24 @@ mungefs_clean :
 $(NANODBC_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) nanodbc > nanodbc.log 2>&1
 nanodbc : $(NANODBC_PACKAGE)
+$(NANODBC-LIBCXX_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) nanodbc-libcxx > nanodbc-libcxx.log 2>&1
+nanodbc-libcxx : $(NANODBC-LIBCXX_PACKAGE)
 nanodbc_clean :
 	@echo "Cleaning nanodbc..."
 	@rm -rf nanodbc*
-	@rm -rf $(NANODBC_PACKAGE)
+	@rm -rf $(NANODBC_PACKAGE) $(NANODBC-LIBCXX_PACKAGE)
 
 $(QPID-PROTON_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) qpid-proton > qpid-proton.log 2>&1
 qpid-proton : $(QPID-PROTON_PACKAGE)
+$(QPID-PROTON-LIBCXX_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) qpid-proton-libcxx > qpid-proton-libcxx.log 2>&1
+qpid-proton-libcxx : $(QPID-PROTON-LIBCXX_PACKAGE)
 qpid-proton_clean :
 	@echo "Cleaning qpid-proton..."
 	@rm -rf qpid-proton*
-	@rm -rf $(QPID-PROTON_PACKAGE)
+	@rm -rf $(QPID-PROTON_PACKAGE) $(QPID-PROTON-LIBCXX_PACKAGE)
 
 $(REDIS_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) redis > redis.log 2>&1
@@ -137,18 +156,24 @@ redis_clean :
 $(SPDLOG_PACKAGE) : $(FMT_PACKAGE)
 	./build.py $(BUILD_OPTIONS) spdlog > spdlog.log 2>&1
 spdlog : $(SPDLOG_PACKAGE)
+$(SPDLOG-LIBCXX_PACKAGE) : $(FMT-LIBCXX_PACKAGE)
+	./build.py $(BUILD_OPTIONS) spdlog-libcxx > spdlog-libcxx.log 2>&1
+spdlog-libcxx : $(SPDLOG-LIBCXX_PACKAGE)
 spdlog_clean :
 	@echo "Cleaning spdlog..."
 	@rm -rf spdlog*
-	@rm -rf $(SPDLOG_PACKAGE)
+	@rm -rf $(SPDLOG_PACKAGE) $(SPDLOG-LIBCXX_PACKAGE)
 
 $(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) zeromq4-1 > zeromq4-1.log 2>&1
 zeromq4-1 : $(ZEROMQ4-1_PACKAGE)
+$(ZEROMQ4-1-LIBCXX_PACKAGE) : $(CLANG_PACKAGE)
+	./build.py $(BUILD_OPTIONS) zeromq4-1-libcxx > zeromq4-1-libcxx.log 2>&1
+zeromq4-1-libcxx : $(ZEROMQ4-1-LIBCXX_PACKAGE)
 zeromq4-1_clean :
 	@echo "Cleaning zeromq4-1..."
 	@rm -rf zeromq4-1*
-	@rm -rf $(ZEROMQ4-1_PACKAGE)
+	@rm -rf $(ZEROMQ4-1_PACKAGE) $(ZEROMQ4-1-LIBCXX_PACKAGE)
 
 clean : avro_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean json_clean jwt-cpp_clean libarchive_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
