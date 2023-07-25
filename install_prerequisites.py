@@ -104,8 +104,10 @@ def main():
             'curl',
             'fuse',
             'fuse-devel',
+            'gcc',
             'gcc-c++',
             'git',
+            'glibc-devel'
             'help2man',
             'libcurl-devel',
             'libmicrohttpd-devel',
@@ -145,6 +147,12 @@ def main():
                 # For version 9, curl is installed by another step of this process and manually installing the package
                 # here creates a conflict. Just delete curl from the list of packages to install.
                 main_package_list.remove('curl')
+            if int(distro_major_version) == 8:
+                main_package_list.extend([
+                    'gcc-toolset-11-gcc',
+                    'gcc-toolset-11-gcc-c++',
+                    'gcc-toolset-11-libstdc++-devel'
+                ])
             build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
 
         else:
@@ -152,12 +160,17 @@ def main():
             build.run_cmd(cmd, check_rc='rpm rebuild failed')
             cmd = ['sudo','yum','clean','all']
             build.run_cmd(cmd, check_rc='yum clean failed')
-            cmd = ['sudo','yum','install','centos-release-scl-rh', '-y']
+            cmd = ['sudo','yum','install','centos-release-scl', '-y']
             build.run_cmd(cmd, check_rc='yum install failed')
             cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
             build.run_cmd(cmd, check_rc='yum update failed')
             cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
             build.run_cmd(cmd, check_rc='installing epel failed')
+            main_package_list.extend([
+                'devtoolset-10-gcc',
+                'devtoolset-10-gcc-c++',
+                'devtoolset-10-libstdc++-devel'
+            ])
             cmd = ['sudo','yum','install','-y']
             build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
 
