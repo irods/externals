@@ -1,4 +1,4 @@
-all : avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq cpr elasticlient fmt imagemagick json libarchive libs3 mungefs nanodbc pistache qpid-proton redis spdlog zeromq4-1
+all : avro aws-sdk-cpp boost catch2 clang clang-runtime cmake cppzmq fmt imagemagick json libarchive libs3 mungefs nanodbc pistache qpid-proton redis spdlog zeromq4-1
 
 
 server : avro boost catch2 clang-runtime cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
@@ -77,22 +77,6 @@ cppzmq_clean :
 	@echo "Cleaning cppzmq..."
 	@rm -rf cppzmq*
 	@rm -rf $(CPPZMQ_PACKAGE)
-
-$(CPR_PACKAGE) : $(ELASTICLIENT_PACKAGE)
-	./build.py $(BUILD_OPTIONS) cpr > cpr.log 2>&1
-cpr : $(CPR_PACKAGE)
-cpr_clean :
-	@echo "Cleaning cpr..."
-	@rm -rf cpr*
-	@rm -rf $(CPR_PACKAGE)
-
-$(ELASTICLIENT_PACKAGE) : $(CLANG_PACKAGE) $(BOOST_PACKAGE)
-	./build.py $(BUILD_OPTIONS) elasticlient > elasticlient.log 2>&1
-elasticlient : $(ELASTICLIENT_PACKAGE)
-elasticlient_clean :
-	@echo "Cleaning elasticlient..."
-	@rm -rf elasticlient*
-	@rm -rf $(ELASTICLIENT_PACKAGE)
 
 $(FMT_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) fmt > fmt.log 2>&1
@@ -198,7 +182,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean cpr_clean elasticlient_clean fmt_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
+clean : avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
