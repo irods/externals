@@ -3,7 +3,7 @@
         "commitish": "release-1.11.0",
         "version_string": "1.11.0",
         "license": "Apache License 2.0",
-        "consortium_build_number": "1",
+        "consortium_build_number": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
@@ -34,8 +34,8 @@
     },
     "boost": {
         "git_repository": "https://github.com/boostorg/boost",
-        "commitish": "boost-1.78.0",
-        "version_string": "1.78.0",
+        "commitish": "boost-1.81.0",
+        "version_string": "1.81.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
@@ -237,8 +237,8 @@
         "fpm_directories": ["bin","include","lib"]
     },
     "mungefs": {
-        "commitish": "1.0.5",
-        "version_string": "1.0.5",
+        "commitish": "1.0.6",
+        "version_string": "1.0.6",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
