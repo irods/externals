@@ -167,6 +167,23 @@
         ],
         "fpm_directories": ["include","lib"]
     },
+    "jwt-cpp": {
+        "enable_sha": true,
+        "commitish": "ce1f9df3a9f861d136d6f0c93a6f811c364d1d3d",
+        "version_string": "0.6.99.0",
+        "license": "MIT",
+        "consortium_build_number": "0",
+        "externals_root": "opt/irods-externals",
+        "build_steps": [
+            "mkdir -p build",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJWT_BUILD_EXAMPLES=OFF -DJWT_DISABLE_PICOJSON=ON -Dnlohmann_json_ROOT=TEMPLATE_JSON_PATH -DJWT_CMAKE_FILES_INSTALL_DIR=lib/cmake/jwt-cpp",
+            "cd build; make -jTEMPLATE_JOBS; make install"
+        ],
+        "external_build_steps": [
+            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
+        ],
+        "fpm_directories": ["include","lib"]
+    },
     "libarchive": {
         "commitish": "v3.5.2",
         "version_string": "3.5.2",

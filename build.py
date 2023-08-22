@@ -190,6 +190,8 @@ def build_package(target, build_native_package):
     log.debug('boost_root: [{0}]'.format(boost_root))
     fmt_root = get_local_path('fmt',[])
     log.debug('fmt_root: [{0}]'.format(fmt_root))
+    json_root = get_local_path('json',[])
+    log.debug('json_root: [{0}]'.format(json_root))
 
     # prepare other strings
     if get_package_type() == 'osxpkg':
@@ -324,6 +326,7 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_ZMQ_PATH", zmq_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
         i = re.sub("TEMPLATE_FMT_PATH", fmt_root, i)
+        i = re.sub("TEMPLATE_JSON_PATH", json_root, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
     # MacOSX - after building boost
