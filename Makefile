@@ -94,14 +94,6 @@ imagemagick_clean :
 	@rm -rf imagemagick*
 	@rm -rf $(IMAGEMAGICK_PACKAGE)
 
-$(JANSSON_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(BUILD_OPTIONS) jansson > jansson.log 2>&1
-jansson : $(JANSSON_PACKAGE)
-jansson_clean :
-	@echo "Cleaning jansson..."
-	@rm -rf jansson*
-	@rm -rf $(JANSSON_PACKAGE)
-
 $(JSON_PACKAGE) : $(CMAKE_PACKAGE)
 	./build.py $(BUILD_OPTIONS) json > json.log 2>&1
 json : $(JSON_PACKAGE)
@@ -182,7 +174,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE)
 
-clean : avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean imagemagick_clean jansson_clean json_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
+clean : avro_clean aws-sdk-cpp_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean imagemagick_clean json_clean libarchive_clean libs3_clean mungefs_clean nanodbc_clean pistache_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
