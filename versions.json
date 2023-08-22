@@ -167,23 +167,6 @@
         ],
         "fpm_directories": ["bin","etc","include","lib","share"]
     },
-    "jansson": {
-        "commitish": "v2.7",
-        "version_string": "2.7",
-        "license": "MIT",
-        "consortium_build_number": "0",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-            "autoreconf -fi",
-            "./configure --prefix=TEMPLATE_INSTALL_PREFIX --libdir=TEMPLATE_INSTALL_PREFIX/lib --with-pic",
-            "make -jTEMPLATE_JOBS",
-            "make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["include","lib"]
-    },
     "json": {
         "commitish": "v3.10.4",
         "version_string": "3.10.4",

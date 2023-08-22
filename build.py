@@ -290,7 +290,7 @@ def build_package(target, build_native_package):
         log.debug('CXX='+myenv['CXX'])
         myenv['PATH'] = '{0}:{1}'.format(clang_bindir, myenv['PATH'])
         log.debug('PATH='+myenv['PATH'])
-    if get_package_type() == 'osxpkg' and target in ['jansson','zeromq4-1']:
+    if get_package_type() == 'osxpkg' and target in ['zeromq4-1']:
         myenv['LIBTOOLIZE'] = 'glibtoolize'
         log.debug('LIBTOOLIZE='+myenv['LIBTOOLIZE'])
 
