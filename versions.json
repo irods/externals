@@ -203,8 +203,8 @@
     },
     "libs3": {
         "enable_sha": true,
-        "commitish": "00d2dbe355b78b507f890458b3d656f162384799",
-        "version_string": "00d2dbe3",
+        "commitish": "e8457e0905dd9e502416b9c6400762ab440bb29e",
+        "version_string": "e8457e09",
         "license": "LGPL v3",
         "consortium_build_number": "0",
         "externals_root": "opt/irods-externals",
