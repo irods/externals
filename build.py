@@ -104,7 +104,14 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False, retries=0):
     return p.returncode
 
 def get_distribution_name():
-    return distro.codename()
+    try:
+        # Older versions of distro return a bad string here... Try using the deprecated method if available. This
+        # function was removed in Python 3.8 so newer platforms will fall back to distro.
+        from platform import linux_distribution
+        return linux_distribution()[2]
+
+    except ImportError:
+        return distro.codename()
 
 def get_package_filename(p):
     v = get_versions()[p]
