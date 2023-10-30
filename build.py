@@ -194,6 +194,8 @@ def build_package(target, build_native_package):
     log.debug('fmt_root: [{0}]'.format(fmt_root))
     json_root = get_local_path('json',[])
     log.debug('json_root: [{0}]'.format(json_root))
+    libarchive_root = get_local_path('libarchive',[])
+    log.debug('libarchive_root: [{0}]'.format(libarchive_root))
 
     # prepare other strings
     if get_package_type() == 'osxpkg':
@@ -321,6 +323,7 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
         i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
         i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
+        i = re.sub("TEMPLATE_LIBARCHIVE_PATH", libarchive_root, i)
         i = re.sub("TEMPLATE_LIBARCHIVE_RPATH", libarchive_rpath, i)
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
