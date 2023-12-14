@@ -197,13 +197,6 @@ def build_package(target, build_native_package):
     libarchive_root = get_local_path('libarchive',[])
     log.debug('libarchive_root: [{0}]'.format(libarchive_root))
 
-    # prepare other strings
-    if get_package_type() == 'osxpkg':
-        libs3_makefile_string = '-f GNUmakefile.osx'
-    else:
-        libs3_makefile_string = ''
-    log.debug('libs3_makefile_string: [{0}]'.format(libs3_makefile_string))
-
     # build boost install path
     boost_info = get_versions()['boost']
     boost_subdirectory = '{0}{1}-{2}'.format('boost', boost_info['version_string'], boost_info['consortium_build_number'])
@@ -321,7 +314,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_QPID_PROTON_RPATH", qpid_proton_rpath, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
-        i = re.sub("TEMPLATE_LIBS3_MAKEFILE_STRING", libs3_makefile_string, i)
         i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
         i = re.sub("TEMPLATE_LIBARCHIVE_PATH", libarchive_root, i)
         i = re.sub("TEMPLATE_LIBARCHIVE_RPATH", libarchive_rpath, i)
