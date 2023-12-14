@@ -201,25 +201,6 @@
         "fpm_directories": ["bin","include","lib","share"],
         "rpm_dependencies": ["xz-libs >= 5.2.2"]
     },
-    "libs3": {
-        "enable_sha": true,
-        "commitish": "e8457e0905dd9e502416b9c6400762ab440bb29e",
-        "version_string": "e8457e09",
-        "license": "LGPL v3",
-        "consortium_build_number": "0",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-            "CFLAGS=-fPIC make -jTEMPLATE_JOBS TEMPLATE_LIBS3_MAKEFILE_STRING",
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/bin",
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/include",
-            "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
-            "make DESTDIR=TEMPLATE_INSTALL_PREFIX TEMPLATE_LIBS3_MAKEFILE_STRING install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin","include","lib"]
-    },
     "mungefs": {
         "commitish": "1.0.7",
         "version_string": "1.0.7",
