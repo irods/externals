@@ -4,6 +4,7 @@
         "version_string": "1.11.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "2",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
@@ -21,6 +22,7 @@
         "version_string": "1.9.323",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -38,6 +40,7 @@
         "version_string": "1.81.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "git submodule update --init",
@@ -55,6 +58,7 @@
         "version_string": "2.13.8",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -71,6 +75,7 @@
         "version_string": "13.0.0",
         "license": "LLVM",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' ../llvm-project/llvm",
@@ -90,6 +95,7 @@
         "version_string": "13.0.0",
         "license": "LLVM",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
@@ -108,6 +114,7 @@
         "version_string": "3.21.4",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
@@ -124,6 +131,7 @@
         "version_string": "4.8.1",
         "license": "LGPL v3",
         "consortium_build_number": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -140,6 +148,7 @@
         "version_string": "8.1.1",
         "license": "MIT",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -156,6 +165,7 @@
         "version_string": "3.10.4",
         "license": "MIT",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -173,6 +183,7 @@
         "version_string": "0.6.99.0",
         "license": "MIT",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -189,6 +200,7 @@
         "version_string": "3.5.2",
         "license": "BSD 2-Clause",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
@@ -206,6 +218,7 @@
         "version_string": "1.0.7",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -222,6 +235,7 @@
         "version_string": "2.13.0",
         "license": "MIT",
         "consortium_build_number": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -240,6 +254,7 @@
         "version_string": "0.36.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -256,6 +271,7 @@
         "version_string": "4.0.10",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "make -jTEMPLATE_JOBS",
@@ -271,6 +287,7 @@
         "version_string": "1.9.2",
         "license": "MIT",
         "consortium_build_number": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -287,6 +304,7 @@
         "version_string": "4.1.8",
         "license": "LGPL v3",
         "consortium_build_number": "0",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
