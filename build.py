@@ -113,19 +113,31 @@ def get_distribution_name():
     except ImportError:
         return distro.codename()
 
+def get_package_version(p):
+    v = get_versions()[p]
+    ver_base = '1.0-'
+    ver_pkgrev = v.get('package_revision', '0')
+    ver_pkgrev_suffix = ''
+    if get_package_type() == 'deb':
+        dn = get_distribution_name()
+        ver_pkgrev_suffix = '~{0}'.format(dn)
+    else:
+        dv = distro.major_version()
+        ver_pkgrev_suffix = '.el{0}'.format(dv)
+    return ver_base + ver_pkgrev + ver_pkgrev_suffix
+
 def get_package_filename(p):
     v = get_versions()[p]
     a = get_package_arch()
     t = get_package_type()
-    d = ''
+    d = get_package_version(p)
     if t == 'rpm':
-        package_filename_template = 'irods-externals-{0}{1}-{2}-1.0-1.{4}.{3}'
+        package_filename_template = 'irods-externals-{0}{1}-{2}-{5}.{4}.{3}'
     elif t == 'osxpkg':
         t = 'pkg'
-        package_filename_template = 'irods-externals-{0}{1}-{2}-1.0.{3}'
+        package_filename_template = 'irods-externals-{0}{1}-{2}-{5}.{3}'
     else:
-        d = get_distribution_name()
-        package_filename_template = 'irods-externals-{0}{1}-{2}_1.0~{5}_{4}.{3}'
+        package_filename_template = 'irods-externals-{0}{1}-{2}_{5}_{4}.{3}'
     return package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a, d)
 
 def get_versions():
@@ -372,11 +384,7 @@ def build_package(target, build_native_package):
         except KeyError:
             pass
         package_cmd.extend(['-m', '<packages@irods.org>'])
-        if get_package_type() == 'deb':
-            d = get_distribution_name()
-            package_cmd.extend(['--version', '1.0~{0}'.format(d)])
-        else:
-            package_cmd.extend(['--version', '1.0'])
+        package_cmd.extend(['--version', get_package_version(target)])
         package_cmd.extend(['--vendor', 'iRODS Consortium'])
         package_cmd.extend(['--license', v['license']])
         package_cmd.extend(['--description', 'iRODS Build Dependency'])
