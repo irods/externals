@@ -113,32 +113,70 @@ def get_distribution_name():
     except ImportError:
         return distro.codename()
 
+def get_distribution_type(distro_id = None):
+    if distro_id is None:
+        distro_id = distro.id()
+    if distro_id == 'ol': # special handling for Oracle Linux
+        return 'rhel'
+    if distro_id in ['rhel', 'ubuntu', 'suse']:
+        return distro_id
+    distro_like = distro.like().split()
+    if len(distro_like) == 0:
+        return distro_id
+    return get_distribution_type(distro_like[0])
+
+# Does not account for derivatives that follow their own version scheme
+# (ex: RHEL7-like Amazon Linux 2)
+def get_distribution_version():
+    distro_type = get_distribution_type()
+    if distro_type == 'ubuntu':
+        return '{0}.{1}'.format(distro.major_version(), distro.minor_version())
+    if distro_type == 'suse':
+        return distro.version()
+    distro_version = distro.major_version()
+    if distro_version in ['', None]:
+        return 'rolling'
+    return distro_version
+
+def get_package_name(p):
+    v = get_versions()[p]
+    return 'irods-externals-{0}{1}-{2}'.format(p, v['version_string'], v['consortium_build_number'])
+
 def get_package_version(p):
     v = get_versions()[p]
     ver_base = '1.0-'
     ver_pkgrev = v.get('package_revision', '0')
-    ver_pkgrev_suffix = ''
+    ver_pkgrev_suffix1 = ''
+    ver_pkgrev_suffix2 = ''
     if get_package_type() == 'deb':
-        dn = get_distribution_name()
-        ver_pkgrev_suffix = '~{0}'.format(dn)
+        ver_pkgrev_suffix1 = '~'
+        ver_pkgrev_suffix2 = get_distribution_name()
     else:
-        dv = distro.major_version()
-        ver_pkgrev_suffix = '.el{0}'.format(dv)
-    return ver_base + ver_pkgrev + ver_pkgrev_suffix
+        dt = get_distribution_type()
+        dv = get_distribution_version()
+        ver_pkgrev_suffix2 = dv
+        if dt == 'rhel':
+            ver_pkgrev_suffix1 = '.el'
+        elif dt == 'fedora':
+            ver_pkgrev_suffix1 = '.fc'
+        else:
+            # probably suse
+            ver_pkgrev_suffix1 = '.{0}'.format(dt)
+    return '{0}{1}{2}{3}'.format(ver_base, ver_pkgrev, ver_pkgrev_suffix1, ver_pkgrev_suffix2)
 
 def get_package_filename(p):
-    v = get_versions()[p]
+    n = get_package_name(p)
     a = get_package_arch()
     t = get_package_type()
-    d = get_package_version(p)
+    v = get_package_version(p)
     if t == 'rpm':
-        package_filename_template = 'irods-externals-{0}{1}-{2}-{5}.{4}.{3}'
+        package_filename_template = '{0}-{3}.{2}.{1}'
     elif t == 'osxpkg':
         t = 'pkg'
-        package_filename_template = 'irods-externals-{0}{1}-{2}-{5}.{3}'
+        package_filename_template = '{0}-{3}.{1}'
     else:
-        package_filename_template = 'irods-externals-{0}{1}-{2}_{5}_{4}.{3}'
-    return package_filename_template.format(p, v['version_string'], v['consortium_build_number'], t, a, d)
+        package_filename_template = '{0}_{3}_{2}.{1}'
+    return package_filename_template.format(n, t, a, v)
 
 def get_versions():
     with open(script_path + '/versions.json', 'r') as f:
@@ -152,11 +190,11 @@ def get_package_arch():
 
 def get_package_type():
     log = logging.getLogger(__name__)
-    distro_id = distro.id()
+    distro_id = get_distribution_type()
     log.debug('linux distribution detected: {0}'.format(distro_id))
     if distro_id in ['debian', 'ubuntu']:
         pt = 'deb'
-    elif distro_id in ['rocky', 'almalinux', 'centos', 'rhel', 'scientific', 'opensuse', 'sles']:
+    elif distro_id in ['amzn', 'fedora', 'rhel', 'scientific', 'sles', 'suse']:
         pt = 'rpm'
     else:
         if platform.mac_ver()[0] != '':
@@ -165,6 +203,31 @@ def get_package_type():
             pt = 'not_detected'
     log.debug('package type detected: {0}'.format(pt))
     return pt
+
+def get_package_dependencies(v):
+    log = logging.getLogger(__name__)
+    deps = []
+
+    # dependencies on other externals packages
+    if 'interdependencies' in v:
+        for d in v['interdependencies']:
+            deps.append(get_package_name(d))
+
+    # distro-specific dependencies
+    if 'distro_dependencies' in v:
+        distro_type = get_distribution_type()
+        v_distro_deps = v['distro_dependencies']
+        if distro_type in v_distro_deps:
+            distro_ver = get_distribution_version()
+            distro_type_deps = v_distro_deps[distro_type]
+            if distro_ver in distro_type_deps:
+                deps.extend(distro_type_deps[distro_ver])
+            else:
+                log.debug('version [%s] of distro [%s] not in distro_dependencies', distro_ver, distro_type)
+        else:
+            log.debug('distro [%s] not in distro_dependencies', distro_type)
+
+    return deps
 
 def get_jobs():
     log = logging.getLogger(__name__)
@@ -368,21 +431,12 @@ def build_package(target, build_native_package):
         package_cmd = [fpmbinary, '-f', '-s', 'dir']
         package_cmd.extend(['-t', get_package_type()])
         package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
-        try:
-            if get_package_type() == 'rpm':
-                distro_id = distro.id()
-                if any(x in distro_id for x in ['rocky', 'almalinux']):
-                    # Do not include .build-id links in the package. These links will cause package
-                    # conflicts between the clang and clang-runtime packages being produced.
-                    package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
-                if v['rpm_dependencies'] and any(x in distro_id for x in ['centos', 'rocky', 'almalinux']):
-                    for d in v['rpm_dependencies']:
-                        package_cmd.extend(['-d', d]) # Package dependencies for RPM being prepared.
-            elif get_package_type() == 'deb' and v['deb_dependencies']:
-                for d in v['deb_dependencies']:
-                    package_cmd.extend(['-d', d]) # Package dependencies for DEB being prepared.
-        except KeyError:
-            pass
+        if get_package_type() == 'rpm' and target == 'clang-runtime':
+            # Do not include .build-id links in the package. These links will cause package
+            # conflicts between the clang and clang-runtime packages being produced.
+            package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
+        for d in get_package_dependencies(v):
+            package_cmd.extend(['-d', d])
         package_cmd.extend(['-m', '<packages@irods.org>'])
         package_cmd.extend(['--version', get_package_version(target)])
         package_cmd.extend(['--vendor', 'iRODS Consortium'])

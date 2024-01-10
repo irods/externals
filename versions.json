@@ -4,7 +4,7 @@
         "version_string": "1.11.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "2",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
@@ -15,14 +15,18 @@
             "cd lang/c++/build",
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["bin","include","lib"]
+        "fpm_directories": ["bin","include","lib"],
+        "interdependencies": [
+            "boost",
+            "clang-runtime"
+        ]
     },
     "aws-sdk-cpp": {
         "commitish": "1.9.323",
         "version_string": "1.9.323",
         "license": "Apache License 2.0",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -32,7 +36,53 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include","lib","lib64"]
+        "fpm_directories": ["include","lib","lib64"],
+        "interdependencies": [
+            "clang-runtime"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "libcurl",
+                    "zlib",
+                    "openssl-libs"
+                ],
+                "8": [
+                    "libcurl",
+                    "zlib",
+                    "openssl-libs"
+                ],
+                "9": [
+                    "libcurl",
+                    "zlib",
+                    "openssl-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libcurl3-gnutls",
+                    "libz1",
+                    "libssl1.1"
+                ],
+                "12": [
+                    "libcurl3-gnutls",
+                    "libz1",
+                    "libssl3"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libcurl3-gnutls",
+                    "libz1",
+                    "libssl1.1"
+                ],
+                "22.04": [
+                    "libcurl3-gnutls",
+                    "libz1",
+                    "libssl3"
+                ]
+            }
+        }
     },
     "boost": {
         "git_repository": "https://github.com/boostorg/boost",
@@ -40,7 +90,7 @@
         "version_string": "1.81.0",
         "license": "Boost Software License 1.0",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "git submodule update --init",
@@ -51,7 +101,54 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include","lib"]
+        "fpm_directories": ["include","lib"],
+        "interdependencies": [
+            "clang-runtime"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "zlib",
+                    "bzip2-libs",
+                    "xz-libs"
+                ],
+                "8": [
+                    "zlib",
+                    "bzip2-libs",
+                    "xz-libs",
+                    "libzstd"
+                ],
+                "9": [
+                    "zlib",
+                    "bzip2-libs",
+                    "xz-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libicu67"
+                ],
+                "12": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libicu72"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libicu66"
+                ],
+                "22.04": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libicu70"
+                ]
+            }
+        }
     },
     "catch2": {
         "commitish": "v2.13.8",
@@ -75,7 +172,7 @@
         "version_string": "13.0.0",
         "license": "LLVM",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' ../llvm-project/llvm",
@@ -88,7 +185,57 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["bin","include","lib","share"]
+        "fpm_directories": ["bin","include","lib","share"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "zlib",
+                    "libstdc++",
+                    "ncurses-libs",
+                    "libxml2"
+                ],
+                "8": [
+                    "zlib",
+                    "libstdc++",
+                    "ncurses-libs",
+                    "libxml2"
+                ],
+                "9": [
+                    "zlib",
+                    "libstdc++",
+                    "ncurses-libs",
+                    "libxml2"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libz1",
+                    "libstdc++6",
+                    "libtinfo6",
+                    "libxml2"
+                ],
+                "12": [
+                    "libz1",
+                    "libstdc++6",
+                    "libtinfo6",
+                    "libxml2"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libz1",
+                    "libstdc++6",
+                    "libtinfo6",
+                    "libxml2"
+                ],
+                "22.04": [
+                    "libz1",
+                    "libstdc++6",
+                    "libtinfo6",
+                    "libxml2"
+                ]
+            }
+        }
     },
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
@@ -114,7 +261,7 @@
         "version_string": "3.21.4",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
@@ -124,14 +271,61 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["bin","doc","share"]
+        "fpm_directories": ["bin","doc","share"],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "libstdc++",
+                    "ncurses-libs",
+                    "openssl-libs"
+                ],
+                "8": [
+                    "libstdc++",
+                    "ncurses-libs",
+                    "openssl-libs"
+                ],
+                "9": [
+                    "libstdc++",
+                    "ncurses-libs",
+                    "openssl-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libncurses6",
+                    "libstdc++6",
+                    "libssl1.1",
+                    "libtinfo6"
+                ],
+                "12": [
+                    "libncurses6",
+                    "libstdc++6",
+                    "libssl3",
+                    "libtinfo6"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libncurses6",
+                    "libstdc++6",
+                    "libssl1.1",
+                    "libtinfo6"
+                ],
+                "22.04": [
+                    "libncurses6",
+                    "libstdc++6",
+                    "libssl3",
+                    "libtinfo6"
+                ]
+            }
+        }
     },
     "cppzmq": {
         "commitish": "v4.8.1",
         "version_string": "4.8.1",
         "license": "LGPL v3",
         "consortium_build_number": "1",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -141,14 +335,17 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include","lib"]
+        "fpm_directories": ["include","lib"],
+        "interdependencies": [
+            "zeromq4-1"
+        ]
     },
     "fmt": {
         "commitish": "8.1.1",
         "version_string": "8.1.1",
         "license": "MIT",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -158,7 +355,10 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include", "lib"]
+        "fpm_directories": ["include", "lib"],
+        "interdependencies": [
+            "clang-runtime"
+        ]
     },
     "json": {
         "commitish": "v3.10.4",
@@ -183,7 +383,7 @@
         "version_string": "0.6.99.0",
         "license": "MIT",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -193,14 +393,17 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include","lib"]
+        "fpm_directories": ["include","lib"],
+        "interdependencies": [
+            "json"
+        ]
     },
     "libarchive": {
         "commitish": "v3.5.2",
         "version_string": "3.5.2",
         "license": "BSD 2-Clause",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
@@ -211,14 +414,67 @@
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
         "fpm_directories": ["bin","include","lib","share"],
-        "rpm_dependencies": ["xz-libs >= 5.2.2"]
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "zlib",
+                    "bzip2-libs",
+                    "openssl-libs",
+                    "libxml2",
+                    "xz-libs >= 5.2.2"
+                ],
+                "8": [
+                    "zlib",
+                    "bzip2-libs",
+                    "openssl-libs",
+                    "libxml2",
+                    "xz-libs >= 5.2.2",
+                    "libzstd"
+                ],
+                "9": [
+                    "zlib",
+                    "bzip2-libs",
+                    "openssl-libs",
+                    "libxml2",
+                    "xz-libs >= 5.2.2"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libssl1.1",
+                    "libxml2"
+                ],
+                "12": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libssl3",
+                    "libxml2"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libssl1.1",
+                    "libxml2"
+                ],
+                "22.04": [
+                    "libz1",
+                    "libbz2-1.0",
+                    "libssl3",
+                    "libxml2"
+                ]
+            }
+        }
     },
     "mungefs": {
         "commitish": "1.0.7",
         "version_string": "1.0.7",
         "license": "BSD 3-Clause",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -228,14 +484,50 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["bin"]
+        "fpm_directories": ["bin"],
+        "interdependencies": [
+            "clang-runtime",
+            "boost",
+            "libarchive",
+            "avro",
+            "zeromq4-1"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "fuse-libs"
+                ],
+                "8": [
+                    "fuse-libs"
+                ],
+                "9": [
+                    "fuse-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libfuse2"
+                ],
+                "12": [
+                    "libfuse2"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libfuse2"
+                ],
+                "22.04": [
+                    "libfuse2"
+                ]
+            }
+        }
     },
     "nanodbc": {
         "commitish": "v2.13.0",
         "version_string": "2.13.0",
         "license": "MIT",
         "consortium_build_number": "1",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -246,15 +538,45 @@
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
         "fpm_directories": ["include", "lib"],
-        "deb_dependencies": ["libodbc1"],
-        "rpm_dependencies": ["unixODBC"]
+        "interdependencies": [
+            "clang-runtime"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "unixODBC"
+                ],
+                "8": [
+                    "unixODBC"
+                ],
+                "9": [
+                    "unixODBC"
+                ]
+            },
+            "debian": {
+                "1": [
+                    "libodbc1"
+                ],
+                "12": [
+                    "libodbc2"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libodbc1"
+                ],
+                "22.04": [
+                    "libodbc2"
+                ]
+            }
+        }
     },
     "qpid-proton": {
         "commitish": "0.36.0",
         "version_string": "0.36.0",
         "license": "Apache License 2.0",
         "consortium_build_number": "1",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -264,7 +586,39 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include", "lib"]
+        "fpm_directories": ["include", "lib"],
+        "interdependencies": [
+            "clang-runtime"
+        ],
+        "distro_dependencies": {
+            "rhel": {
+                "7": [
+                    "openssl-libs"
+                ],
+                "8": [
+                    "openssl-libs"
+                ],
+                "9": [
+                    "openssl-libs"
+                ]
+            },
+            "debian": {
+                "11": [
+                    "libssl1.1"
+                ],
+                "12": [
+                    "libssl3"
+                ]
+            },
+            "ubuntu": {
+                "20.04": [
+                    "libssl1.1"
+                ],
+                "22.04": [
+                    "libssl3"
+                ]
+            }
+        }
     },
     "redis": {
         "commitish": "4.0.10",
@@ -287,7 +641,7 @@
         "version_string": "1.9.2",
         "license": "MIT",
         "consortium_build_number": "1",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -297,14 +651,17 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["include","lib"]
+        "fpm_directories": ["include","lib"],
+        "interdependencies": [
+            "fmt"
+        ]
     },
     "zeromq4-1": {
         "commitish": "v4.1.8",
         "version_string": "4.1.8",
         "license": "LGPL v3",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -314,6 +671,9 @@
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
         ],
-        "fpm_directories": ["bin","include","lib"]
+        "fpm_directories": ["bin","include","lib"],
+        "interdependencies": [
+            "clang-runtime"
+        ]
     }
 }
