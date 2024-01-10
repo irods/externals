@@ -11,7 +11,7 @@ Currently tested on:
 
 # Assumptions
 
-This repository is expected to build in a VM or container environment that is isolated from other software or build environments.
+This repository is expected to build in a VM or container environment that is isolated from other software or build environments. Pre-written dockerfiles can be found in the [development environment repository](https://github.com/irods/irods_development_environment/).
 
 The automated scripts run commands as `sudo` and update system libraries and compilers, etc.
 
