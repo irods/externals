@@ -2,12 +2,14 @@
 
 Currently tested on:
 
-- Ubuntu 18
-- Ubuntu 20
+- Ubuntu 20.04
+- Ubuntu 22.04
 - CentOS 7
 - AlmaLinux 8
 - Rocky Linux 8
+- Rocky Linux 9
 - Debian 11
+- Debian 12
 
 # Assumptions
 
@@ -17,10 +19,11 @@ The automated scripts run commands as `sudo` and update system libraries and com
 
 In a new container, run the following:
 
-## Ubuntu 18, Ubuntu 20, and Debian 11
+## Ubuntu 20.04, Ubuntu 22.04, Debian 11, and Debian 12
 
 ```bash
-apt-get update -y && apt-get install -y sudo git python3 python3-distro
+apt-get update
+apt-get install -y sudo git python3 python3-distro
 ./install_prerequisites.py
 
 # The following lines apply to Ubuntu 20 only!!!
@@ -31,33 +34,44 @@ hash -r
 make # or "make server" for packages specific to building the iRODS server.
 ```
 
-## CentOS 7
+## RHEL / CentOS 7
 
 ```bash
-yum update -y && yum install -y sudo git python3 centos-release-scl
-yum install -y devtoolset-10-gcc devtoolset-10-gcc-c++
+yum install -y sudo git python3 centos-release-scl epel-release
+yum install -y python36-distro devtoolset-10-gcc devtoolset-10-gcc-c++
 
 # Installing the prerequistes must be done before enabling the GCC compiler
 # environment.
-python3 -m venv build_env
-source build_env/bin/activate
-python -m pip install distro
 ./install_prerequisites.py
 
 # Enable the GCC 10 compiler tools.
 scl enable devtoolset-10 bash
 
-# Although it appears that the python virtual environment has been deactivated,
-# trust and believe it is still active.
 make # or "make server" for packages specific to building the iRODS server.
 ```
 
-## AlmaLinux 8 and Rocky Linux 8
+## RHEL / AlmaLinux / Rocky Linux 8
 
 ```bash
-dnf update -y && dnf install -y sudo git python3 python3-distro gcc-toolset-11
+dnf config-manager --set-enabled powertools
+dnf install -y sudo git python3 python3-distro gcc-toolset-11
+
+# Installing the prerequistes must be done before enabling the GCC compiler
+# environment.
 ./install_prerequisites.py
+
+# Enable the GCC 11 compiler tools.
 scl enable gcc-toolset-11 bash
+
+make # or "make server" for packages specific to building the iRODS server.
+```
+
+## RHEL / AlmaLinux / Rocky Linux 9
+
+```bash
+dnf config-manager --set-enabled crb
+dnf install -y sudo git python3 python3-distro
+./install_prerequisites.py
 make # or "make server" for packages specific to building the iRODS server.
 ```
 
