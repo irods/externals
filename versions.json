@@ -21,69 +21,6 @@
             "clang-runtime"
         ]
     },
-    "aws-sdk-cpp": {
-        "commitish": "1.9.323",
-        "version_string": "1.9.323",
-        "license": "Apache License 2.0",
-        "consortium_build_number": "0",
-        "package_revision": "3",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-            "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_SHARED_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_EXE_LINKER_FLAGS='-LTEMPLATE_CLANG_CPP_LIBRARIES -stdlib=libc++' -DCMAKE_INCLUDE_DIRECTORIES_BEFORE=ON -DCMAKE_CXX_FLAGS='-ITEMPLATE_CLANG_CPP_HEADERS -nostdinc++' -DBUILD_ONLY='s3;sts' ..",
-            "cd build; make -jTEMPLATE_JOBS; make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["include","lib","lib64"],
-        "interdependencies": [
-            "clang-runtime"
-        ],
-        "distro_dependencies": {
-            "rhel": {
-                "7": [
-                    "libcurl",
-                    "zlib",
-                    "openssl-libs"
-                ],
-                "8": [
-                    "libcurl",
-                    "zlib",
-                    "openssl-libs"
-                ],
-                "9": [
-                    "libcurl",
-                    "zlib",
-                    "openssl-libs"
-                ]
-            },
-            "debian": {
-                "11": [
-                    "libcurl3-gnutls",
-                    "libz1",
-                    "libssl1.1"
-                ],
-                "12": [
-                    "libcurl3-gnutls",
-                    "libz1",
-                    "libssl3"
-                ]
-            },
-            "ubuntu": {
-                "20.04": [
-                    "libcurl3-gnutls",
-                    "libz1",
-                    "libssl1.1"
-                ],
-                "22.04": [
-                    "libcurl3-gnutls",
-                    "libz1",
-                    "libssl3"
-                ]
-            }
-        }
-    },
     "boost": {
         "git_repository": "https://github.com/boostorg/boost",
         "commitish": "boost-1.81.0",
