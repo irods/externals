@@ -143,8 +143,12 @@ def get_package_name(p):
     return 'irods-externals-{0}{1}-{2}'.format(p, v['version_string'], v['consortium_build_number'])
 
 def get_package_version(p):
+    # At present, all our package versions are 1.0.
+    # This method is provided to make changing that easier, should we ever need to.
+    return '1.0'
+
+def get_package_revision(p):
     v = get_versions()[p]
-    ver_base = '1.0-'
     ver_pkgrev = v.get('package_revision', '0')
     ver_pkgrev_suffix1 = ''
     ver_pkgrev_suffix2 = ''
@@ -162,21 +166,22 @@ def get_package_version(p):
         else:
             # probably suse
             ver_pkgrev_suffix1 = '.{0}'.format(dt)
-    return '{0}{1}{2}{3}'.format(ver_base, ver_pkgrev, ver_pkgrev_suffix1, ver_pkgrev_suffix2)
+    return '{0}{1}{2}'.format(ver_pkgrev, ver_pkgrev_suffix1, ver_pkgrev_suffix2)
 
 def get_package_filename(p):
     n = get_package_name(p)
     a = get_package_arch()
     t = get_package_type()
     v = get_package_version(p)
+    r = get_package_revision(p)
     if t == 'rpm':
-        package_filename_template = '{0}-{3}.{2}.{1}'
+        package_filename_template = '{0}-{1}-{2}.{3}.{4}'
     elif t == 'osxpkg':
         t = 'pkg'
-        package_filename_template = '{0}-{3}.{1}'
+        package_filename_template = '{0}-{1}-{2}.{4}'
     else:
-        package_filename_template = '{0}_{3}_{2}.{1}'
-    return package_filename_template.format(n, t, a, v)
+        package_filename_template = '{0}_{1}-{2}_{3}.{4}'
+    return package_filename_template.format(n, v, r, a, t)
 
 def get_versions():
     with open(script_path + '/versions.json', 'r') as f:
@@ -439,6 +444,7 @@ def build_package(target, build_native_package):
             package_cmd.extend(['-d', d])
         package_cmd.extend(['-m', '<packages@irods.org>'])
         package_cmd.extend(['--version', get_package_version(target)])
+        package_cmd.extend(['--iteration', get_package_revision(target)])
         package_cmd.extend(['--vendor', 'iRODS Consortium'])
         package_cmd.extend(['--license', v['license']])
         package_cmd.extend(['--description', 'iRODS Build Dependency'])
