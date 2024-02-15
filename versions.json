@@ -304,11 +304,11 @@
         "fpm_directories": ["include","lib","share"]
     },
     "clang": {
-        "commitish": "llvmorg-13.0.0",
-        "version_string": "13.0.0",
+        "commitish": "llvmorg-13.0.1",
+        "version_string": "13.0.1",
         "license": "LLVM",
         "consortium_build_number": "0",
-        "package_revision": "4",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' -DLLVM_TARGETS_TO_BUILD='X86' ../llvm-project/llvm",
@@ -413,10 +413,10 @@
     },
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
-        "version_string": "13.0.0",
+        "version_string": "13.0.1",
         "license": "LLVM",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
