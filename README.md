@@ -19,17 +19,26 @@ The automated scripts run commands as `sudo` and update system libraries and com
 
 In a new container, run the following:
 
-## Ubuntu 20.04, Ubuntu 22.04, Debian 11, and Debian 12
+## Ubuntu 20.04
 
 ```bash
 apt-get update
 apt-get install -y sudo git python3 python3-distro
 ./install_prerequisites.py
 
-# The following lines apply to Ubuntu 20 only!!!
 update-alternatives --install /usr/local/bin/gcc gcc /usr/bin/gcc-10 1
 update-alternatives --install /usr/local/bin/g++ g++ /usr/bin/g++-10 1
 hash -r
+
+make # or "make server" for packages specific to building the iRODS server.
+```
+
+## Ubuntu 22.04, Debian 11, and Debian 12
+
+```bash
+apt-get update
+apt-get install -y sudo git python3 python3-distro
+./install_prerequisites.py
 
 make # or "make server" for packages specific to building the iRODS server.
 ```
