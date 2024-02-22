@@ -2,7 +2,7 @@
     "avro": {
         "commitish": "release-1.11.0",
         "version_string": "1.11.0",
-        "license": "Apache License 2.0",
+        "license": "Apache-2.0",
         "consortium_build_number": "3",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -67,7 +67,7 @@
         "git_repository": "https://github.com/irods/avro",
         "commitish": "release-1.11.0",
         "version_string": "1.11.0",
-        "license": "Apache License 2.0",
+        "license": "Apache-2.0",
         "consortium_build_number": "3",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -126,7 +126,7 @@
         "git_repository": "https://github.com/boostorg/boost",
         "commitish": "boost-1.81.0",
         "version_string": "1.81.0",
-        "license": "Boost Software License 1.0",
+        "license": "BSL-1.0",
         "consortium_build_number": "1",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -210,7 +210,7 @@
         "git_repository": "https://github.com/boostorg/boost",
         "commitish": "boost-1.81.0",
         "version_string": "1.81.0",
-        "license": "Boost Software License 1.0",
+        "license": "BSL-1.0",
         "consortium_build_number": "1",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -289,9 +289,9 @@
     "catch2": {
         "commitish": "v2.13.8",
         "version_string": "2.13.8",
-        "license": "Boost Software License 1.0",
+        "license": "BSL-1.0",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -306,7 +306,7 @@
     "clang": {
         "commitish": "llvmorg-13.0.1",
         "version_string": "13.0.1",
-        "license": "LLVM",
+        "license": "Apache-2.0 WITH LLVM-exception",
         "consortium_build_number": "0",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -414,7 +414,7 @@
     "clang-runtime": {
         "commitish": "not-used-same-as-clang",
         "version_string": "13.0.1",
-        "license": "LLVM",
+        "license": "Apache-2.0 WITH LLVM-exception",
         "consortium_build_number": "0",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -469,9 +469,9 @@
     "cmake": {
         "commitish": "v3.21.4",
         "version_string": "3.21.4",
-        "license": "BSD 3-Clause",
+        "license": "BSD-3-Clause",
         "consortium_build_number": "0",
-        "package_revision": "3",
+        "package_revision": "4",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
@@ -547,9 +547,9 @@
     "cppzmq": {
         "commitish": "v4.8.1",
         "version_string": "4.8.1",
-        "license": "LGPL v3",
+        "license": "MIT",
         "consortium_build_number": "1",
-        "package_revision": "3",
+        "package_revision": "4",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -683,7 +683,7 @@
         "version_string": "3.10.4",
         "license": "MIT",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -701,7 +701,7 @@
         "version_string": "0.6.99.0",
         "license": "MIT",
         "consortium_build_number": "0",
-        "package_revision": "3",
+        "package_revision": "4",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -719,9 +719,9 @@
     "libarchive": {
         "commitish": "v3.5.2",
         "version_string": "3.5.2",
-        "license": "BSD 2-Clause",
+        "license": "BSD-2-Clause",
         "consortium_build_number": "0",
-        "package_revision": "3",
+        "package_revision": "4",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
@@ -797,9 +797,9 @@
     "mungefs": {
         "commitish": "1.0.7",
         "version_string": "1.0.7",
-        "license": "BSD 3-Clause",
+        "license": "BSD-3-Clause",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1002,7 +1002,7 @@
     "qpid-proton": {
         "commitish": "0.36.0",
         "version_string": "0.36.0",
-        "license": "Apache License 2.0",
+        "license": "Apache-2.0",
         "consortium_build_number": "2",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -1070,7 +1070,7 @@
         "git_repository": "https://github.com/irods/qpid-proton",
         "commitish": "0.36.0",
         "version_string": "0.36.0",
-        "license": "Apache License 2.0",
+        "license": "Apache-2.0",
         "consortium_build_number": "2",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -1133,9 +1133,9 @@
     "redis": {
         "commitish": "4.0.10",
         "version_string": "4.0.10",
-        "license": "BSD 3-Clause",
+        "license": "BSD-3-Clause",
         "consortium_build_number": "0",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "make -jTEMPLATE_JOBS",
@@ -1299,7 +1299,7 @@
     "zeromq4-1": {
         "commitish": "v4.1.8",
         "version_string": "4.1.8",
-        "license": "LGPL v3",
+        "license": "LGPL-3.0-or-later",
         "consortium_build_number": "1",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
@@ -1360,7 +1360,7 @@
         "git_repository": "https://github.com/irods/zeromq4-1",
         "commitish": "v4.1.8",
         "version_string": "4.1.8",
-        "license": "LGPL v3",
+        "license": "LGPL-3.0-or-later",
         "consortium_build_number": "1",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
