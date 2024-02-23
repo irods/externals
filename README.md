@@ -102,3 +102,13 @@ $ cd <git_repository>
 $ git fetch
 $ git checkout <sha> # Or branch name, or tag.
 ```
+
+### Q. What are `consortium_build_number` and `package_revision` in `versions.json`?
+These fields allow for changes to the packaging and build process of a package without having to change the version of the software being packaged. `consortium_build_number` affects the package *name* and `package_revision` affects the package *version*.
+
+Here's a quick guide on when these fields should be incremented or reset:  
+- When bumping `consortium_build_number`, `package_revision` should be reset to `0`.
+- When bumping the version of the software being packaged, both `consortium_build_number` and `package_revision` should be reset to `0`, and `consortium_build_number` of any dependant packages should be incremented, unless they are also being updated.
+- When making a change to the packaging or build process of a package without changing the version of the software being packaged, consider whether the updated package should *replace* the previous version, or if it should be installable *alongside* the previous version of the package.
+    - If the updated package should replace the previous version of the package, increment `package_revision`. If any dependant packages are affected by the change, increment their `package_revision` as well.
+    - If the updated package should be installable alongside the previous version of the package, increment `consortium_build_number`. The `consortium_build_number` of any dependant packages will need to be incremented as well.
