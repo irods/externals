@@ -107,7 +107,7 @@ def main():
             'gcc',
             'gcc-c++',
             'git',
-            'glibc-devel'
+            'glibc-devel',
             'help2man',
             'libcurl-devel',
             'libmicrohttpd-devel',
