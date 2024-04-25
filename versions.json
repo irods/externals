@@ -1072,7 +1072,7 @@
         "version_string": "0.36.0",
         "license": "Apache-2.0",
         "consortium_build_number": "2",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1362,7 +1362,7 @@
         "version_string": "4.1.8",
         "license": "LGPL-3.0-or-later",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
