@@ -310,7 +310,7 @@ def build_package(target, build_native_package):
     avro_rpath = os.path.join(avro_install_prefix, 'lib')
 
     avro_libcxx_info = get_versions()['avro-libcxx']
-    avro_libcxx_subdirectory = '{0}{1}-{2}'.format('avro', avro_libcxx_info['version_string'], avro_libcxx_info['consortium_build_number'])
+    avro_libcxx_subdirectory = '{0}{1}-{2}'.format('avro-libcxx', avro_libcxx_info['version_string'], avro_libcxx_info['consortium_build_number'])
     avro_libcxx_install_prefix = os.path.join(avro_libcxx_info['externals_root'], avro_libcxx_subdirectory)
     avro_libcxx_rpath = os.path.join(avro_libcxx_install_prefix, 'lib')
 
@@ -325,7 +325,7 @@ def build_package(target, build_native_package):
     zmq_rpath = os.path.join(zmq_install_prefix, 'lib')
 
     zmq_libcxx_info = get_versions()['zeromq4-1-libcxx']
-    zmq_libcxx_subdirectory = '{0}{1}-{2}'.format('zeromq4-1', zmq_libcxx_info['version_string'], zmq_libcxx_info['consortium_build_number'])
+    zmq_libcxx_subdirectory = '{0}{1}-{2}'.format('zeromq4-1-libcxx', zmq_libcxx_info['version_string'], zmq_libcxx_info['consortium_build_number'])
     zmq_libcxx_install_prefix = os.path.join(zmq_libcxx_info['externals_root'], zmq_libcxx_subdirectory)
     zmq_libcxx_rpath = os.path.join(zmq_libcxx_install_prefix, 'lib')
 
@@ -346,7 +346,7 @@ def build_package(target, build_native_package):
     qpid_proton_rpath = os.path.join(qpid_proton_install_prefix, 'lib')
 
     qpid_proton_libcxx_info = get_versions()['qpid-proton-libcxx']
-    qpid_proton_libcxx_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpid_proton_libcxx_info['version_string'], qpid_proton_libcxx_info['consortium_build_number'])
+    qpid_proton_libcxx_subdirectory = '{0}{1}-{2}'.format('qpid-proton-libcxx', qpid_proton_libcxx_info['version_string'], qpid_proton_libcxx_info['consortium_build_number'])
     qpid_proton_libcxx_install_prefix = os.path.join(qpid_proton_libcxx_info['externals_root'], qpid_proton_libcxx_subdirectory)
     qpid_proton_libcxx_rpath = os.path.join(qpid_proton_libcxx_install_prefix, 'lib')
 
