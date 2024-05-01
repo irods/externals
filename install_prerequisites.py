@@ -129,8 +129,6 @@ def main():
             build.run_cmd(cmd, check_rc='dnf install failed')
             cmd = ['sudo','dnf','clean','all']
             build.run_cmd(cmd, check_rc='dnf clean failed')
-            cmd = ['sudo','dnf','update','-y','glibc*','yum*','rpm*','python*']
-            build.run_cmd(cmd, check_rc='dnf update failed')
             cmd = ['sudo','dnf','install','-y','epel-release','wget','openssl','ca-certificates']
             build.run_cmd(cmd, check_rc='installing epel failed')
             cmd = ['sudo','dnf','install','-y']
@@ -153,8 +151,6 @@ def main():
             build.run_cmd(cmd, check_rc='yum clean failed')
             cmd = ['sudo','yum','install','centos-release-scl', '-y']
             build.run_cmd(cmd, check_rc='yum install failed')
-            cmd = ['sudo','yum','update','-y','glibc*','yum*','rpm*','python*']
-            build.run_cmd(cmd, check_rc='yum update failed')
             cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
             build.run_cmd(cmd, check_rc='installing epel failed')
             main_package_list.extend([
