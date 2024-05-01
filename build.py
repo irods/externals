@@ -187,6 +187,17 @@ def build_package(target, build_native_package):
     install_prefix = os.path.join(build_dir, v['externals_root'], package_subdirectory)
     log.info(install_prefix)
 
+    def apply_patches():
+        if 'patches' not in v:
+            return
+        patch_dir = os.path.join(script_path, 'patches')
+        for patch in v['patches']:
+            log.info(f'Applying patch [{patch}]')
+            patch_path = os.path.join(patch_dir, patch)
+            patch_cmd = ['patch', '-Nt', '-p1', '-i', patch_path]
+            run_cmd(patch_cmd + ['--dry-run'], check_rc='failed to apply patch') # test it first
+            run_cmd(patch_cmd, check_rc='failed to apply patch (patch may be partially applied)')
+
     # prepare executables
     os.chdir(os.path.join(script_path))
     python_executable = sys.executable
@@ -285,18 +296,21 @@ def build_package(target, build_native_package):
 
     clang_gcc_install_prefix = os.getenv('IRODS_EXTERNALS_GCC_PREFIX', default='')
 
-    # get
+    # get and patch
     if target == 'clang':
+        target_dir = os.path.join(build_dir, "llvm-project")
         if not os.path.isdir(os.path.join(build_dir, "build")):
             os.makedirs(os.path.join(build_dir, "build"))
-        os.chdir(build_dir)
-        log.debug('cwd: {0}'.format(os.getcwd()))
-        # Clone only the version we want! It would take too long to download all of LLVM.
-        run_cmd(['git', 'clone', '--depth', '1', '--branch', v['commitish'], 'https://github.com/irods/llvm-project'])
-        os.chdir('llvm-project')
-        log.debug('cwd: {0}'.format(os.getcwd()))
-        run_cmd(['git', 'fetch'], check_rc='git fetch failed')
-        run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
+        if not os.path.isdir(target_dir):
+            os.chdir(build_dir)
+            log.debug('cwd: {0}'.format(os.getcwd()))
+            # Clone only the version we want! It would take too long to download all of LLVM.
+            run_cmd(['git', 'clone', '--depth', '1', '--branch', v['commitish'], 'https://github.com/irods/llvm-project'])
+            os.chdir('llvm-project')
+            log.debug('cwd: {0}'.format(os.getcwd()))
+            run_cmd(['git', 'fetch'], check_rc='git fetch failed')
+            run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
+            apply_patches()
     elif target == 'clang-runtime':
         if not os.path.isdir(os.path.join(build_dir, target)):
             os.makedirs(os.path.join(build_dir, target))
@@ -328,6 +342,7 @@ def build_package(target, build_native_package):
                 git_cmd.append(target)
                 run_cmd(git_cmd, check_rc='git clone failed')
                 os.chdir(target_dir)
+            apply_patches()
 
     # set environment
     if target == 'boost' or target == 'boost-libcxx':
