@@ -3,3 +3,7 @@ packages.mk
 *.deb
 *.rpm
 *.log
+
+# Python cache
+__pycache__/
+*.py[cod]
