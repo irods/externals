@@ -58,40 +58,56 @@ def main():
     distro_id = distro.id()
     distro_major_version = distro.major_version()
 
+    log.info('Detected: {0}'.format(distro_id))
+
     if distro_id in ['debian', 'ubuntu']:
-        log.info('Detected: {0}'.format(distro_id))
+        package_list = [
+            'autoconf',
+            'autoconf2.13',
+            'automake',
+            'curl',
+            'fuse',
+            'git',
+            'gpg',
+            'help2man',
+            'libbz2-dev',
+            'libcurl4-gnutls-dev',
+            'libfuse-dev',
+            'libmicrohttpd-dev',
+            'libssl-dev',
+            'libtool',
+            'libxml2-dev',
+            'lsb-release',
+            'make',
+            'patchelf',
+            'procps',
+            'pkg-config',
+            'python3-dev',
+            'rsync',
+            'texinfo',
+            'unixodbc-dev',
+            'uuid-dev',
+            'zlib1g-dev',
+        ]
+
         cmd = ['sudo', 'apt-get', 'update', '-y']
         build.run_cmd(cmd, check_rc='getting updates failed')
-        # get prerequisites
-        cmd = ['sudo','DEBIAN_FRONTEND=noninteractive','apt-get','install','-y','curl','automake','make',
-               'autoconf2.13','texinfo','help2man','git','gpg','lsb-release','libtool','libbz2-dev',
-               'zlib1g-dev','libcurl4-gnutls-dev','libxml2-dev','pkg-config','python3-dev','uuid-dev',
-               'libssl-dev','fuse','libfuse2','libfuse-dev', 'libmicrohttpd-dev', 'unixodbc-dev']
-        if distro_id in ['debian']:
-            # Debian 11's default GCC is version 10.2.
-            # Debian containers do not have "ps" command by default.
-            cmd.extend(['g++', 'procps']) 
-        # At this point, we know we're dealing with some version of Ubuntu.
-        elif distro_major_version == '20':
-            # Compiling LLVM 13's libcxx requires at least GCC 10.
-            cmd.extend(['gcc-10', 'g++-10']) 
+
+        if distro_id == 'ubuntu' and distro_major_version == '20':
+            # Compiling LLVM 13's libcxx doesn't work with GCC 9.
+            package_list.extend(['gcc-10', 'g++-10'])
         else:
-            # Ubuntu 18 does not have any issues compiling LLVM 13's libcxx
-            # because it is using GCC 7 which does not support any C++20 features.
-            cmd.append('g++')
-        build.run_cmd(cmd, check_rc='installing prerequisites failed')
-        cmd = ['sudo','apt-get','install','-y','autoconf','rsync']
-        build.run_cmd(cmd, check_rc='installing autoconf failed')
-        cmd = ['sudo','apt-get','install','-y','patchelf']
-        build.run_cmd(cmd, check_rc='installing patchelf failed')
+            package_list.extend(['gcc', 'g++'])
+
+        cmd = ['sudo', 'DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', '-y']
+        build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
     elif distro_id in ['rocky', 'almalinux', 'centos', 'rhel', 'scientific']:
-        log.info('Detected: {0}'.format(distro_id))
-
-        main_package_list = [
+        package_list = [
             'autoconf',
             'automake',
             'bzip2-devel',
+            'ca-certificates',
             'curl',
             'fuse',
             'fuse-devel',
@@ -105,61 +121,64 @@ def main():
             'libtool',
             'libuuid-devel',
             'libxml2-devel',
+            'openssl',
             'openssl-devel',
             'patchelf',
+            'procps',
             'python3-devel',
             'rpm-build',
+            'rsync',
             'ruby-devel',
             'rubygems',
             'texinfo',
             'unixODBC-devel',
-            'zlib-devel'
+            'wget',
+            'zlib-devel',
         ]
 
         if distro_id in ['rocky', 'almalinux']:
+            cmd = ['sudo', 'dnf', 'clean', 'all']
+            build.run_cmd(cmd, check_rc='dnf clean failed')
+
             cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
-            build.run_cmd(cmd, check_rc='rpm dnf install failed')
+            build.run_cmd(cmd, check_rc='dnf install repos failed')
+
             codeready_repo_name = 'powertools' if int(distro_major_version) < 9 else 'crb'
             cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
-            build.run_cmd(cmd, check_rc='rpm dnf config-manager failed')
-            cmd = ['sudo', 'dnf', 'install', '-y', 'procps', 'rsync'] # For ps and rsync.
-            # lsb_release package appears to not be available in versions of EL 9 and on(?).
+            build.run_cmd(cmd, check_rc='dnf config-manager failed')
+
             if int(distro_major_version) < 9:
-                cmd.append('redhat-lsb-core')
-            build.run_cmd(cmd, check_rc='dnf install failed')
-            cmd = ['sudo','dnf','clean','all']
-            build.run_cmd(cmd, check_rc='dnf clean failed')
-            cmd = ['sudo','dnf','install','-y','epel-release','wget','openssl','ca-certificates']
-            build.run_cmd(cmd, check_rc='installing epel failed')
-            cmd = ['sudo','dnf','install','-y']
-            if int(distro_major_version) == 9:
-                # For version 9, curl is installed by another step of this process and manually installing the package
-                # here creates a conflict. Just delete curl from the list of packages to install.
-                main_package_list.remove('curl')
-            if int(distro_major_version) == 8:
-                main_package_list.extend([
+                package_list.extend([
                     'gcc-toolset-11-gcc',
                     'gcc-toolset-11-gcc-c++',
-                    'gcc-toolset-11-libstdc++-devel'
+                    'gcc-toolset-11-libstdc++-devel',
+                    'redhat-lsb-core',
                 ])
-            build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
+            else:
+                # For version 9, curl is installed by another step of this process and manually installing the package
+                # here creates a conflict. Just delete curl from the list of packages to install.
+                package_list.remove('curl')
+
+            cmd = ['sudo', 'dnf', 'install', '-y']
+            build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
         else:
             cmd = ['sudo', 'rpm', '--rebuilddb']
             build.run_cmd(cmd, check_rc='rpm rebuild failed')
-            cmd = ['sudo','yum','clean','all']
+            cmd = ['sudo', 'yum', 'clean', 'all']
             build.run_cmd(cmd, check_rc='yum clean failed')
-            cmd = ['sudo','yum','install','centos-release-scl', '-y']
-            build.run_cmd(cmd, check_rc='yum install failed')
-            cmd = ['sudo','yum','install','-y','epel-release','wget','openssl','ca-certificates']
-            build.run_cmd(cmd, check_rc='installing epel failed')
-            main_package_list.extend([
+
+            cmd = ['sudo', 'yum', 'install', '-y', 'epel-release', 'centos-release-scl']
+            build.run_cmd(cmd, check_rc='yum install repos failed')
+
+            package_list.extend([
                 'devtoolset-10-gcc',
                 'devtoolset-10-gcc-c++',
-                'devtoolset-10-libstdc++-devel'
+                'devtoolset-10-libstdc++-devel',
             ])
-            cmd = ['sudo','yum','install','-y']
-            build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
+
+            cmd = ['sudo', 'yum', 'install', '-y']
+            build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
     else:
         log.error('Cannot determine prerequisites for platform [{0}]'.format(distro_id))
