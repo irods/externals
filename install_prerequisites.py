@@ -12,15 +12,6 @@ import sys
 RUBY_VERSION = build.ruby_requirements['ruby']
 RVM_PATH = build.ruby_requirements['path']
 
-def mkdir_p(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc:  # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else:
-            raise
-
 def install_rvm_and_ruby():
     cmd = 'curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -'
     build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')

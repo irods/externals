@@ -21,14 +21,6 @@ ruby_requirements = {
     'path': '/usr/local/rvm/bin'
 }
 
-def mkdir_p(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc: # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else: raise
-
 def touch(filename):
     try:
         os.utime(filename, None)
@@ -355,7 +347,7 @@ def build_package(target, build_native_package):
     # get
     if target == 'clang':
         if not os.path.isdir(os.path.join(build_dir, "build")):
-            mkdir_p(os.path.join(build_dir, "build"))
+            os.makedirs(os.path.join(build_dir, "build"))
         os.chdir(build_dir)
         log.debug('cwd: {0}'.format(os.getcwd()))
         # Clone only the version we want! It would take too long to download all of LLVM.
@@ -366,14 +358,14 @@ def build_package(target, build_native_package):
         run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
     elif target == 'clang-runtime':
         if not os.path.isdir(os.path.join(build_dir, target)):
-            mkdir_p(os.path.join(build_dir, target))
+            os.makedirs(os.path.join(build_dir, target))
     else:
         target_dir = os.path.join(build_dir, target)
 
         # Because cloning is disabled when the target directory exists, users who want to rebuild
         # a package using a different repository or commit must run "make <target>_clean" first.
         if not os.path.isdir(target_dir):
-            mkdir_p(build_dir)
+            os.makedirs(build_dir)
             os.chdir(build_dir)
             log.debug('cwd: {0}'.format(os.getcwd()))
 
