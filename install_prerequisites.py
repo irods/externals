@@ -161,24 +161,9 @@ def main():
             cmd = ['sudo','yum','install','-y']
             build.run_cmd(cmd + main_package_list, check_rc='installing prerequisites failed')
 
-    elif distro_id in ['opensuse ', 'sles']:
-        log.info('Detected: {0}'.format(distro_id))
-        # get prerequisites
-        cmd = ['sudo','zypper','install','-y','curl','tar','gzip','git','ruby-devel','libmicrohttpd-devel','makeinfo','rubygems',
-               'libopenssl-devel','rpm-build','help2man','python-devel','libbz2-devel','libcurl-devel','libxml2-devel','libtool',
-               'libuuid-devel','uuid-devel','unixODBC-devel','cyrus-sasl','patchelf']
-        build.run_cmd(cmd, check_rc='installing prerequisites failed')
     else:
-        if platform.mac_ver()[0] != '':
-            log.info('Detected: {0}'.format(platform.mac_ver()[0]))
-            # get prerequisites
-            cmd = ['brew','install','git','help2man','texinfo','libtool']
-            build.run_cmd(cmd, check_rc='installing prerequisites failed')
-            cmd = ['brew','link','texinfo','--force']
-            build.run_cmd(cmd, check_rc='linking texinfo failed')
-        else:
-            log.error('Cannot determine prerequisites for platform [{0}]'.format(distro_id))
-            return 1
+        log.error('Cannot determine prerequisites for platform [{0}]'.format(distro_id))
+        return 1
 
     # get necessary ruby gems
     if options.package:
