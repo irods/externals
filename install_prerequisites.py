@@ -108,7 +108,6 @@ def main():
             'automake',
             'bzip2-devel',
             'ca-certificates',
-            'curl',
             'fuse',
             'fuse-devel',
             'gcc',
@@ -149,15 +148,18 @@ def main():
 
             if int(distro_major_version) < 9:
                 package_list.extend([
+                    'curl',
                     'gcc-toolset-11-gcc',
                     'gcc-toolset-11-gcc-c++',
                     'gcc-toolset-11-libstdc++-devel',
                     'redhat-lsb-core',
                 ])
             else:
-                # For version 9, curl is installed by another step of this process and manually installing the package
-                # here creates a conflict. Just delete curl from the list of packages to install.
-                package_list.remove('curl')
+                # Starting with EL9, curl is provided by curl-minimal by default.
+                # We don't need the full package, so let's just ensure curl-minimal is installed.
+                package_list.extend([
+                    'curl-minimal',
+                ])
 
             cmd = ['sudo', 'dnf', 'install', '-y']
             build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
@@ -172,6 +174,7 @@ def main():
             build.run_cmd(cmd, check_rc='yum install repos failed')
 
             package_list.extend([
+                'curl',
                 'devtoolset-10-gcc',
                 'devtoolset-10-gcc-c++',
                 'devtoolset-10-libstdc++-devel',
