@@ -168,9 +168,6 @@ def get_package_filename(p):
     r = get_package_revision(p)
     if t == 'rpm':
         package_filename_template = '{0}-{1}-{2}.{3}.{4}'
-    elif t == 'osxpkg':
-        t = 'pkg'
-        package_filename_template = '{0}-{1}-{2}.{4}'
     else:
         package_filename_template = '{0}_{1}-{2}_{3}.{4}'
     return package_filename_template.format(n, v, r, a, t)
@@ -194,10 +191,7 @@ def get_package_type():
     elif distro_id in ['amzn', 'fedora', 'rhel', 'scientific', 'sles', 'suse']:
         pt = 'rpm'
     else:
-        if platform.mac_ver()[0] != '':
-            pt = 'osxpkg'
-        else:
-            pt = 'not_detected'
+        pt = 'not_detected'
     log.debug('package type detected: {0}'.format(pt))
     return pt
 
@@ -401,9 +395,6 @@ def build_package(target, build_native_package):
         log.debug('CXX='+myenv['CXX'])
         myenv['PATH'] = '{0}:{1}'.format(clang_bindir, myenv['PATH'])
         log.debug('PATH='+myenv['PATH'])
-    if get_package_type() == 'osxpkg' and target in ['zeromq4-1']:
-        myenv['LIBTOOLIZE'] = 'glibtoolize'
-        log.debug('LIBTOOLIZE='+myenv['LIBTOOLIZE'])
 
     # build
     if target == 'clang':
@@ -448,66 +439,46 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_JSON_PATH", json_root, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
-    # MacOSX - after building boost
-    # libraries lack an absolute path in their install_name, so apps using them fail to load
-    # in our case, avro
-    # https://svn.boost.org/trac/boost/ticket/9141
-    if get_package_type() == 'osxpkg' and target == 'boost':
-        run_cmd('for x in {0}/lib/*.dylib; do \
-            install_name_tool -id $x $x; \
-            install_name_tool -change libboost_system.dylib {0}/lib/libboost_system.dylib $x; \
-            done'.format(boost_root), run_env=myenv, unsafe_shell=True, check_rc='osx dylib fullpath fix failed')
-
-
     # package
     if not build_native_package:
         return
 
-    if get_package_type() == 'osxpkg':
-        print('MacOSX Detected - Skipping Package Build')
-        # touch file to satisfy make
-        f = os.path.join(script_path,get_package_filename(target))
-        touch(f)
-    else:
-        if distro.id() == 'opensuse ':
-            fpmbinary='fpm.ruby2.1'
-        else:
-            fpmbinary='fpm'
-        run_cmd(['which', fpmbinary], check_rc='fpm not found, try "gem install fpm"')
-        os.chdir(script_path)
-        package_cmd = [fpmbinary, '-f', '-s', 'dir']
-        package_cmd.extend(['-t', get_package_type()])
-        package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
-        if get_package_type() == 'rpm' and target == 'clang-runtime':
-            # Do not include .build-id links in the package. These links will cause package
-            # conflicts between the clang and clang-runtime packages being produced.
-            package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
-        for d in get_package_dependencies(v):
-            package_cmd.extend(['-d', d])
-        package_cmd.extend(['-m', '<packages@irods.org>'])
-        package_cmd.extend(['--version', get_package_version(target)])
-        package_cmd.extend(['--iteration', get_package_revision(target)])
-        package_cmd.extend(['--vendor', 'iRODS Consortium'])
-        package_cmd.extend(['--license', v['license']])
-        package_cmd.extend(['--description', 'iRODS Build Dependency'])
-        package_cmd.extend(['--url', 'https://irods.org'])
-        package_cmd.extend(['-C', build_dir])
-        for i in sorted(v['fpm_directories']):
-            addpath = os.path.join(v['externals_root'], package_subdirectory, i)
-            # lib and lib64 might both be necessary for cross-platform builds
-            if i.startswith("lib"):
-                fullpath  = os.path.abspath(os.path.join(install_prefix, i))
-                if os.path.isdir(fullpath):
-                    package_cmd.extend([addpath])
-                else:
-                    log.debug("skipped ["+fullpath+"] (does not exist)")
-            else:
+    fpmbinary='fpm'
+    run_cmd(['which', fpmbinary], check_rc='fpm not found, try "gem install fpm"')
+    os.chdir(script_path)
+    package_cmd = [fpmbinary, '-f', '-s', 'dir']
+    package_cmd.extend(['-t', get_package_type()])
+    package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
+    if get_package_type() == 'rpm' and target == 'clang-runtime':
+        # Do not include .build-id links in the package. These links will cause package
+        # conflicts between the clang and clang-runtime packages being produced.
+        package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
+    for d in get_package_dependencies(v):
+        package_cmd.extend(['-d', d])
+    package_cmd.extend(['-m', '<packages@irods.org>'])
+    package_cmd.extend(['--version', get_package_version(target)])
+    package_cmd.extend(['--iteration', get_package_revision(target)])
+    package_cmd.extend(['--vendor', 'iRODS Consortium'])
+    package_cmd.extend(['--license', v['license']])
+    package_cmd.extend(['--description', 'iRODS Build Dependency'])
+    package_cmd.extend(['--url', 'https://irods.org'])
+    package_cmd.extend(['-C', build_dir])
+    for i in sorted(v['fpm_directories']):
+        addpath = os.path.join(v['externals_root'], package_subdirectory, i)
+        # lib and lib64 might both be necessary for cross-platform builds
+        if i.startswith("lib"):
+            fullpath  = os.path.abspath(os.path.join(install_prefix, i))
+            if os.path.isdir(fullpath):
                 package_cmd.extend([addpath])
-        if len(v['fpm_directories']) > 0:
-            run_cmd(package_cmd, check_rc='packaging failed')
+            else:
+                log.debug("skipped ["+fullpath+"] (does not exist)")
         else:
-            touch(get_package_filename(target))
-        print('Building [{0}] ... Complete'.format(target))
+            package_cmd.extend([addpath])
+    if len(v['fpm_directories']) > 0:
+        run_cmd(package_cmd, check_rc='packaging failed')
+    else:
+        touch(get_package_filename(target))
+    print('Building [{0}] ... Complete'.format(target))
 
 def main():
     # check parameters
