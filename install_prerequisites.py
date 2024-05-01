@@ -65,6 +65,7 @@ def main():
             'autoconf',
             'autoconf2.13',
             'automake',
+            'cmake',
             'curl',
             'fuse',
             'git',
@@ -145,6 +146,10 @@ def main():
             codeready_repo_name = 'powertools' if int(distro_major_version) < 9 else 'crb'
             cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
             build.run_cmd(cmd, check_rc='dnf config-manager failed')
+
+            package_list.extend([
+                'cmake',
+            ])
 
             if int(distro_major_version) < 9:
                 package_list.extend([
