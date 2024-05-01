@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 from __future__ import print_function
 
-import build
 import errno
 import logging
 import optparse
 import os
 import distro
 import sys
+
+import build
+import distro_info
+from distro_info import DistroVersion
 
 RUBY_VERSION = build.ruby_requirements['ruby']
 RVM_PATH = build.ruby_requirements['path']
@@ -56,11 +59,12 @@ def main():
     log.addHandler(ch)
 
     distro_id = distro.id()
-    distro_major_version = distro.major_version()
+    distro_type = distro_info.distribution_type()
+    distro_version = distro_info.distribution_version()
 
-    log.info('Detected: {0}'.format(distro_id))
+    log.info('Detected: {0} {1} ({2})'.format(distro_id, str(distro_version), distro_type))
 
-    if distro_id in ['debian', 'ubuntu']:
+    if distro_type in ['debian', 'ubuntu']:
         package_list = [
             'autoconf',
             'autoconf2.13',
@@ -94,16 +98,24 @@ def main():
         cmd = ['sudo', 'apt-get', 'update', '-y']
         build.run_cmd(cmd, check_rc='getting updates failed')
 
-        if distro_id == 'ubuntu' and distro_major_version == '20':
-            # Compiling LLVM 13's libcxx doesn't work with GCC 9.
-            package_list.extend(['gcc-10', 'g++-10'])
+        # Compiling LLVM 13's libcxx doesn't work with GCC 8/9.
+        if distro_type == 'ubuntu':
+            if DistroVersion('18.10') <= distro_version < DistroVersion('20.04'):
+                package_list.extend(['gcc-7', 'g++-7'])
+            elif DistroVersion('20.04') <= distro_version < DistroVersion('20.10'):
+                package_list.extend(['gcc-10', 'g++-10'])
+            else:
+                package_list.extend(['gcc', 'g++'])
         else:
-            package_list.extend(['gcc', 'g++'])
+            if distro_version < DistroVersion('11'):
+                package_list.extend(['gcc-7', 'g++-7'])
+            else:
+                package_list.extend(['gcc', 'g++'])
 
         cmd = ['sudo', 'DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', '-y']
         build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
-    elif distro_id in ['rocky', 'almalinux', 'centos', 'rhel', 'scientific']:
+    elif distro_type in ['rhel', 'scientific']:
         package_list = [
             'autoconf',
             'automake',
@@ -136,14 +148,14 @@ def main():
             'zlib-devel',
         ]
 
-        if distro_id in ['rocky', 'almalinux']:
+        if distro_version >= DistroVersion('8'):
             cmd = ['sudo', 'dnf', 'clean', 'all']
             build.run_cmd(cmd, check_rc='dnf clean failed')
 
             cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
             build.run_cmd(cmd, check_rc='dnf install repos failed')
 
-            codeready_repo_name = 'powertools' if int(distro_major_version) < 9 else 'crb'
+            codeready_repo_name = 'powertools' if distro_version < DistroVersion('9') else 'crb'
             cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
             build.run_cmd(cmd, check_rc='dnf config-manager failed')
 
@@ -151,7 +163,7 @@ def main():
                 'cmake',
             ])
 
-            if int(distro_major_version) < 9:
+            if distro_version < DistroVersion('9'):
                 package_list.extend([
                     'curl',
                     'gcc-toolset-11-gcc',

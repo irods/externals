@@ -23,7 +23,7 @@ In a new container, run the following:
 
 ```bash
 apt-get update
-apt-get install -y sudo git python3 python3-distro
+apt-get install -y sudo git python3 python3-distro python3-distutils
 ./install_prerequisites.py
 
 update-alternatives --install /usr/local/bin/gcc gcc /usr/bin/gcc-10 1
@@ -37,7 +37,7 @@ make # or "make server" for packages specific to building the iRODS server.
 
 ```bash
 apt-get update
-apt-get install -y sudo git python3 python3-distro
+apt-get install -y sudo git python3 python3-distro python3-setuptools
 ./install_prerequisites.py
 
 make # or "make server" for packages specific to building the iRODS server.
@@ -77,7 +77,7 @@ make # or "make server" for packages specific to building the iRODS server.
 ## RHEL / AlmaLinux / Rocky Linux 9
 
 ```bash
-dnf install -y sudo git python3 python3-distro
+dnf install -y sudo git python3 python3-distro python3-setuptools
 ./install_prerequisites.py
 make # or "make server" for packages specific to building the iRODS server.
 ```

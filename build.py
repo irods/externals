@@ -8,11 +8,11 @@ import logging
 import multiprocessing
 import optparse
 import os
-import distro
-import platform
 import re
 import subprocess
 import sys
+
+import distro_info
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -95,41 +95,6 @@ def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False, retries=0):
                 sys.exit(p.returncode)
     return p.returncode
 
-def get_distribution_name():
-    try:
-        # Older versions of distro return a bad string here... Try using the deprecated method if available. This
-        # function was removed in Python 3.8 so newer platforms will fall back to distro.
-        from platform import linux_distribution
-        return linux_distribution()[2]
-
-    except ImportError:
-        return distro.codename()
-
-def get_distribution_type(distro_id = None):
-    if distro_id is None:
-        distro_id = distro.id()
-    if distro_id == 'ol': # special handling for Oracle Linux
-        return 'rhel'
-    if distro_id in ['rhel', 'ubuntu', 'suse']:
-        return distro_id
-    distro_like = distro.like().split()
-    if len(distro_like) == 0:
-        return distro_id
-    return get_distribution_type(distro_like[0])
-
-# Does not account for derivatives that follow their own version scheme
-# (ex: RHEL7-like Amazon Linux 2)
-def get_distribution_version():
-    distro_type = get_distribution_type()
-    if distro_type == 'ubuntu':
-        return '{0}.{1}'.format(distro.major_version(), distro.minor_version())
-    if distro_type == 'suse':
-        return distro.version()
-    distro_version = distro.major_version()
-    if distro_version in ['', None]:
-        return 'rolling'
-    return distro_version
-
 def get_package_name(p):
     v = get_versions()[p]
     return 'irods-externals-{0}{1}-{2}'.format(p, v['version_string'], v['consortium_build_number'])
@@ -144,12 +109,13 @@ def get_package_revision(p):
     ver_pkgrev = v.get('package_revision', '0')
     ver_pkgrev_suffix1 = ''
     ver_pkgrev_suffix2 = ''
-    if get_package_type() == 'deb':
+    if distro_info.package_filename_extension() == 'deb':
         ver_pkgrev_suffix1 = '~'
-        ver_pkgrev_suffix2 = get_distribution_name()
+        ver_pkgrev_suffix2 = distro_info.distribution_codename()
     else:
-        dt = get_distribution_type()
-        dv = get_distribution_version()
+        dt = distro_info.distribution_type()
+        dv = distro_info.distribution_version()
+        ver_pkgrev_suffix2 = str(dv)
         ver_pkgrev_suffix2 = dv
         if dt == 'rhel':
             ver_pkgrev_suffix1 = '.el'
@@ -162,8 +128,8 @@ def get_package_revision(p):
 
 def get_package_filename(p):
     n = get_package_name(p)
-    a = get_package_arch()
-    t = get_package_type()
+    a = distro_info.package_architecture_string()
+    t = distro_info.package_filename_extension()
     v = get_package_version(p)
     r = get_package_revision(p)
     if t == 'rpm':
@@ -176,25 +142,6 @@ def get_versions():
     with open(script_path + '/versions.json', 'r') as f:
         return json.load(f)
 
-def get_package_arch():
-    machine_type = platform.machine()
-    if get_package_type() == 'deb' and machine_type == 'x86_64':
-        return 'amd64'
-    return machine_type
-
-def get_package_type():
-    log = logging.getLogger(__name__)
-    distro_id = get_distribution_type()
-    log.debug('linux distribution detected: {0}'.format(distro_id))
-    if distro_id in ['debian', 'ubuntu']:
-        pt = 'deb'
-    elif distro_id in ['amzn', 'fedora', 'rhel', 'scientific', 'sles', 'suse']:
-        pt = 'rpm'
-    else:
-        pt = 'not_detected'
-    log.debug('package type detected: {0}'.format(pt))
-    return pt
-
 def get_package_dependencies(v):
     log = logging.getLogger(__name__)
     deps = []
@@ -206,10 +153,10 @@ def get_package_dependencies(v):
 
     # distro-specific dependencies
     if 'distro_dependencies' in v:
-        distro_type = get_distribution_type()
+        distro_type = distro_info.distribution_type()
         v_distro_deps = v['distro_dependencies']
         if distro_type in v_distro_deps:
-            distro_ver = get_distribution_version()
+            distro_ver = str(distro_info.distribution_version())
             distro_type_deps = v_distro_deps[distro_type]
             if distro_ver in distro_type_deps:
                 deps.extend(distro_type_deps[distro_ver])
@@ -447,9 +394,9 @@ def build_package(target, build_native_package):
     run_cmd(['which', fpmbinary], check_rc='fpm not found, try "gem install fpm"')
     os.chdir(script_path)
     package_cmd = [fpmbinary, '-f', '-s', 'dir']
-    package_cmd.extend(['-t', get_package_type()])
+    package_cmd.extend(['-t', distro_info.package_type()])
     package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
-    if get_package_type() == 'rpm' and target == 'clang-runtime':
+    if distro_info.package_type() == 'rpm' and target == 'clang-runtime':
         # Do not include .build-id links in the package. These links will cause package
         # conflicts between the clang and clang-runtime packages being produced.
         package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
