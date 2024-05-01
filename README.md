@@ -46,8 +46,8 @@ make # or "make server" for packages specific to building the iRODS server.
 ## RHEL / CentOS 7
 
 ```bash
-yum install -y sudo git python3 centos-release-scl epel-release
-yum install -y python36-distro devtoolset-10-gcc devtoolset-10-gcc-c++
+yum install -y sudo git python3 epel-release
+yum install -y python36-distro
 
 # Installing the prerequistes must be done before enabling the GCC compiler
 # environment.
@@ -62,8 +62,7 @@ make # or "make server" for packages specific to building the iRODS server.
 ## RHEL / AlmaLinux / Rocky Linux 8
 
 ```bash
-dnf config-manager --set-enabled powertools
-dnf install -y sudo git python3 python3-distro gcc-toolset-11
+dnf install -y sudo git python3 python3-distro
 
 # Installing the prerequistes must be done before enabling the GCC compiler
 # environment.
@@ -78,7 +77,6 @@ make # or "make server" for packages specific to building the iRODS server.
 ## RHEL / AlmaLinux / Rocky Linux 9
 
 ```bash
-dnf config-manager --set-enabled crb
 dnf install -y sudo git python3 python3-distro
 ./install_prerequisites.py
 make # or "make server" for packages specific to building the iRODS server.
