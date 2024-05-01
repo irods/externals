@@ -55,6 +55,7 @@ yum install -y python36-distro
 
 # Enable the GCC 10 compiler tools.
 scl enable devtoolset-10 bash
+export IRODS_EXTERNALS_GCC_PREFIX="/opt/rh/devtoolset-10/root/usr"
 
 make # or "make server" for packages specific to building the iRODS server.
 ```
@@ -70,6 +71,7 @@ dnf install -y sudo git python3 python3-distro
 
 # Enable the GCC 11 compiler tools.
 scl enable gcc-toolset-11 bash
+export IRODS_EXTERNALS_GCC_PREFIX="/opt/rh/gcc-toolset-11/root/usr"
 
 make # or "make server" for packages specific to building the iRODS server.
 ```
