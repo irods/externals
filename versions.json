@@ -874,8 +874,10 @@
         "consortium_build_number": "2",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "nanodbc/1001-Add-missing-include-279.patch"
+        ],
         "build_steps": [
-            "sed -i '26i #include <limits>' nanodbc/nanodbc.cpp",
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DNANODBC_FORCE_LIBCXX=OFF -DNANODBC_DISABLE_LIBCXX=ON ..",
             "cd build; make nanodbc install"
