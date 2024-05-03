@@ -1,0 +1,53 @@
+Replaces a few more instances of `__has_keyword`/`__has_feature` with `__has_builtin`
+
+Not based on any upstream commit, as the checks in question were removed before they could be updated.
+
+---
+ libcxx/include/__config     |    2 +-
+ llvm/include/llvm/ADT/bit.h |    8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff -pru llvm-project.orig/libcxx/include/__config llvm-project/libcxx/include/__config
+--- llvm-project.orig/libcxx/include/__config	2024-05-02 15:29:00.327309498 -0500
++++ llvm-project/libcxx/include/__config	2024-05-02 20:00:53.969430242 -0500
+@@ -1378,7 +1378,7 @@ extern "C" _LIBCPP_FUNC_VIS void __sanit
+ #define _LIBCPP_HAS_NO_DEDUCTION_GUIDES
+ #endif
+ 
+-#if !__has_keyword(__is_aggregate) && (_GNUC_VER_NEW < 7001)
++#if !__has_builtin(__is_aggregate) && (_GNUC_VER_NEW < 7001)
+ #define _LIBCPP_HAS_NO_IS_AGGREGATE
+ #endif
+ 
+diff -pru llvm-project.orig/llvm/include/llvm/ADT/bit.h llvm-project/llvm/include/llvm/ADT/bit.h
+--- llvm-project.orig/llvm/include/llvm/ADT/bit.h	2024-05-02 15:29:00.537307326 -0500
++++ llvm-project/llvm/include/llvm/ADT/bit.h	2024-05-02 20:01:54.360832591 -0500
+@@ -25,22 +25,22 @@ namespace llvm {
+ template <
+     typename To, typename From,
+     typename = std::enable_if_t<sizeof(To) == sizeof(From)>
+-#if (__has_feature(is_trivially_constructible) && defined(_LIBCPP_VERSION)) || \
++#if (__has_builtin(__is_trivially_constructible) && defined(_LIBCPP_VERSION)) || \
+     (defined(__GNUC__) && __GNUC__ >= 5)
+     ,
+     typename = std::enable_if_t<std::is_trivially_constructible<To>::value>
+-#elif __has_feature(is_trivially_constructible)
++#elif __has_builtin(__is_trivially_constructible)
+     ,
+     typename = std::enable_if_t<__is_trivially_constructible(To)>
+ #else
+   // See comment below.
+ #endif
+-#if (__has_feature(is_trivially_copyable) && defined(_LIBCPP_VERSION)) || \
++#if (__has_builtin(__is_trivially_copyable) && defined(_LIBCPP_VERSION)) || \
+     (defined(__GNUC__) && __GNUC__ >= 5)
+     ,
+     typename = std::enable_if_t<std::is_trivially_copyable<To>::value>,
+     typename = std::enable_if_t<std::is_trivially_copyable<From>::value>
+-#elif __has_feature(is_trivially_copyable)
++#elif __has_builtin(__is_trivially_copyable)
+     ,
+     typename = std::enable_if_t<__is_trivially_copyable(To)>,
+     typename = std::enable_if_t<__is_trivially_copyable(From)>
+-- 
+

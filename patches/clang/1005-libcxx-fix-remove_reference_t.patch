@@ -1,0 +1,52 @@
+The `remove_reference` section of `<type_traits>` does not define
+`remove_reference_t` if `__has_builtin(__remove_reference)` is truthy.
+Let's fix that, and also use `__remove_reference_t`, if it's available.
+
+---
+ libcxx/include/type_traits |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff -pru llvm-project.orig/libcxx/include/type_traits llvm-project/libcxx/include/type_traits
+--- llvm-project.orig/libcxx/include/type_traits	2024-05-02 23:25:51.904167661 -0500
++++ llvm-project/libcxx/include/type_traits	2024-05-02 23:26:32.848773347 -0500
+@@ -1324,23 +1324,34 @@ template <class _Tp> using add_cv_t = ty
+ 
+ // remove_reference
+ 
+-#if __has_builtin(__remove_reference)
++#if __has_builtin(__remove_reference_t)
++
++template<class _Tp>
++struct _LIBCPP_TEMPLATE_VIS remove_reference { typedef __remove_reference_t(_Tp) type; };
++
++template <class _Tp> using __libcpp_remove_reference_t = __remove_reference_t(_Tp);
++
++#elif __has_builtin(__remove_reference)
+ 
+ template<class _Tp>
+ struct _LIBCPP_TEMPLATE_VIS remove_reference { typedef __remove_reference(_Tp) type; };
+ 
++template <class _Tp> using __libcpp_remove_reference_t = typename remove_reference<_Tp>::type;
++
+ #else // __has_builtin(__remove_reference)
+ 
+ template <class _Tp> struct _LIBCPP_TEMPLATE_VIS remove_reference        {typedef _LIBCPP_NODEBUG_TYPE _Tp type;};
+ template <class _Tp> struct _LIBCPP_TEMPLATE_VIS remove_reference<_Tp&>  {typedef _LIBCPP_NODEBUG_TYPE _Tp type;};
+ template <class _Tp> struct _LIBCPP_TEMPLATE_VIS remove_reference<_Tp&&> {typedef _LIBCPP_NODEBUG_TYPE _Tp type;};
+ 
+-#if _LIBCPP_STD_VER > 11
+-template <class _Tp> using remove_reference_t = typename remove_reference<_Tp>::type;
+-#endif
++template <class _Tp> using __libcpp_remove_reference_t = typename remove_reference<_Tp>::type;
+ 
+ #endif // __has_builtin(__remove_reference)
+ 
++#if _LIBCPP_STD_VER > 11
++template <class _Tp> using remove_reference_t = __libcpp_remove_reference_t<_Tp>;
++#endif
++
+ // add_lvalue_reference
+ 
+ template <class _Tp, bool = __is_referenceable<_Tp>::value> struct __add_lvalue_reference_impl            { typedef _LIBCPP_NODEBUG_TYPE _Tp  type; };
+-- 
+

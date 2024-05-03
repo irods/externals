@@ -1,0 +1,26 @@
+From 64282577ec0005094c6df186bc424f1d2fab19a0 Mon Sep 17 00:00:00 2001
+From: detule <ogjoneski@gmail.com>
+Date: Thu, 27 Jul 2023 12:01:45 -0400
+Subject: [PATCH] headers: Unconditionally include cstdint (#386)
+
+---
+ nanodbc/nanodbc.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/nanodbc/nanodbc.h b/nanodbc/nanodbc.h
+index 1d90adc..5cfcd71 100644
+--- a/nanodbc/nanodbc.h
++++ b/nanodbc/nanodbc.h
+@@ -96,9 +96,7 @@
+ #endif
+ #include <vector>
+ 
+-#ifndef __clang__
+ #include <cstdint>
+-#endif
+ 
+ /// \brief The entirety of nanodbc can be found within this one namespace.
+ ///
+-- 
+2.44.0
+
