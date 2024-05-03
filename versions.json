@@ -59,6 +59,11 @@
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
                 ]
             }
         }
@@ -116,6 +121,10 @@
                     "libgcc-s1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1"
                 ]
@@ -210,6 +219,14 @@
                     "libstdc++6",
                     "libbz2-1.0",
                     "libicu70"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libz1",
+                    "libstdc++6",
+                    "libbz2-1.0",
+                    "libicu74"
                 ]
             }
         }
@@ -298,6 +315,13 @@
                     "libz1",
                     "libbz2-1.0",
                     "libicu70"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libz1",
+                    "libbz2-1.0",
+                    "libicu74"
                 ]
             }
         }
@@ -361,15 +385,20 @@
             "clang/from-debian/CVE-2023-29934.patch",
             "clang/from-debian/CVE-2023-29939.patch",
             "clang/from-fedora/0001-Driver-Add-a-gcc-equivalent-triple-to-the-list-of-tr.patch",
-            "clang/from-fedora/0001-PATCH-compiler-rt-Workaround-libstdc-limitation-wrt..patch"
+            "clang/from-fedora/0001-PATCH-compiler-rt-Workaround-libstdc-limitation-wrt..patch",
+            "clang/1002-libcxx-Prefer-__has_builtin-for-detecting-compiler-p.patch",
+            "clang/1003-more-__has_builtin-replacements.patch",
+            "clang/1004-libcxx-Use-__is_convertible-built-in-when-available.patch",
+            "clang/1005-libcxx-fix-remove_reference_t.patch"
         ],
         "build_steps": [
-            "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' -DLLVM_TARGETS_TO_BUILD='X86' ../llvm-project/llvm",
-            "make -jTEMPLATE_JOBS",
-            "make -jTEMPLATE_JOBS check-clang-tools",
-            "make -jTEMPLATE_JOBS install",
-            "cp ./libexec/c++-analyzer TEMPLATE_INSTALL_PREFIX/bin",
-            "cp ./libexec/ccc-analyzer TEMPLATE_INSTALL_PREFIX/bin"
+            "mkdir -p ../build",
+            "cd ../build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' -DLLVM_TARGETS_TO_BUILD='X86' ../llvm-project/llvm",
+            "cd ../build; make -jTEMPLATE_JOBS",
+            "cd ../build; make -jTEMPLATE_JOBS check-clang-tools",
+            "cd ../build; make -jTEMPLATE_JOBS install",
+            "cp ../build/libexec/c++-analyzer TEMPLATE_INSTALL_PREFIX/bin",
+            "cp ../build/libexec/ccc-analyzer TEMPLATE_INSTALL_PREFIX/bin"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -460,6 +489,17 @@
                     "libstdc++-11-dev",
                     "libtinfo6",
                     "libxml2"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libc6-dev",
+                    "libgcc-s1",
+                    "libgcc-13-dev",
+                    "libz1",
+                    "libstdc++6",
+                    "libstdc++-13-dev",
+                    "libtinfo6",
+                    "libxml2"
                 ]
             }
         }
@@ -513,6 +553,10 @@
                     "libgcc-s1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1"
                 ]
@@ -592,6 +636,14 @@
                     "libtinfo6"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libncurses6",
+                    "libstdc++6",
+                    "libssl3",
+                    "libtinfo6"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1",
                     "libncurses6",
@@ -681,6 +733,11 @@
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
                 ]
             }
         }
@@ -739,6 +796,10 @@
                     "libgcc-s1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1"
                 ]
@@ -868,6 +929,13 @@
                     "libbz2-1.0",
                     "libssl3",
                     "libxml2"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libz1",
+                    "libbz2-1.0",
+                    "libssl3",
+                    "libxml2"
                 ]
             }
         }
@@ -941,6 +1009,12 @@
                     "libgcc-s1",
                     "libstdc++6",
                     "libfuse2"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libfuse2"
                 ]
             }
         }
@@ -953,7 +1027,8 @@
         "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "patches": [
-            "nanodbc/1001-Add-missing-include-279.patch"
+            "nanodbc/1001-Add-missing-include-279.patch",
+            "nanodbc/1002-headers-Unconditionally-include-cstdint-386.patch"
         ],
         "build_steps": [
             "mkdir -p build",
@@ -1007,6 +1082,12 @@
                     "libodbc1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libodbc2"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
@@ -1072,6 +1153,11 @@
                     "libodbc1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libodbc2"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1",
                     "libodbc2"
@@ -1142,6 +1228,12 @@
                     "libgcc-s1",
                     "libstdc++6",
                     "libssl3"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6",
+                    "libssl3"
                 ]
             }
         }
@@ -1206,6 +1298,11 @@
                     "libc6",
                     "libgcc-s1",
                     "libssl3"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libssl3"
                 ]
             }
         }
@@ -1250,6 +1347,9 @@
                     "libc6"
                 ],
                 "22.04": [
+                    "libc6"
+                ],
+                "24.04": [
                     "libc6"
                 ]
             }
@@ -1314,6 +1414,11 @@
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
                 ]
             }
         }
@@ -1370,6 +1475,10 @@
                     "libgcc-s1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1"
                 ]
@@ -1432,6 +1541,11 @@
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6"
+                ],
+                "24.04": [
+                    "libc6",
+                    "libgcc-s1",
+                    "libstdc++6"
                 ]
             }
         }
@@ -1487,6 +1601,10 @@
                     "libgcc-s1"
                 ],
                 "22.04": [
+                    "libc6",
+                    "libgcc-s1"
+                ],
+                "24.04": [
                     "libc6",
                     "libgcc-s1"
                 ]

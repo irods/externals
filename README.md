@@ -4,6 +4,7 @@ Currently tested on:
 
 - Ubuntu 20.04
 - Ubuntu 22.04
+- Ubuntu 24.04
 - CentOS 7
 - AlmaLinux 8
 - Rocky Linux 8
@@ -33,7 +34,7 @@ hash -r
 make # or "make server" for packages specific to building the iRODS server.
 ```
 
-## Ubuntu 22.04, Debian 11, and Debian 12
+## Ubuntu 22.04, Ubuntu 24.04, Debian 11, and Debian 12
 
 ```bash
 apt-get update
