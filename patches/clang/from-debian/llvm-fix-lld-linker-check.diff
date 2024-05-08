@@ -1,0 +1,15 @@
+remove regex anchor in lld linker detection to account for vendor, if
+specified, being prepended to lld version string
+Index: llvm-toolchain-12_12.0.1/llvm/cmake/modules/AddLLVM.cmake
+===================================================================
+--- llvm-toolchain-12_12.0.1.orig/llvm/cmake/modules/AddLLVM.cmake
++++ llvm-toolchain-12_12.0.1/llvm/cmake/modules/AddLLVM.cmake
+@@ -196,7 +196,7 @@ if (NOT DEFINED LLVM_LINKER_DETECTED)
+       set(LLVM_LINKER_DETECTED YES CACHE INTERNAL "")
+       set(LLVM_LINKER_IS_GOLD YES CACHE INTERNAL "")
+       message(STATUS "Linker detection: GNU Gold")
+-    elseif("${stdout}" MATCHES "^LLD")
++    elseif("${stdout}" MATCHES "LLD")
+       set(LLVM_LINKER_DETECTED YES CACHE INTERNAL "")
+       set(LLVM_LINKER_IS_LLD YES CACHE INTERNAL "")
+       message(STATUS "Linker detection: LLD")

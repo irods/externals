@@ -1,0 +1,15 @@
+Index: llvm-toolchain-snapshot_12~++20200809124138+04a23f1fe08/clang/lib/Driver/ToolChains/Arch/X86.cpp
+===================================================================
+--- llvm-toolchain-snapshot_12~++20200809124138+04a23f1fe08.orig/clang/lib/Driver/ToolChains/Arch/X86.cpp
++++ llvm-toolchain-snapshot_12~++20200809124138+04a23f1fe08/clang/lib/Driver/ToolChains/Arch/X86.cpp
+@@ -102,8 +102,8 @@ std::string x86::getX86TargetCPU(const A
+   case llvm::Triple::FreeBSD:
+     return "i686";
+   default:
+-    // Fallback to p4.
+-    return "pentium4";
++    // Fallback to i686.
++    return "i686";
+   }
+ }
+ 

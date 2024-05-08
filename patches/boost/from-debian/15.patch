@@ -1,0 +1,25 @@
+From d87190a3b1ea23d6d684b21751e6f65927e6083f Mon Sep 17 00:00:00 2001
+From: Evan Lenz <evan@evanlenz.net>
+Date: Tue, 23 Aug 2022 10:37:15 -0700
+Subject: [PATCH] Remove template rule conflict for text nodesa
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1016321
+
+
+fix https://github.com/boostorg/boostbook/issues/14
+---
+ xsl/annotation.xsl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: boost1.80-1.80.0/tools/boostbook/xsl/annotation.xsl
+===================================================================
+--- boost1.80-1.80.0.orig/tools/boostbook/xsl/annotation.xsl
++++ boost1.80-1.80.0/tools/boostbook/xsl/annotation.xsl
+@@ -426,7 +426,7 @@
+     <xsl:copy/>
+   </xsl:template>
+ 
+-  <xsl:template match="node()" mode="annotation">
++  <xsl:template match="*" mode="annotation">
+     <xsl:param name="highlight" select="false()"/>
+ 
+     <xsl:element name="{name(.)}">

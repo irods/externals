@@ -1,0 +1,185 @@
+From 61967bbc7d4e9f72fb1fa082fa2235b99e36b698 Mon Sep 17 00:00:00 2001
+From: Nikita Popov <npopov@redhat.com>
+Date: Thu, 20 Apr 2023 14:59:27 +0200
+Subject: [PATCH] [OpenMP] Replace libomp_check_linker_flag with
+ llvm_check_compiler_linker_flag
+
+Replace the custom libomp_check_linker_flag() implementation with
+llvm_check_compiler_linker_flag() from the common cmake utils. Due
+to the way the custom implementation is implemented (capturing
+output from an entire nested cmake invocation) it can easily end
+up incorrectly detecting flags as unavailable, e.g. because "error",
+"unknown" or similar occurs inside compiler flags, the directory
+name, etc.
+
+Fixes https://github.com/llvm/llvm-project/issues/62240.
+
+Differential Revision: https://reviews.llvm.org/D148798
+---
+ .../runtime/cmake/LibompCheckLinkerFlag.cmake | 72 -------------------
+ openmp/runtime/cmake/config-ix.cmake          | 18 ++---
+ 2 files changed, 9 insertions(+), 81 deletions(-)
+ delete mode 100644 openmp/runtime/cmake/LibompCheckLinkerFlag.cmake
+
+Add also part of 24d144571dbffc6993d13fb7ca781248eed024de
+diff --git a/openmp/runtime/cmake/LLVMCheckCompilerLinkerFlag.cmake b/openmp/runtime/cmake/LLVMCheckCompilerLinkerFlag.cmake
+new file mode 100644
+index 00000000000000..f61ec0585f9a45
+--- /dev/null
++++ b/openmp/runtime/cmake/LLVMCheckCompilerLinkerFlag.cmake
+@@ -0,0 +1,35 @@
++include(CMakePushCheckState)
++
++include(CheckCompilerFlag OPTIONAL)
++
++if(NOT COMMAND check_compiler_flag)
++  include(CheckCCompilerFlag)
++  include(CheckCXXCompilerFlag)
++endif()
++
++function(llvm_check_compiler_linker_flag lang flag out_var)
++  # If testing a flag with check_c_compiler_flag, it gets added to the compile
++  # command only, but not to the linker command in that test. If the flag
++  # is vital for linking to succeed, the test would fail even if it would
++  # have succeeded if it was included on both commands.
++  #
++  # Therefore, try adding the flag to CMAKE_REQUIRED_FLAGS, which gets
++  # added to both compiling and linking commands in the tests.
++
++  cmake_push_check_state()
++  set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} ${flag}")
++  if(COMMAND check_compiler_flag)
++    check_compiler_flag("${lang}" "" ${out_var})
++  else()
++    # Until the minimum CMAKE version is 3.19
++    # cmake builtin compatible, except we assume lang is C or CXX
++    if("${lang}" STREQUAL "C")
++      check_c_compiler_flag("" ${out_var})
++    elseif("${lang}" STREQUAL "CXX")
++      check_cxx_compiler_flag("" ${out_var})
++    else()
++      message(FATAL_ERROR "\"${lang}\" is not C or CXX")
++    endif()
++  endif()
++  cmake_pop_check_state()
++endfunction()
+Index: llvm-toolchain-13-13.0.1/openmp/runtime/cmake/LibompCheckLinkerFlag.cmake
+===================================================================
+--- llvm-toolchain-13-13.0.1.orig/openmp/runtime/cmake/LibompCheckLinkerFlag.cmake
++++ /dev/null
+@@ -1,68 +0,0 @@
+-#
+-#//===----------------------------------------------------------------------===//
+-#//
+-#// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+-#// See https://llvm.org/LICENSE.txt for license information.
+-#// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+-#//
+-#//===----------------------------------------------------------------------===//
+-#
+-
+-# Checking a linker flag to build a shared library
+-# There is no real trivial way to do this in CMake, so we implement it here
+-# this will have ${boolean} = TRUE if the flag succeeds, otherwise FALSE.
+-function(libomp_check_linker_flag flag boolean)
+-  if(NOT DEFINED "${boolean}")
+-  set(retval TRUE)
+-  set(library_source
+-    "int foo(int a) { return a*a; }")
+-  set(cmake_source
+-    "cmake_minimum_required(VERSION 3.13.4)
+-     project(foo C)
+-     set(CMAKE_SHARED_LINKER_FLAGS \"${flag}\")
+-     add_library(foo SHARED src_to_link.c)")
+-  set(failed_regexes "[Ee]rror;[Uu]nknown;[Ss]kipping;LINK : warning")
+-  set(base_dir ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/link_flag_check_${boolean})
+-  file(MAKE_DIRECTORY ${base_dir})
+-  file(MAKE_DIRECTORY ${base_dir}/build)
+-  file(WRITE ${base_dir}/src_to_link.c "${library_source}")
+-  file(WRITE ${base_dir}/CMakeLists.txt "${cmake_source}")
+-
+-  message(STATUS "Performing Test ${boolean}")
+-  try_compile(
+-    try_compile_result
+-    ${base_dir}/build
+-    ${base_dir}
+-    foo
+-    OUTPUT_VARIABLE OUTPUT)
+-
+-  if(try_compile_result)
+-    foreach(regex IN LISTS failed_regexes)
+-      # Ignore the warning about the newer or unknown CUDA version.
+-      if(("${OUTPUT}" MATCHES ${regex}) AND NOT ("${OUTPUT}" MATCHES "Unknown CUDA version"))
+-        set(retval FALSE)
+-      endif()
+-    endforeach()
+-  else()
+-    set(retval FALSE)
+-  endif()
+-
+-  if(${retval})
+-    set(${boolean} 1 CACHE INTERNAL "Test ${boolean}")
+-    message(STATUS "Performing Test ${boolean} - Success")
+-    file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeOutput.log
+-      "Performing C Linker Flag test ${boolean} succeeded with the following output:\n"
+-      "${OUTPUT}\n"
+-      "Source file was:\n${library_source}\n")
+-  else()
+-    set(${boolean} "" CACHE INTERNAL "Test ${boolean}")
+-    message(STATUS "Performing Test ${boolean} - Failed")
+-    file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
+-      "Performing C Linker Flag test ${boolean} failed with the following output:\n"
+-      "${OUTPUT}\n"
+-      "Source file was:\n${library_source}\n")
+-  endif()
+-
+-  set(${boolean} ${retval} PARENT_SCOPE)
+-  endif()
+-endfunction()
+Index: llvm-toolchain-13-13.0.1/openmp/runtime/cmake/config-ix.cmake
+===================================================================
+--- llvm-toolchain-13-13.0.1.orig/openmp/runtime/cmake/config-ix.cmake
++++ llvm-toolchain-13-13.0.1/openmp/runtime/cmake/config-ix.cmake
+@@ -16,8 +16,8 @@
+ include(CheckLibraryExists)
+ include(CheckIncludeFiles)
+ include(CheckSymbolExists)
+-include(LibompCheckLinkerFlag)
+ include(LibompCheckFortranFlag)
++include(LLVMCheckCompilerLinkerFlag)
+ 
+ # Check for versioned symbols
+ function(libomp_check_version_symbols retval)
+@@ -111,14 +111,14 @@
+ 
+ # Check linker flags
+ if(WIN32)
+-  libomp_check_linker_flag(/SAFESEH LIBOMP_HAVE_SAFESEH_FLAG)
++  llvm_check_compiler_linker_flag(/SAFESEH LIBOMP_HAVE_SAFESEH_FLAG)
+ elseif(NOT APPLE)
+-  libomp_check_linker_flag(-Wl,-x LIBOMP_HAVE_X_FLAG)
+-  libomp_check_linker_flag(-Wl,--warn-shared-textrel LIBOMP_HAVE_WARN_SHARED_TEXTREL_FLAG)
+-  libomp_check_linker_flag(-Wl,--as-needed LIBOMP_HAVE_AS_NEEDED_FLAG)
+-  libomp_check_linker_flag("-Wl,--version-script=${LIBOMP_SRC_DIR}/exports_so.txt" LIBOMP_HAVE_VERSION_SCRIPT_FLAG)
+-  libomp_check_linker_flag(-static-libgcc LIBOMP_HAVE_STATIC_LIBGCC_FLAG)
+-  libomp_check_linker_flag(-Wl,-z,noexecstack LIBOMP_HAVE_Z_NOEXECSTACK_FLAG)
++  llvm_check_compiler_linker_flag(C -Wl,-x LIBOMP_HAVE_X_FLAG)
++  llvm_check_compiler_linker_flag(C -Wl,--warn-shared-textrel LIBOMP_HAVE_WARN_SHARED_TEXTREL_FLAG)
++  llvm_check_compiler_linker_flag(C -Wl,--as-needed LIBOMP_HAVE_AS_NEEDED_FLAG)
++  llvm_check_compiler_linker_flag(C "-Wl,--version-script=${LIBOMP_SRC_DIR}/exports_so.txt" LIBOMP_HAVE_VERSION_SCRIPT_FLAG)
++  llvm_check_compiler_linker_flag(C -static-libgcc LIBOMP_HAVE_STATIC_LIBGCC_FLAG)
++  llvm_check_compiler_linker_flag(C -Wl,-z,noexecstack LIBOMP_HAVE_Z_NOEXECSTACK_FLAG)
+ endif()
+ 
+ # Check Intel(R) C Compiler specific flags
+@@ -129,8 +129,8 @@
+   check_cxx_compiler_flag(-Qoption,cpp,--extended_float_types LIBOMP_HAVE_EXTENDED_FLOAT_TYPES_FLAG)
+   check_cxx_compiler_flag(-falign-stack=maintain-16-byte LIBOMP_HAVE_FALIGN_STACK_FLAG)
+   check_cxx_compiler_flag("-opt-streaming-stores never" LIBOMP_HAVE_OPT_STREAMING_STORES_FLAG)
+-  libomp_check_linker_flag(-static-intel LIBOMP_HAVE_STATIC_INTEL_FLAG)
+-  libomp_check_linker_flag(-no-intel-extensions LIBOMP_HAVE_NO_INTEL_EXTENSIONS_FLAG)
++  llvm_check_compiler_linker_flag(C -static-intel LIBOMP_HAVE_STATIC_INTEL_FLAG)
++  llvm_check_compiler_linker_flag(C -no-intel-extensions LIBOMP_HAVE_NO_INTEL_EXTENSIONS_FLAG)
+   check_library_exists(irc_pic _intel_fast_memcpy "" LIBOMP_HAVE_IRC_PIC_LIBRARY)
+ endif()
+ 

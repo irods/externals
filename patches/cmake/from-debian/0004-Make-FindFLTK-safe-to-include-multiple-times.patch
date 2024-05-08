@@ -1,0 +1,38 @@
+From: =?utf-8?q?Timo_R=C3=B6hling?= <roehling@debian.org>
+Date: Mon, 18 Oct 2021 16:45:01 +0200
+Subject: Make FindFLTK safe to include multiple times
+
+Forwarded: not-needed
+
+This is a backport of commit 51fd21736b10e2fa04382c5aa71f2044d31e362f
+from the 3.22.x milestone.
+---
+ Modules/FindFLTK.cmake | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/Modules/FindFLTK.cmake b/Modules/FindFLTK.cmake
+index bab7256..d54d2f6 100644
+--- a/Modules/FindFLTK.cmake
++++ b/Modules/FindFLTK.cmake
+@@ -152,13 +152,17 @@ if(NOT FLTK_DIR)
+ endif()
+ 
+ # Check if FLTK was built using CMake
+-if(EXISTS ${FLTK_DIR}/FLTKConfig.cmake)
+-  set(FLTK_BUILT_WITH_CMAKE 1)
+-endif()
++foreach(fltk_include IN LISTS FLTK_DIR)
++  if(EXISTS "${fltk_include}/FLTKConfig.cmake")
++    set(FLTK_BUILT_WITH_CMAKE 1)
++    set(FLTK_CMAKE_PATH "${fltk_include}/FLTKConfig.cmake")
++    break()
++  endif()
++endforeach()
+ 
+ if(FLTK_BUILT_WITH_CMAKE)
+   set(FLTK_FOUND 1)
+-  include(${FLTK_DIR}/FLTKConfig.cmake)
++  include("${FLTK_CMAKE_PATH}")
+ 
+   # Fluid
+   if(FLUID_COMMAND)

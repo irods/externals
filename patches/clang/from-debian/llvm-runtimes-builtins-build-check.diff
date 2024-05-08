@@ -1,0 +1,20 @@
+add a check and only set up and build compiler-rt builtins if they have
+not been disabled
+Index: llvm-toolchain-13-13.0.1~+rc1/llvm/runtimes/CMakeLists.txt
+===================================================================
+--- llvm-toolchain-13-13.0.1~+rc1.orig/llvm/runtimes/CMakeLists.txt
++++ llvm-toolchain-13-13.0.1~+rc1/llvm/runtimes/CMakeLists.txt
+@@ -129,7 +129,12 @@ endfunction()
+ # is required because the other runtimes need the builtin libraries present
+ # before the just-built compiler can pass the configuration tests.
+ get_compiler_rt_path(compiler_rt_path)
+-if(compiler_rt_path)
++# check if builtins have been disabled
++set(RUNTIMES_BUILD_BUILTINS ON)
++if(DEFINED COMPILER_RT_BUILD_BUILTINS)
++  set(RUNTIMES_BUILD_BUILTINS ${COMPILER_RT_BUILD_BUILTINS})
++endif()
++if(compiler_rt_path AND RUNTIMES_BUILD_BUILTINS)
+   if(NOT LLVM_BUILTIN_TARGETS)
+     builtin_default_target(${compiler_rt_path}
+       DEPENDS clang-resource-headers)

@@ -4,7 +4,7 @@
         "version_string": "1.11.0",
         "license": "Apache-2.0",
         "consortium_build_number": "3",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
@@ -69,7 +69,7 @@
         "version_string": "1.11.0",
         "license": "Apache-2.0",
         "consortium_build_number": "3",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
@@ -128,8 +128,16 @@
         "version_string": "1.81.0",
         "license": "BSL-1.0",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "boost/from-debian/15.patch",
+            "boost/from-debian/116.patch",
+            "boost/from-debian/fix-mpi-python37.patch",
+            "boost/from-debian/fix_extension.patch",
+            "boost/from-debian/30.patch",
+            "boost/from-debian/40.patch"
+        ],
         "build_steps": [
             "git submodule update --init",
             "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
@@ -212,8 +220,16 @@
         "version_string": "1.81.0",
         "license": "BSL-1.0",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "boost/from-debian/15.patch",
+            "boost/from-debian/116.patch",
+            "boost/from-debian/fix-mpi-python37.patch",
+            "boost/from-debian/fix_extension.patch",
+            "boost/from-debian/30.patch",
+            "boost/from-debian/40.patch"
+        ],
         "build_steps": [
             "git submodule update --init",
             "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
@@ -308,8 +324,45 @@
         "version_string": "13.0.1",
         "license": "Apache-2.0 WITH LLVM-exception",
         "consortium_build_number": "0",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "clang/from-debian/declare_clear_cache.diff",
+            "clang/from-debian/unwind-chain-inclusion.diff",
+            "clang/from-debian/atomic_library_1.diff",
+            "clang/from-debian/0001-tools-clang-cmake-resolve-symlinks-in-ClangConfig.cmake.patch",
+            "clang/from-debian/debug-jit-path.diff",
+            "clang/from-debian/0001-llvm-cmake-resolve-symlinks-in-LLVMConfig.cmake.patch",
+            "clang/from-debian/openmp/openmp-check-execstack.diff",
+            "clang/from-debian/clang-baseline-fix-i386.patch",
+            "clang/from-debian/disable-sse2-old-x86.diff",
+            "clang/from-debian/clangd-atomic-cmake.patch",
+            "clang/from-debian/remove-apple-clang-manpage.diff",
+            "clang/from-debian/bootstrap-fix-include-next.diff",
+            "clang/from-debian/python3-shebang.patch",
+            "clang/from-debian/llvm-fix-lld-linker-check.diff",
+            "clang/from-debian/compilerrt-fix-warn-xray-testing.diff",
+            "clang/from-debian/openmp-fix-runtimes-build.diff",
+            "clang/from-debian/libclc-fix-prepare_builtins-rpath.diff",
+            "clang/from-debian/libcxx-libatomic-only-with-gcc-rtlib.diff",
+            "clang/from-debian/libcxxabi-fix-link-builtins.diff",
+            "clang/from-debian/llvm-runtimes-builtins-build-check.diff",
+            "clang/from-debian/use-gold-for-compiler-rt-when-set.diff",
+            "clang/from-debian/fix-typo.diff",
+            "clang/from-debian/fix-merge-MergeFunctions-scheduling.diff",
+            "clang/from-debian/llvm-objcopy-COFF-Consider-section-flags-when-adding.patch",
+            "clang/from-debian/yaml2obj-COFF-Allow-variable-number-of-directories.patch",
+            "clang/from-debian/llvm-objcopy-COFF-Fix-test-for-debug-dir-presence.patch",
+            "clang/from-debian/protobuf_llvm_13.0.1-8.patch",
+            "clang/from-debian/link-grpc.diff",
+            "clang/from-debian/new-cmake-build-fix.patch",
+            "clang/from-debian/gcc-13-build-fix.patch",
+            "clang/from-debian/CVE-2023-29932.patch",
+            "clang/from-debian/CVE-2023-29934.patch",
+            "clang/from-debian/CVE-2023-29939.patch",
+            "clang/from-fedora/0001-Driver-Add-a-gcc-equivalent-triple-to-the-list-of-tr.patch",
+            "clang/from-fedora/0001-PATCH-compiler-rt-Workaround-libstdc-limitation-wrt..patch"
+        ],
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;libcxx;libcxxabi;clang-tools-extra;compiler-rt;' -DLLVM_TARGETS_TO_BUILD='X86' ../llvm-project/llvm",
             "make -jTEMPLATE_JOBS",
@@ -416,7 +469,7 @@
         "version_string": "13.0.1",
         "license": "Apache-2.0 WITH LLVM-exception",
         "consortium_build_number": "0",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p TEMPLATE_INSTALL_PREFIX/lib",
@@ -471,8 +524,13 @@
         "version_string": "3.21.4",
         "license": "BSD-3-Clause",
         "consortium_build_number": "0",
-        "package_revision": "4",
+        "package_revision": "5",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "cmake/from-debian/0004-Make-FindFLTK-safe-to-include-multiple-times.patch",
+            "cmake/from-debian/0005-Fix-check_symbol_exists-with-pedantic-errors.patch",
+            "cmake/from-rhel/cmake-mingw-dl.patch"
+        ],
         "build_steps": [
             "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
             "make -jTEMPLATE_JOBS",
@@ -549,8 +607,11 @@
         "version_string": "4.8.1",
         "license": "MIT",
         "consortium_build_number": "1",
-        "package_revision": "4",
+        "package_revision": "5",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "cppzmq/from-debian/0003_fix-gcc12-compile.patch"
+        ],
         "build_steps": [
             "mkdir -p build",
             "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -Dpkgcfg_lib_PC_LIBZMQ_zmq=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DCPPZMQ_BUILD_TESTS=OFF -DCPPZMQ_CMAKECONFIG_INSTALL_DIR=lib/cmake/cppzmq",
@@ -566,8 +627,11 @@
         "version_string": "8.1.1",
         "license": "MIT",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "fmt/from-epel/fmt-fix_implicit_ptr_conv.patch"
+        ],
         "build_steps": [
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DFMT_DOC=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX ..",
@@ -627,8 +691,11 @@
         "version_string": "8.1.1",
         "license": "MIT",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "fmt/from-epel/fmt-fix_implicit_ptr_conv.patch"
+        ],
         "build_steps": [
             "mkdir -p build",
             "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_RPATH=/TEMPLATE_CLANG_RUNTIME_RPATH -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DFMT_DOC=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_SHARED_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' -DCMAKE_MODULE_LINKER_FLAGS='-stdlib=libc++ -LTEMPLATE_CLANG_CPP_LIBRARIES -lc++abi' ..",
@@ -721,8 +788,19 @@
         "version_string": "3.5.2",
         "license": "BSD-2-Clause",
         "consortium_build_number": "0",
-        "package_revision": "4",
+        "package_revision": "5",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "libarchive/from-debian/typos.patch",
+            "libarchive/from-debian/lzip-large-dict.patch",
+            "libarchive/from-debian/upstream-fixup-symlinks.patch",
+            "libarchive/from-debian/upstream-fixup-file-flags.patch",
+            "libarchive/from-debian/upstream-fix-32bit-size-cast.patch",
+            "libarchive/from-rhel/openssl3-rmd160failure.patch",
+            "libarchive/from-rhel/libarchive-3.5.3-Fix-CVE-2022-26280.patch",
+            "libarchive/from-rhel/libarchive-3.5.3-Fix-size-filed-in-pax-header.patch",
+            "libarchive/from-rhel/libarchive-3.5.3-Fix-CVE-2022-36227.patch"
+        ],
         "build_steps": [
             "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
             "make -jTEMPLATE_JOBS",
@@ -799,7 +877,7 @@
         "version_string": "1.0.7",
         "license": "BSD-3-Clause",
         "consortium_build_number": "1",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -872,7 +950,7 @@
         "version_string": "2.13.0",
         "license": "MIT",
         "consortium_build_number": "2",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "patches": [
             "nanodbc/1001-Add-missing-include-279.patch"
@@ -943,7 +1021,7 @@
         "version_string": "2.13.0",
         "license": "MIT",
         "consortium_build_number": "2",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1006,7 +1084,7 @@
         "version_string": "0.36.0",
         "license": "Apache-2.0",
         "consortium_build_number": "2",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1074,7 +1152,7 @@
         "version_string": "0.36.0",
         "license": "Apache-2.0",
         "consortium_build_number": "2",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1137,7 +1215,7 @@
         "version_string": "4.0.10",
         "license": "BSD-3-Clause",
         "consortium_build_number": "0",
-        "package_revision": "3",
+        "package_revision": "4",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "make -jTEMPLATE_JOBS",
@@ -1182,7 +1260,7 @@
         "version_string": "1.9.2",
         "license": "MIT",
         "consortium_build_number": "2",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1246,7 +1324,7 @@
         "version_string": "1.9.2",
         "license": "MIT",
         "consortium_build_number": "2",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1303,7 +1381,7 @@
         "version_string": "4.1.8",
         "license": "LGPL-3.0-or-later",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
@@ -1364,7 +1442,7 @@
         "version_string": "4.1.8",
         "license": "LGPL-3.0-or-later",
         "consortium_build_number": "1",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",

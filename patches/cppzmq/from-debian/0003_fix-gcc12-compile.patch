@@ -1,0 +1,15 @@
+Description: Fix missing <threads> header
+Author: Stephan Lachnit <stephanlachnit@debian.org>
+Forwarded: https://github.com/zeromq/cppzmq/pull/568
+Applied-Upstream: commit:3f8cc0ae992e0ef151efee9dfa47be8d783e61d0
+
+--- a/examples/pubsub_multithread_inproc.cpp
++++ b/examples/pubsub_multithread_inproc.cpp
+@@ -1,6 +1,7 @@
+ #include <future>
+ #include <iostream>
+ #include <string>
++#include <thread>
+ 
+ #include "zmq.hpp"
+ #include "zmq_addon.hpp"

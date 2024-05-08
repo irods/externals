@@ -1,0 +1,55 @@
+Description: Support lzip dictionary size up to 512MB.
+Bug-Debian: https://bugs.debian.org/1001901
+Forwarded: https://github.com/libarchive/libarchive/pull/1645
+Author: Peter Pentchev <roam@ringlet.net>
+Last-Update: 2021-12-22
+
+--- a/libarchive/archive_read_support_filter_xz.c
++++ b/libarchive/archive_read_support_filter_xz.c
+@@ -293,8 +293,8 @@
+ 	/* Second through fifth bytes are dictionary size, stored in
+ 	 * little-endian order. The minimum dictionary size is
+ 	 * 1 << 12(4KiB) which the lzma of LZMA SDK uses with option
+-	 * -d12 and the maximum dictionary size is 1 << 27(128MiB)
+-	 * which the one uses with option -d27.
++	 * -d12 and the maximum dictionary size is 1 << 29(512MiB)
++	 * which the one uses with option -d29.
+ 	 * NOTE: A comment of LZMA SDK source code says this dictionary
+ 	 * range is from 1 << 12 to 1 << 30. */
+ 	dicsize = archive_le32dec(buffer+1);
+@@ -377,7 +377,7 @@
+ 
+ 	/* Dictionary size. */
+ 	log2dic = buffer[5] & 0x1f;
+-	if (log2dic < 12 || log2dic > 27)
++	if (log2dic < 12 || log2dic > 29)
+ 		return (0);
+ 	bits_checked += 8;
+ 
+@@ -562,7 +562,7 @@
+ 
+ 	/* Get dictionary size. */
+ 	log2dic = h[5] & 0x1f;
+-	if (log2dic < 12 || log2dic > 27)
++	if (log2dic < 12 || log2dic > 29)
+ 		return (ARCHIVE_FATAL);
+ 	dicsize = 1U << log2dic;
+ 	if (log2dic > 12)
+--- a/libarchive/archive_write_add_filter_xz.c
++++ b/libarchive/archive_write_add_filter_xz.c
+@@ -251,13 +251,13 @@
+ 		int ds, log2dic, wedges;
+ 
+ 		/* Calculate a coded dictionary size */
+-		if (dict_size < (1 << 12) || dict_size > (1 << 27)) {
++		if (dict_size < (1 << 12) || dict_size > (1 << 29)) {
+ 			archive_set_error(f->archive, ARCHIVE_ERRNO_MISC,
+ 			    "Unacceptable dictionary size for lzip: %d",
+ 			    dict_size);
+ 			return (ARCHIVE_FATAL);
+ 		}
+-		for (log2dic = 27; log2dic >= 12; log2dic--) {
++		for (log2dic = 29; log2dic >= 12; log2dic--) {
+ 			if (dict_size & (1 << log2dic))
+ 				break;
+ 		}
