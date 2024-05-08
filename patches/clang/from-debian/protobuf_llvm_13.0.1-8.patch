@@ -1,0 +1,15 @@
+diff -Nur a/clang-tools-extra/clangd/index/remote/monitor/Monitor.cpp b/clang-tools-extra/clangd/index/remote/monitor/Monitor.cpp
+--- a/clang-tools-extra/clangd/index/remote/monitor/Monitor.cpp	2022-01-23 01:26:53.000000000 +0100
++++ b/clang-tools-extra/clangd/index/remote/monitor/Monitor.cpp	2022-09-08 19:17:39.103577486 +0200
+@@ -66,9 +66,8 @@
+   const auto JsonStatus =
+       google::protobuf::util::MessageToJsonString(Response, &Output, Options);
+   if (!JsonStatus.ok()) {
+-    clang::clangd::elog("Can not convert response ({0}) to JSON ({1}): {2}\n",
+-                        Response.DebugString(), JsonStatus.error_code(),
+-                        JsonStatus.error_message().as_string());
++    clang::clangd::elog("Can not convert response ({0}) to JSON: {1}\n",
++                        Response.DebugString(), JsonStatus.ToString());
+     return -1;
+   }
+   llvm::outs() << Output;

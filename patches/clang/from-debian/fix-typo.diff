@@ -1,0 +1,22 @@
+Index: llvm-toolchain-13-13.0.1/llvm/include/llvm/ADT/IntrusiveRefCntPtr.h
+===================================================================
+--- llvm-toolchain-13-13.0.1.orig/llvm/include/llvm/ADT/IntrusiveRefCntPtr.h
++++ llvm-toolchain-13-13.0.1/llvm/include/llvm/ADT/IntrusiveRefCntPtr.h
+@@ -79,7 +79,7 @@ protected:
+ #ifndef NDEBUG
+   ~RefCountedBase() {
+     assert(RefCount == 0 &&
+-           "Destruction occured when there are still references to this.");
++           "Destruction occurred when there are still references to this.");
+   }
+ #else
+   // Default the destructor in release builds, A trivial destructor may enable
+@@ -110,7 +110,7 @@ protected:
+ #ifndef NDEBUG
+   ~ThreadSafeRefCountedBase() {
+     assert(RefCount == 0 &&
+-           "Destruction occured when there are still references to this.");
++           "Destruction occurred when there are still references to this.");
+   }
+ #else
+   // Default the destructor in release builds, A trivial destructor may enable

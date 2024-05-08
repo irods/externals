@@ -1,0 +1,128 @@
+From cdd407286a9652ec62b33f437a298754fe3ba7ab Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Alfonso=20S=C3=A1nchez-Beato?=
+ <alfonso.sanchez-beato@canonical.com>
+Date: Wed, 25 Aug 2021 23:03:32 +0300
+Subject: [PATCH] [llvm-objcopy] [COFF] Consider section flags when adding
+ section
+
+The --set-section-flags option was being ignored when adding a new
+section. Take it into account if present.
+
+Fixes https://llvm.org/PR51244
+
+Reviewed By: jhenderson, MaskRay
+
+Differential Revision: https://reviews.llvm.org/D106942
+---
+ .../COFF/add-section-and-set-flags.test       | 36 +++++++++++++++++++
+ llvm/tools/llvm-objcopy/COFF/COFFObjcopy.cpp  | 19 ++++++----
+ 2 files changed, 49 insertions(+), 6 deletions(-)
+ create mode 100644 llvm/test/tools/llvm-objcopy/COFF/add-section-and-set-flags.test
+
+diff --git a/llvm/test/tools/llvm-objcopy/COFF/add-section-and-set-flags.test b/llvm/test/tools/llvm-objcopy/COFF/add-section-and-set-flags.test
+new file mode 100644
+index 000000000000..b5fdcb8f6624
+--- /dev/null
++++ b/llvm/test/tools/llvm-objcopy/COFF/add-section-and-set-flags.test
+@@ -0,0 +1,36 @@
++# RUN: yaml2obj %s -o %t
++
++## Test that llvm-objcopy can add sections and set its flags in the same
++## call.
++# RUN: echo DEADBEEF > %t.sec
++# RUN: llvm-objcopy --set-section-flags=.test.section1=code --add-section=.test.section1=%t.sec --set-section-flags=.test.section2=data --add-section=.test.section2=%t.sec %t %t1
++# RUN: llvm-readobj --sections --section-data %t1 | FileCheck %s
++
++# CHECK:       Name: .test.section1
++# CHECK-NEXT:  VirtualSize: 0x9
++# CHECK-NEXT:  VirtualAddress: 0x0
++# CHECK-NEXT:  RawDataSize: 9
++# CHECK:       Characteristics [
++# CHECK-NEXT:      IMAGE_SCN_CNT_CODE
++# CHECK-NEXT:      IMAGE_SCN_MEM_EXECUTE
++# CHECK-NEXT:      IMAGE_SCN_MEM_READ
++# CHECK-NEXT:      IMAGE_SCN_MEM_WRITE
++# CHECK-NEXT:  ]
++
++# CHECK:       Name: .test.section2
++# CHECK-NEXT:  VirtualSize: 0x9
++# CHECK-NEXT:  VirtualAddress: 0x9
++# CHECK-NEXT:  RawDataSize: 9
++# CHECK:       Characteristics [
++# CHECK-NEXT:    IMAGE_SCN_CNT_INITIALIZED_DATA
++# CHECK-NEXT:    IMAGE_SCN_MEM_READ
++# CHECK-NEXT:    IMAGE_SCN_MEM_WRITE
++# CHECK-NEXT:  ]
++
++--- !COFF
++header:
++  Machine:         IMAGE_FILE_MACHINE_AMD64
++  Characteristics: [ ]
++sections:
++symbols:
++...
+diff --git a/llvm/tools/llvm-objcopy/COFF/COFFObjcopy.cpp b/llvm/tools/llvm-objcopy/COFF/COFFObjcopy.cpp
+index e50ac2e12e2f..38c9cd09433b 100644
+--- a/llvm/tools/llvm-objcopy/COFF/COFFObjcopy.cpp
++++ b/llvm/tools/llvm-objcopy/COFF/COFFObjcopy.cpp
+@@ -94,7 +94,7 @@ static Error addGnuDebugLink(Object &Obj, StringRef DebugLinkFile) {
+   return Error::success();
+ }
+ 
+-static void setSectionFlags(Section &Sec, SectionFlag AllFlags) {
++static uint32_t flagsToCharacteristics(SectionFlag AllFlags, uint32_t OldChar) {
+   // Need to preserve alignment flags.
+   const uint32_t PreserveMask =
+       IMAGE_SCN_ALIGN_1BYTES | IMAGE_SCN_ALIGN_2BYTES | IMAGE_SCN_ALIGN_4BYTES |
+@@ -107,8 +107,7 @@ static void setSectionFlags(Section &Sec, SectionFlag AllFlags) {
+ 
+   // Setup new section characteristics based on the flags provided in command
+   // line.
+-  uint32_t NewCharacteristics =
+-      (Sec.Header.Characteristics & PreserveMask) | IMAGE_SCN_MEM_READ;
++  uint32_t NewCharacteristics = (OldChar & PreserveMask) | IMAGE_SCN_MEM_READ;
+ 
+   if ((AllFlags & SectionFlag::SecAlloc) && !(AllFlags & SectionFlag::SecLoad))
+     NewCharacteristics |= IMAGE_SCN_CNT_UNINITIALIZED_DATA;
+@@ -128,7 +127,7 @@ static void setSectionFlags(Section &Sec, SectionFlag AllFlags) {
+   if (AllFlags & SectionFlag::SecExclude)
+     NewCharacteristics |= IMAGE_SCN_LNK_REMOVE;
+ 
+-  Sec.Header.Characteristics = NewCharacteristics;
++  return NewCharacteristics;
+ }
+ 
+ static Error handleArgs(const CommonConfig &Config, Object &Obj) {
+@@ -226,7 +225,8 @@ static Error handleArgs(const CommonConfig &Config, Object &Obj) {
+     for (Section &Sec : Obj.getMutableSections()) {
+       const auto It = Config.SetSectionFlags.find(Sec.Name);
+       if (It != Config.SetSectionFlags.end())
+-        setSectionFlags(Sec, It->second.NewFlags);
++        Sec.Header.Characteristics = flagsToCharacteristics(
++            It->second.NewFlags, Sec.Header.Characteristics);
+     }
+ 
+   for (const auto &Flag : Config.AddSection) {
+@@ -238,11 +238,18 @@ static Error handleArgs(const CommonConfig &Config, Object &Obj) {
+       return createFileError(FileName, errorCodeToError(BufOrErr.getError()));
+     auto Buf = std::move(*BufOrErr);
+ 
++    uint32_t Characteristics;
++    const auto It = Config.SetSectionFlags.find(SecName);
++    if (It != Config.SetSectionFlags.end())
++      Characteristics = flagsToCharacteristics(It->second.NewFlags, 0);
++    else
++      Characteristics = IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_ALIGN_1BYTES;
++
+     addSection(
+         Obj, SecName,
+         makeArrayRef(reinterpret_cast<const uint8_t *>(Buf->getBufferStart()),
+                      Buf->getBufferSize()),
+-        IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_ALIGN_1BYTES);
++        Characteristics);
+   }
+ 
+   if (!Config.AddGnuDebugLink.empty())
+-- 
+2.25.1
+

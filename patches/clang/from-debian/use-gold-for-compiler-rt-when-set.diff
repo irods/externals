@@ -1,0 +1,22 @@
+Index: llvm-toolchain-13-13.0.1~+rc1/llvm/runtimes/CMakeLists.txt
+===================================================================
+--- llvm-toolchain-13-13.0.1~+rc1.orig/llvm/runtimes/CMakeLists.txt
++++ llvm-toolchain-13-13.0.1~+rc1/llvm/runtimes/CMakeLists.txt
+@@ -244,6 +244,8 @@ function(runtime_default_target)
+                                       -DCMAKE_ASM_COMPILER_WORKS=ON
+                                       ${RUNTIMES_CMAKE_ARGS}
+                            PASSTHROUGH_PREFIXES LLVM_ENABLE_RUNTIMES
++                                                LLVM_USE_LLD
++                                                LLVM_USE_LINKER
+                                                 ${ARG_PREFIXES}
+                            EXTRA_TARGETS ${extra_targets}
+                                          ${test_targets}
+@@ -345,6 +347,8 @@ function(runtime_register_target name ta
+                                       -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON
+                                       -DLLVM_RUNTIMES_TARGET=${name}
+                                       ${${name}_extra_args}
++                           PASSTHROUGH_PREFIXES LLVM_USE_LLD
++                                                LLVM_USE_LINKER
+                            EXTRA_TARGETS ${${name}_extra_targets}
+                                          ${${name}_test_targets}
+                            USE_TOOLCHAIN

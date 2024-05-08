@@ -1,0 +1,48 @@
+Description: Fix size_t cast in read_mac_metadata_blob
+ The size_t data type on 32 bit systems is smaller than int64_t. Check
+ the int64_t value before casting to size_t. If the value is too large
+ then stop operation instead of continuing operation with truncated
+ value.
+Origin: upstream, https://github.com/libarchive/libarchive/commit/a7ce8a6aa7b710986ab918761c8d2ff1b0e9f537
+Author: Samanta Navarro <ferivoz@riseup.net>
+Last-Updated: 2021-12-22
+
+--- a/libarchive/archive_read_support_format_tar.c
++++ b/libarchive/archive_read_support_format_tar.c
+@@ -1396,6 +1396,7 @@
+     struct archive_entry *entry, const void *h, size_t *unconsumed)
+ {
+ 	int64_t size;
++	size_t msize;
+ 	const void *data;
+ 	const char *p, *name;
+ 	const wchar_t *wp, *wname;
+@@ -1434,6 +1435,11 @@
+ 
+  	/* Read the body as a Mac OS metadata blob. */
+ 	size = archive_entry_size(entry);
++	msize = (size_t)size;
++	if (size < 0 || (uintmax_t)msize != (uintmax_t)size) {
++		*unconsumed = 0;
++		return (ARCHIVE_FATAL);
++	}
+ 
+ 	/*
+ 	 * TODO: Look beyond the body here to peek at the next header.
+@@ -1447,13 +1453,13 @@
+ 	 * Q: Is the above idea really possible?  Even
+ 	 * when there are GNU or pax extension entries?
+ 	 */
+-	data = __archive_read_ahead(a, (size_t)size, NULL);
++	data = __archive_read_ahead(a, msize, NULL);
+ 	if (data == NULL) {
+ 		*unconsumed = 0;
+ 		return (ARCHIVE_FATAL);
+ 	}
+-	archive_entry_copy_mac_metadata(entry, data, (size_t)size);
+-	*unconsumed = (size_t)((size + 511) & ~ 511);
++	archive_entry_copy_mac_metadata(entry, data, msize);
++	*unconsumed = (msize + 511) & ~ 511;
+ 	tar_flush_unconsumed(a, unconsumed);
+ 	return (tar_read_header(a, tar, entry, unconsumed));
+ }

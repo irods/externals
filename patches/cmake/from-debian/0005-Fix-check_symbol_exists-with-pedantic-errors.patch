@@ -1,0 +1,64 @@
+From: =?utf-8?q?Timo_R=C3=B6hling?= <roehling@debian.org>
+Date: Fri, 22 Oct 2021 15:32:20 +0200
+Subject: Fix check_symbol_exists() with -pedantic-errors
+
+Forwarded: https://gitlab.kitware.com/cmake/cmake/-/merge_requests/6656
+---
+ Modules/CheckSymbolExists.cmake                  | 15 +++++++++++++++
+ Tests/CMakeOnly/CheckSymbolExists/CMakeLists.txt | 11 +++++++++++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/Modules/CheckSymbolExists.cmake b/Modules/CheckSymbolExists.cmake
+index f8ca584..a87fdbd 100644
+--- a/Modules/CheckSymbolExists.cmake
++++ b/Modules/CheckSymbolExists.cmake
+@@ -67,14 +67,29 @@ cmake_policy(SET CMP0054 NEW) # if() quoted variables not dereferenced
+ 
+ macro(CHECK_SYMBOL_EXISTS SYMBOL FILES VARIABLE)
+   if(CMAKE_C_COMPILER_LOADED)
++    __CHECK_SYMBOL_EXISTS_FILTER_FLAGS(C)
+     __CHECK_SYMBOL_EXISTS_IMPL("${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/CheckSymbolExists.c" "${SYMBOL}" "${FILES}" "${VARIABLE}" )
++    __CHECK_SYMBOL_EXISTS_RESTORE_FLAGS(C)
+   elseif(CMAKE_CXX_COMPILER_LOADED)
++    __CHECK_SYMBOL_EXISTS_FILTER_FLAGS(CXX)
+     __CHECK_SYMBOL_EXISTS_IMPL("${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/CheckSymbolExists.cxx" "${SYMBOL}" "${FILES}" "${VARIABLE}" )
++    __CHECK_SYMBOL_EXISTS_RESTORE_FLAGS(CXX)
+   else()
+     message(FATAL_ERROR "CHECK_SYMBOL_EXISTS needs either C or CXX language enabled")
+   endif()
+ endmacro()
+ 
++macro(__CHECK_SYMBOL_EXISTS_FILTER_FLAGS LANG)
++    set(__CMAKE_${LANG}_FLAGS_SAVED "${CMAKE_${LANG}_FLAGS}")
++    string(REGEX REPLACE "(^| )-Werror([= ][^ ]*)?( |$)" " " CMAKE_${LANG}_FLAGS "${CMAKE_${LANG}_FLAGS}")
++    string(REGEX REPLACE "(^| )-pedantic-errors( |$)" " " CMAKE_${LANG}_FLAGS "${CMAKE_${LANG}_FLAGS}")
++endmacro()
++
++macro(__CHECK_SYMBOL_EXISTS_RESTORE_FLAGS LANG)
++    set(CMAKE_${LANG}_FLAGS "${__CMAKE_${LANG}_FLAGS_SAVED}")
++    unset(__CMAKE_${LANG}_FLAGS_SAVED)
++endmacro()
++
+ macro(__CHECK_SYMBOL_EXISTS_IMPL SOURCEFILE SYMBOL FILES VARIABLE)
+   if(NOT DEFINED "${VARIABLE}" OR "x${${VARIABLE}}" STREQUAL "x${VARIABLE}")
+     set(CMAKE_CONFIGURABLE_FILE_CONTENT "/* */\n")
+diff --git a/Tests/CMakeOnly/CheckSymbolExists/CMakeLists.txt b/Tests/CMakeOnly/CheckSymbolExists/CMakeLists.txt
+index 9a9bb2a..0ced696 100644
+--- a/Tests/CMakeOnly/CheckSymbolExists/CMakeLists.txt
++++ b/Tests/CMakeOnly/CheckSymbolExists/CMakeLists.txt
+@@ -48,4 +48,15 @@ if (CMAKE_COMPILER_IS_GNUCC)
+   if (CSE_RESULT_O3)
+     message(SEND_ERROR "CheckSymbolExists reported a nonexistent symbol as existing with optimization -O3")
+   endif ()
++
++  string(APPEND CMAKE_C_FLAGS " -pedantic-errors")
++  unset(CS_RESULT_PEDANTIC_ERRORS CACHE)
++  message(STATUS "Testing with -pedantic-errors")
++
++  check_symbol_exists(fopen "stdio.h" CSE_RESULT_PEDANTIC_ERRORS)
++
++  if(NOT CSE_RESULT_PEDANTIC_ERRORS)
++    message(SEND_ERROR "ChecKSymbolExists reported an existing symbol as nonexisting with -pedantic-errors")
++  endif()
++
+ endif ()

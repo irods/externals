@@ -1,0 +1,15 @@
+--- libarchive-3.5.1/libarchive/archive_digest.c.old	2021-05-27 15:46:54.988302284 +0200
++++ libarchive-3.5.1/libarchive/archive_digest.c	2021-05-27 15:50:03.519746886 +0200
+@@ -432,9 +432,11 @@
+ static int
+ __archive_ripemd160init(archive_rmd160_ctx *ctx)
+ {
++  int ret;
+   if ((*ctx = EVP_MD_CTX_new()) == NULL)
+ 	return (ARCHIVE_FAILED);
+-  EVP_DigestInit(*ctx, EVP_ripemd160());
++  if (!(ret = EVP_DigestInit(*ctx, EVP_ripemd160())))
++	return (ARCHIVE_FAILED);
+   return (ARCHIVE_OK);
+ }
+ 

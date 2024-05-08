@@ -1,0 +1,33 @@
+suppress warnings for xray and testing when not enabled
+Index: llvm-toolchain-12_12.0.1/compiler-rt/cmake/Modules/CompilerRTUtils.cmake
+===================================================================
+--- llvm-toolchain-12_12.0.1.orig/compiler-rt/cmake/Modules/CompilerRTUtils.cmake
++++ llvm-toolchain-12_12.0.1/compiler-rt/cmake/Modules/CompilerRTUtils.cmake
+@@ -242,15 +242,15 @@ macro(load_llvm_config)
+ 
+     # Detect if we have the LLVMXRay and TestingSupport library installed and
+     # available from llvm-config.
++    set(COMPILER_RT_HAS_LLVMXRAY FALSE)
+     execute_process(
+       COMMAND ${LLVM_CONFIG_PATH} "--ldflags" "--libs" "xray"
+       RESULT_VARIABLE HAD_ERROR
+       OUTPUT_VARIABLE CONFIG_OUTPUT
+       ERROR_QUIET)
+-    if (HAD_ERROR)
++    if (HAD_ERROR AND COMPILER_RT_BUILD_XRAY)
+       message(WARNING "llvm-config finding xray failed with status ${HAD_ERROR}")
+-      set(COMPILER_RT_HAS_LLVMXRAY FALSE)
+-    else()
++    elseif(COMPILER_RT_BUILD_XRAY)
+       string(REGEX REPLACE "[ \t]*[\r\n]+[ \t]*" ";" CONFIG_OUTPUT ${CONFIG_OUTPUT})
+       list(GET CONFIG_OUTPUT 0 LDFLAGS)
+       list(GET CONFIG_OUTPUT 1 LIBLIST)
+@@ -267,7 +267,7 @@ macro(load_llvm_config)
+       RESULT_VARIABLE HAD_ERROR
+       OUTPUT_VARIABLE CONFIG_OUTPUT
+       ERROR_QUIET)
+-    if (HAD_ERROR)
++    if (HAD_ERROR AND COMPILER_RT_INCLUDE_TESTS)
+       message(WARNING "llvm-config finding testingsupport failed with status ${HAD_ERROR}")
+     elseif(COMPILER_RT_INCLUDE_TESTS)
+       string(REGEX REPLACE "[ \t]*[\r\n]+[ \t]*" ";" CONFIG_OUTPUT ${CONFIG_OUTPUT})

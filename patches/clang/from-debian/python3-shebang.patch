@@ -1,0 +1,1152 @@
+Description: change all shebangs to Python3
+ find . -name "*.py" -exec sed "s|\!/usr/bin/env python$|\!/usr/bin/env python3|g" -i {} \;
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #=- run-find-all-symbols.py - Parallel find-all-symbols runner -*- python  -*-=#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/add_new_check.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clang-tidy/add_new_check.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/add_new_check.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- add_new_check.py - clang-tidy check generator ---------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/rename_check.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clang-tidy/rename_check.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/rename_check.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- rename_check.py - clang-tidy check renamer ------------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- clang-tidy-diff.py - ClangTidy Diff Checker -----------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- run-clang-tidy.py - Parallel clang-tidy runner --------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clangd/include-mapping/cppreference_parser.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clangd/include-mapping/cppreference_parser.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clangd/include-mapping/cppreference_parser.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- cppreference_parser.py -  ------------------------------*- python -*--===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clangd/include-mapping/gen_std.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clangd/include-mapping/gen_std.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clangd/include-mapping/gen_std.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- gen_std.py -  ------------------------------------------*- python -*--===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clangd/include-mapping/test.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/clangd/include-mapping/test.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/clangd/include-mapping/test.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- test.py -  ---------------------------------------------*- python -*--===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/test/clang-tidy/check_clang_tidy.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang-tools-extra/test/clang-tidy/check_clang_tidy.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang-tools-extra/test/clang-tidy/check_clang_tidy.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- check_clang_tidy.py - ClangTidy Test Helper ------------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/bindings/python/examples/cindex/cindex-dump.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/bindings/python/examples/cindex/cindex-dump.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/bindings/python/examples/cindex/cindex-dump.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ #===- cindex-dump.py - cindex/Python Source Dump -------------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/bindings/python/examples/cindex/cindex-includes.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/bindings/python/examples/cindex/cindex-includes.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/bindings/python/examples/cindex/cindex-includes.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ #===- cindex-includes.py - cindex/Python Inclusion Graph -----*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/docs/tools/dump_ast_matchers.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/docs/tools/dump_ast_matchers.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/docs/tools/dump_ast_matchers.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # A tool to parse ASTMatchers.h and update the documentation in
+ # ../LibASTMatchersReference.html automatically. Run from the
+ # directory in which this file is located to update the docs.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/docs/tools/dump_format_style.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/docs/tools/dump_format_style.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/docs/tools/dump_format_style.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # A tool to parse the FormatStyle struct from Format.h and update the
+ # documentation in ../ClangFormatStyleOptions.rst automatically.
+ # Run from the directory in which this file is located to update the docs.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/test/AST/gen_ast_dump_json_test.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/test/AST/gen_ast_dump_json_test.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/test/AST/gen_ast_dump_json_test.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ from collections import OrderedDict
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/clang-format/git-clang-format
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/clang-format/git-clang-format
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/clang-format/git-clang-format
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- git-clang-format - ClangFormat Git Integration ---------*- python -*--===#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/bin/analyze-build
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/scan-build-py/bin/analyze-build
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/bin/analyze-build
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+ # See https://llvm.org/LICENSE.txt for license information.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/bin/intercept-build
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/scan-build-py/bin/intercept-build
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/bin/intercept-build
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+ # See https://llvm.org/LICENSE.txt for license information.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/bin/scan-build
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/scan-build-py/bin/scan-build
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/bin/scan-build
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+ # See https://llvm.org/LICENSE.txt for license information.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-view/bin/scan-view
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/scan-view/bin/scan-view
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-view/bin/scan-view
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-view/share/startfile.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/scan-view/share/startfile.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-view/share/startfile.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ 
+ """Utility for opening a file using the default application in a cross-platform
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/ABITest/ABITestGen.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/ABITest/ABITestGen.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/ABITest/ABITestGen.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import absolute_import, division, print_function
+ from pprint import pprint
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/CIndex/completion_logger_server.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/CIndex/completion_logger_server.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/CIndex/completion_logger_server.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ from __future__ import absolute_import, division, print_function
+ import sys
+ from socket import *
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/CaptureCmd
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/CaptureCmd
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/CaptureCmd
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """CaptureCmd - A generic tool for capturing information about the
+ invocations of another program.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/CmpDriver
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/CmpDriver
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/CmpDriver
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ A simple utility that compares tool invocations and exit codes issued by
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/FindSpecRefs
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/FindSpecRefs
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/FindSpecRefs
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import os
+ import re
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/FuzzTest
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/FuzzTest
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/FuzzTest
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ This is a generic fuzz testing tool, see --help for more information.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/TestUtils/deep-stack.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/TestUtils/deep-stack.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/TestUtils/deep-stack.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import absolute_import, division, print_function
+ def pcall(f, N):
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/CmpRuns.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/analyzer/CmpRuns.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/CmpRuns.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ CmpRuns - A simple tool for comparing two static analyzer runs to determine
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SATestAdd.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/analyzer/SATestAdd.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SATestAdd.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ Static Analyzer qualification infrastructure: adding a new project to
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SATestBuild.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/analyzer/SATestBuild.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SATestBuild.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ Static Analyzer qualification infrastructure.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SATestUpdateDiffs.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/analyzer/SATestUpdateDiffs.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SATestUpdateDiffs.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ Update reference results for static analyzer.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SumTimerInfo.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/analyzer/SumTimerInfo.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/SumTimerInfo.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ Script to Summarize statistics in the scan-build output.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/exploded-graph-rewriter.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/analyzer/exploded-graph-rewriter.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/analyzer/exploded-graph-rewriter.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- exploded-graph-rewriter.py - ExplodedGraph dump tool -----*- python -*--#
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/check_cfc/check_cfc.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/check_cfc/check_cfc.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/check_cfc/check_cfc.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Check CFC - Check Compile Flow Consistency
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/check_cfc/obj_diff.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/check_cfc/obj_diff.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/check_cfc/obj_diff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import absolute_import, division, print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/check_cfc/test_check_cfc.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/check_cfc/test_check_cfc.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/check_cfc/test_check_cfc.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Test internal functions within check_cfc.py."""
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/creduce-clang-crash.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/creduce-clang-crash.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/creduce-clang-crash.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """Calls C-Reduce to create a minimal reproducer for clang crashes.
+ 
+ Output files:
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/hmaptool/hmaptool
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/hmaptool/hmaptool
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/hmaptool/hmaptool
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ from __future__ import absolute_import, division, print_function
+ 
+ import json
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/modfuzz.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/modfuzz.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/modfuzz.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # To use:
+ #  1) Update the 'decls' list below with your fuzzing configuration.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/token-delta.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/utils/token-delta.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/utils/token-delta.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import absolute_import, division, print_function
+ import os
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/asan/scripts/asan_symbolize.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/asan/scripts/asan_symbolize.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/asan/scripts/asan_symbolize.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- lib/asan/scripts/asan_symbolize.py -----------------------------------===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/dfsan/scripts/build-libc-list.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/dfsan/scripts/build-libc-list.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/dfsan/scripts/build-libc-list.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- lib/dfsan/scripts/build-libc-list.py ---------------------------------===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/fuzzer/scripts/unbalanced_allocs.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/fuzzer/scripts/unbalanced_allocs.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/fuzzer/scripts/unbalanced_allocs.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- lib/fuzzer/scripts/unbalanced_allocs.py ------------------------------===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/cpplint.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/sanitizer_common/scripts/cpplint.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/cpplint.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ # Copyright (c) 2009 Google Inc. All rights reserved.
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/gen_dynamic_list.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/sanitizer_common/scripts/gen_dynamic_list.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/gen_dynamic_list.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===- lib/sanitizer_common/scripts/gen_dynamic_list.py ---------------------===#
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/litlint.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/sanitizer_common/scripts/litlint.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/litlint.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ # litlint
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/sancov.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/compiler-rt/lib/sanitizer_common/scripts/sancov.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/compiler-rt/lib/sanitizer_common/scripts/sancov.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Merge or print the coverage data collected by asan's coverage.
+ # Input files are sequences of 4-byte integers.
+ # We need to merge these integers into a set and then
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/cat_files.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/libcxx/utils/cat_files.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/cat_files.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===----------------------------------------------------------------------===##
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/generate_feature_test_macro_components.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/libcxx/utils/generate_feature_test_macro_components.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/generate_feature_test_macro_components.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import os
+ from builtins import range
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/google-benchmark/tools/compare.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/libcxx/utils/google-benchmark/tools/compare.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/google-benchmark/tools/compare.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import unittest
+ """
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/google-benchmark/tools/strip_asm.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/libcxx/utils/google-benchmark/tools/strip_asm.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/google-benchmark/tools/strip_asm.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ strip_asm.py - Cleanup ASM output for the specified file
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/merge_archives.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/libcxx/utils/merge_archives.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/merge_archives.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===----------------------------------------------------------------------===##
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/sym_diff.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/libcxx/utils/sym_diff.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/libcxx/utils/sym_diff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #===----------------------------------------------------------------------===##
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lld/utils/benchmark.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lld/utils/benchmark.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lld/utils/benchmark.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+ # See https://llvm.org/LICENSE.txt for license information.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/examples/python/file_extract.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/examples/python/file_extract.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/examples/python/file_extract.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import string
+ import struct
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/packages/Python/lldbsuite/test/bench.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/packages/Python/lldbsuite/test/bench.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/packages/Python/lldbsuite/test/bench.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ A simple bench runner which delegates to the ./dotest.py test driver to run the
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/packages/Python/lldbsuite/test/tools/lldb-vscode/vscode.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/packages/Python/lldbsuite/test/tools/lldb-vscode/vscode.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/packages/Python/lldbsuite/test/tools/lldb-vscode/vscode.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import binascii
+ import json
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/scripts/analyze-project-deps.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/scripts/analyze-project-deps.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/scripts/analyze-project-deps.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import argparse
+ import itertools
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/scripts/verify_api.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/scripts/verify_api.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/scripts/verify_api.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import subprocess
+ import optparse
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/third_party/Python/module/pexpect-4.6/pexpect/FSM.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/third_party/Python/module/pexpect-4.6/pexpect/FSM.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/third_party/Python/module/pexpect-4.6/pexpect/FSM.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ '''This module implements a Finite State Machine (FSM). In addition to state
+ this FSM also maintains a user defined "memory". So this FSM can be used as a
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/utils/lui/lui.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/utils/lui/lui.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/utils/lui/lui.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ ##===-- lui.py -----------------------------------------------*- Python -*-===##
+ ##
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/utils/lui/sandbox.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/lldb/utils/lui/sandbox.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/lldb/utils/lui/sandbox.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ ##===-- sandbox.py -------------------------------------------*- Python -*-===##
+ ##
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/cached/genk-timing.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/examples/Kaleidoscope/MCJIT/cached/genk-timing.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/cached/genk-timing.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/cached/split-lib.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/examples/Kaleidoscope/MCJIT/cached/split-lib.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/cached/split-lib.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/complete/genk-timing.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/examples/Kaleidoscope/MCJIT/complete/genk-timing.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/complete/genk-timing.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/complete/split-lib.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/examples/Kaleidoscope/MCJIT/complete/split-lib.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/complete/split-lib.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/lazy/genk-timing.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/examples/Kaleidoscope/MCJIT/lazy/genk-timing.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/examples/Kaleidoscope/MCJIT/lazy/genk-timing.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/test/BugPoint/compile-custom.ll.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/test/BugPoint/compile-custom.ll.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/test/BugPoint/compile-custom.ll.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/test/Other/opt-bisect-helper.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/test/Other/opt-bisect-helper.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/test/Other/opt-bisect-helper.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/test/TableGen/JSON-check.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/test/TableGen/JSON-check.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/test/TableGen/JSON-check.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ import subprocess
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/opt-diff.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/tools/opt-viewer/opt-diff.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/opt-diff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/opt-stats.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/tools/opt-viewer/opt-stats.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/opt-stats.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/opt-viewer.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/tools/opt-viewer/opt-viewer.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/opt-viewer.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/optrecord.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/tools/opt-viewer/optrecord.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/tools/opt-viewer/optrecord.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/Misc/zkill
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/Misc/zkill
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/Misc/zkill
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import os
+ import re
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/abtest.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/abtest.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/abtest.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ # Given a previous good compile narrow down miscompiles.
+ # Expects two directories named "before" and "after" each containing a set of
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/benchmark/mingw.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/benchmark/mingw.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/benchmark/mingw.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # encoding: utf-8
+ 
+ import argparse
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/benchmark/tools/compare.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/benchmark/tools/compare.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/benchmark/tools/compare.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ compare.py - versatile benchmark output compare tool
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/benchmark/tools/strip_asm.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/benchmark/tools/strip_asm.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/benchmark/tools/strip_asm.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ strip_asm.py - Cleanup ASM output for the specified file
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/bisect
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/bisect
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/bisect
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ # The way you use this is you create a script that takes in as its first
+ # argument a count. The script passes into LLVM the count via a command
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/bisect-skip-count
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/bisect-skip-count
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/bisect-skip-count
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # This script is used to bisect skip and count arguments for --debug-counter.
+ # It is similar to bisect, except it understands how to increase skip and decrease count
+ #
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/bugpoint_gisel_reducer.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/bugpoint_gisel_reducer.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/bugpoint_gisel_reducer.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Reduces GlobalISel failures.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/chunk-print-before-all.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/chunk-print-before-all.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/chunk-print-before-all.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # Given a -print-before-all -print-module-scope log from an opt invocation,
+ # chunk it into a series of individual IR files, one for each pass invocation.
+ # If the log ends with an obvious stack trace, try to split off a separate
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/clang-parse-diagnostics-file
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/clang-parse-diagnostics-file
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/clang-parse-diagnostics-file
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import os
+ import plistlib
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/create_ladder_graph.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/create_ladder_graph.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/create_ladder_graph.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """A ladder graph creation program.
+ 
+ This is a python program that creates c source code that will generate
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/extract_symbols.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/extract_symbols.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/extract_symbols.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """A tool for extracting a list of symbols to export
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/extract_vplan.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/extract_vplan.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/extract_vplan.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # This script extracts the VPlan digraphs from the vectoriser debug messages
+ # and saves them in individual dot files (one for each plan). Optionally, and
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/run_tablegen.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/build/run_tablegen.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/run_tablegen.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """Runs tablegen."""
+ 
+ import subprocess
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/symlink_or_copy.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/build/symlink_or_copy.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/symlink_or_copy.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Symlinks, or on Windows copies, an existing file to a second location.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/sync_source_lists_from_cmake.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/build/sync_source_lists_from_cmake.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/sync_source_lists_from_cmake.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Helps to keep BUILD.gn files in sync with the corresponding CMakeLists.txt.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/write_cmake_config.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/build/write_cmake_config.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/write_cmake_config.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ r"""Emulates the bits of CMake's configure_file() function needed in LLVM.
+ 
+ The CMake build uses configure_file() for several things.  This emulates that
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/write_vcsrevision.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/build/write_vcsrevision.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/build/write_vcsrevision.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Gets the current revision and writes it to VCSRevision.h."""
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/get.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/get.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/get.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """Downloads a prebuilt gn binary to a place where gn.py can find it."""
+ 
+ from __future__ import print_function
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/gn.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/gn/gn.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/gn/gn.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """Calls `gn` with the right --dotfile= and --root= arguments for LLVM."""
+ 
+ # GN normally expects a file called '.gn' at the root of the repository.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/indirect_calls.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/indirect_calls.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/indirect_calls.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """A tool for looking for indirect jumps and calls in x86 binaries.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/lit/ProgressBar.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/lit/ProgressBar.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/lit/ProgressBar.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # Source: http://code.activestate.com/recipes/475116/, with
+ # modifications by Daniel Dunbar.
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/googletest-format/DummySubDir/OneTest.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/googletest-format/DummySubDir/OneTest.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/googletest-format/DummySubDir/OneTest.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/googletest-timeout/DummySubDir/OneTest.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/googletest-timeout/DummySubDir/OneTest.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/googletest-timeout/DummySubDir/OneTest.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ import time
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/googletest-upstream-format/DummySubDir/OneTest.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/googletest-upstream-format/DummySubDir/OneTest.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/googletest-upstream-format/DummySubDir/OneTest.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-env/print_environment.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/shtest-env/print_environment.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-env/print_environment.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ import os
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-format/external_shell/write-bad-encoding.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/shtest-format/external_shell/write-bad-encoding.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-format/external_shell/write-bad-encoding.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/check_args.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/shtest-shell/check_args.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/check_args.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import argparse
+ import platform
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/check_path.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/shtest-shell/check_path.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/check_path.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/write-to-stderr.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/shtest-shell/write-to-stderr.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/write-to-stderr.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/write-to-stdout-and-stderr.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/lit/tests/Inputs/shtest-shell/write-to-stdout-and-stderr.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/lit/tests/Inputs/shtest-shell/write-to-stdout-and-stderr.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import sys
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/llvm-gisel-cov.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/llvm-gisel-cov.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/llvm-gisel-cov.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """
+ Summarize the information in the given coverage files.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/prepare-code-coverage-artifact.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/prepare-code-coverage-artifact.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/prepare-code-coverage-artifact.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/release/findRegressions-nightly.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/release/findRegressions-nightly.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/release/findRegressions-nightly.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ from __future__ import print_function
+ 
+ import re, string, sys, os, time
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/release/findRegressions-simple.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/release/findRegressions-simple.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/release/findRegressions-simple.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ import re, string, sys, os, time, math
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/shuffle_fuzz.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/shuffle_fuzz.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/shuffle_fuzz.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """A shuffle vector fuzz tester.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/shuffle_select_fuzz_tester.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/shuffle_select_fuzz_tester.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/shuffle_select_fuzz_tester.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """A shuffle-select vector fuzz tester.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/sort_includes.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/sort_includes.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/sort_includes.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """Script to sort the top-most block of #include lines.
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/unicode-case-fold.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/unicode-case-fold.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/unicode-case-fold.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """
+ Unicode case folding database conversion utility
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/wciia.py
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/llvm/utils/wciia.py
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/llvm/utils/wciia.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """
+ wciia - Whose Code Is It Anyway
+ 
+Index: llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/libexec/analyze-cc
+===================================================================
+--- llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462.orig/clang/tools/scan-build-py/libexec/analyze-cc
++++ llvm-toolchain-13_13.0.0~++20210730102409+6eaf46beb462/clang/tools/scan-build-py/libexec/analyze-cc
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+ # See https://llvm.org/LICENSE.txt for license information.

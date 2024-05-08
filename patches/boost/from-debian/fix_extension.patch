@@ -1,0 +1,41 @@
+Description: fix python extensions
+Author: Anton Gladky <gladk@debian.org>
+Last-Update: 2023-01-14
+
+--- boost1.81-1.81.0.orig/tools/build/src/tools/python.jam
++++ boost1.81-1.81.0/tools/build/src/tools/python.jam
+@@ -954,8 +954,32 @@ local rule configure ( version ? : cmd-o
+     toolset.add-requirements
+         "$(target-requirements:J=,):<python.interpreter>$(interpreter-cmd)" ;
+ 
+-    # Register the right suffix for extensions.
+-    register-extension-suffix $(extension-suffix) : $(target-requirements) ;
++    #
++    # Discover and set extension suffix
++    #
++    debug-message "Checking for extension suffix..." ;
++    local full-cmd = "from __future__ import print_function; import sysconfig; print(sysconfig.get_config_var('EXT_SUFFIX'))" ;
++    local full-cmd = $(interpreter-cmd)" -c \"$(full-cmd)\"" ;
++    debug-message "running command '$(full-cmd)'" ;
++    local result = [ SHELL $(full-cmd) : strip-eol : exit-status ] ;
++    if $(result[2]) = 0
++    {
++        debug-message "Python extenssion suffix is $(result[1])" ;
++        type.set-generated-target-suffix PYTHON_EXTENSION : $(target-requirements) : <$(result[1])> ;
++    }
++    else
++    {
++        debug-message "Failed to determine python extension suffix" ;
++        debug-message "Falling back to old behaviour" ;
++        if $(target-os) = windows && <python-debugging>on in $(condition)
++        {
++            extension-suffix ?= _d ;
++        }
++        extension-suffix ?= "" ;
++
++        # Register the right suffix for extensions.
++        register-extension-suffix $(extension-suffix) : $(target-requirements) ;
++    }
+ 
+     # Make sure that the python feature is always considered
+     # relevant for any targets that depend on python.  Without

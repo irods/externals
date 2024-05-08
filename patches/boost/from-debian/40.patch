@@ -1,0 +1,43 @@
+Description: Fix FTBFS during doc generation.
+Author: Anton Gladky <gladk@debian.org>
+Bug-Debian: https://bugs.debian.org/1052892
+Last-Update: 2023-10-05
+
+Index: boost/libs/accumulators/doc/Jamfile.v2
+===================================================================
+--- boost.orig/libs/accumulators/doc/Jamfile.v2
++++ boost/libs/accumulators/doc/Jamfile.v2
+@@ -118,7 +118,7 @@ else
+ {
+     CP = cp ;
+     MKDIR = mkdir -p ;
+-    FROM = /../../html/statsdoc/*.png ;
++    FROM = /html/statsdoc/*.png ;
+     TOHTML = ./html/images/accumulators ;
+     TOPDF = /images/accumulators ;
+ }
+Index: boost/tools/boostbook/xsl/source-highlight.xsl
+===================================================================
+--- boost.orig/tools/boostbook/xsl/source-highlight.xsl
++++ boost/tools/boostbook/xsl/source-highlight.xsl
+@@ -157,20 +157,6 @@
+   <xsl:template name="highlight-text-ident-length">
+     <xsl:param name="text"/>
+     <xsl:param name="pos" select="1"/>
+-    <xsl:choose>
+-      <xsl:when test="string-length($text) + 1 = $pos">
+-        <xsl:value-of select="$pos - 1"/>
+-      </xsl:when>
+-      <xsl:when test="contains($id-chars, substring($text, $pos, 1))">
+-        <xsl:call-template name ="highlight-text-ident-length">
+-          <xsl:with-param name="text" select="$text"/>
+-          <xsl:with-param name="pos" select="$pos + 1"/>
+-        </xsl:call-template>
+-      </xsl:when>
+-      <xsl:otherwise>
+-        <xsl:value-of select="$pos - 1"/>
+-      </xsl:otherwise>
+-    </xsl:choose>
+   </xsl:template>
+   
+   <xsl:template name="highlight-text-number-length">

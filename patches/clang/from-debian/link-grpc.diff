@@ -1,0 +1,51 @@
+Index: llvm-toolchain-14-14.0.6/llvm/cmake/modules/FindGRPC.cmake
+===================================================================
+--- llvm-toolchain-14-14.0.6.orig/llvm/cmake/modules/FindGRPC.cmake
++++ llvm-toolchain-14-14.0.6/llvm/cmake/modules/FindGRPC.cmake
+@@ -73,10 +73,29 @@ else()
+       endif()
+     endif()
+   endif()
++
++  find_library(GPR_LIBRARY gpr $GRPC_OPTS REQUIRED)
++  add_library(gpr UNKNOWN IMPORTED GLOBAL)
++  message(STATUS "Using gpr: " ${GPR_LIBRARY})
++  set_target_properties(gpr PROPERTIES IMPORTED_LOCATION ${GPR_LIBRARY})
++
+   find_library(GRPC_LIBRARY grpc++ $GRPC_OPTS REQUIRED)
+   add_library(grpc++ UNKNOWN IMPORTED GLOBAL)
+   message(STATUS "Using grpc++: " ${GRPC_LIBRARY})
+   set_target_properties(grpc++ PROPERTIES IMPORTED_LOCATION ${GRPC_LIBRARY})
++
++  find_library(GRPC2_LIBRARY grpc $GRPC_OPTS REQUIRED)
++  add_library(grpc UNKNOWN IMPORTED GLOBAL)
++  message(STATUS "Using grpc: " ${GRPC2_LIBRARY})
++  set_target_properties(grpc PROPERTIES IMPORTED_LOCATION ${GRPC2_LIBRARY})
++
++  find_library(ABSL_SYNCHRONIZATION_LIBRARY absl_synchronization $GRPC_OPTS REQUIRED)
++  if (ABSL_SYNCHRONIZATION_LIBRARY)
++    add_library(absl_synchronization UNKNOWN IMPORTED GLOBAL)
++    message(STATUS "Using absl_synchronization: " ${ABSL_SYNCHRONIZATION_LIBRARY})
++    set_target_properties(absl_synchronization PROPERTIES IMPORTED_LOCATION ${ABSL_SYNCHRONIZATION_LIBRARY})
++  endif()
++
+   if (ENABLE_GRPC_REFLECTION)
+     find_library(GRPC_REFLECTION_LIBRARY grpc++_reflection $GRPC_OPTS REQUIRED)
+     add_library(grpc++_reflection UNKNOWN IMPORTED GLOBAL)
+@@ -121,9 +140,15 @@ function(generate_protos LibraryName Pro
+         ARGS ${Flags} "${ProtoSourceAbsolutePath}"
+         DEPENDS "${ProtoSourceAbsolutePath}")
+ 
++  set(LINKED_GRPC_LIBRARIES protobuf gpr grpc grpc++)
++
++  if (ABSL_SYNCHRONIZATION_LIBRARY)
++    list(APPEND LINKED_GRPC_LIBRARIES absl_synchronization)
++  endif()
++
+   add_clang_library(${LibraryName} ${GeneratedProtoSource}
+     PARTIAL_SOURCES_INTENDED
+-    LINK_LIBS PUBLIC grpc++ protobuf)
++    LINK_LIBS PUBLIC ${LINKED_GRPC_LIBRARIES})
+ 
+   # Ensure dependency headers are generated before dependent protos are built.
+   # DEPENDS arg is a list of "Foo.proto". While they're logically relative to
