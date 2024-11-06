@@ -825,11 +825,11 @@
     },
     "jwt-cpp": {
         "enable_sha": true,
-        "commitish": "ce1f9df3a9f861d136d6f0c93a6f811c364d1d3d",
-        "version_string": "0.6.99.0",
+        "commitish": "6dd190d154db29fad071574aa5558f15a70752ad",
+        "version_string": "0.6.99.1",
         "license": "MIT",
         "consortium_build_number": "0",
-        "package_revision": "4",
+        "package_revision": "0",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
