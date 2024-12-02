@@ -1,9 +1,9 @@
-all : avro avro-libcxx boost boost-libcxx catch2 clang clang-runtime cmake cppzmq fmt fmt-libcxx json jwt-cpp libarchive mungefs nanodbc nanodbc-libcxx qpid-proton qpid-proton-libcxx redis spdlog spdlog-libcxx zeromq4-1 zeromq4-1-libcxx
+all : avro avro-libcxx boost boost-libcxx catch2 clang clang-runtime cmake cppzmq fmt fmt-libcxx json jsoncons jwt-cpp libarchive mungefs nanodbc nanodbc-libcxx qpid-proton qpid-proton-libcxx redis spdlog spdlog-libcxx zeromq4-1 zeromq4-1-libcxx
 
 
-server-libstdcxx : avro boost catch2 clang cppzmq fmt json libarchive nanodbc spdlog zeromq4-1
+server-libstdcxx : avro boost catch2 clang cppzmq fmt json jsoncons libarchive nanodbc spdlog zeromq4-1
 
-server-libcxx : avro-libcxx boost-libcxx catch2 clang clang-runtime cppzmq fmt-libcxx json libarchive nanodbc-libcxx spdlog-libcxx zeromq4-1-libcxx
+server-libcxx : avro-libcxx boost-libcxx catch2 clang clang-runtime cppzmq fmt-libcxx json jsoncons libarchive nanodbc-libcxx spdlog-libcxx zeromq4-1-libcxx
 
 server : server-libstdcxx server-libcxx
 
@@ -99,6 +99,14 @@ json_clean :
 	@rm -rf json*
 	@rm -rf $(JSON_PACKAGE)
 
+$(JSONCONS_PACKAGE) : $(CMAKE_PACKAGE)
+	./build.py $(BUILD_OPTIONS) jsoncons > jsoncons.log 2>&1
+jsoncons : $(JSONCONS_PACKAGE)
+jsoncons_clean :
+	@echo "Cleaning jsoncons..."
+	@rm -rf jsoncons*
+	@rm -rf $(JSONCONS_PACKAGE)
+
 $(JWT-CPP_PACKAGE) : $(CMAKE_PACKAGE) $(JSON_PACKAGE)
 	./build.py $(BUILD_OPTIONS) jwt-cpp > jwt-cpp.log 2>&1
 jwt-cpp : $(JWT-CPP_PACKAGE)
@@ -175,7 +183,7 @@ zeromq4-1_clean :
 	@rm -rf zeromq4-1*
 	@rm -rf $(ZEROMQ4-1_PACKAGE) $(ZEROMQ4-1-LIBCXX_PACKAGE)
 
-clean : avro_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean json_clean jwt-cpp_clean libarchive_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
+clean : avro_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean json_clean jsoncons_clean jwt-cpp_clean libarchive_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
