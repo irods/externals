@@ -21,11 +21,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -92,10 +87,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -159,14 +150,6 @@
         "fpm_directories": ["include","lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "zlib",
-                    "libstdc++",
-                    "bzip2-libs",
-                    "xz-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -262,13 +245,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "zlib",
-                    "bzip2-libs",
-                    "xz-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -406,18 +382,6 @@
         "fpm_directories": ["bin","include","lib","share"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "glibc-devel",
-                    "libgcc",
-                    "zlib",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "libxml2",
-                    "devtoolset-10-gcc",
-                    "devtoolset-10-gcc-c++",
-                    "devtoolset-10-libstdc++-devel"
-                ],
                 "8": [
                     "glibc",
                     "glibc-devel",
@@ -524,10 +488,6 @@
         "fpm_directories": ["lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -586,13 +546,6 @@
         "fpm_directories": ["bin","doc","share"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "openssl-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -695,11 +648,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -767,10 +715,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -890,14 +834,6 @@
         "fpm_directories": ["bin","include","lib","share"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "zlib",
-                    "bzip2-libs",
-                    "openssl-libs",
-                    "libxml2",
-                    "xz-libs >= 5.2.2"
-                ],
                 "8": [
                     "glibc",
                     "zlib",
@@ -981,12 +917,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "fuse-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1058,12 +988,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "unixODBC"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1135,11 +1059,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "unixODBC"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1200,12 +1119,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "openssl-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1277,11 +1190,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "openssl-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1341,9 +1249,6 @@
         "fpm_directories": ["bin"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc"
-                ],
                 "8": [
                     "glibc"
                 ],
@@ -1393,11 +1298,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1463,10 +1363,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -1520,11 +1416,6 @@
         "fpm_directories": ["bin","include","lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1589,10 +1480,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
