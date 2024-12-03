@@ -5,7 +5,6 @@ Currently tested on:
 - Ubuntu 20.04
 - Ubuntu 22.04
 - Ubuntu 24.04
-- CentOS 7
 - AlmaLinux 8
 - Rocky Linux 8
 - Rocky Linux 9
@@ -40,23 +39,6 @@ make # or "make server" for packages specific to building the iRODS server.
 apt-get update
 apt-get install -y sudo git python3 python3-distro python3-setuptools
 ./install_prerequisites.py
-
-make # or "make server" for packages specific to building the iRODS server.
-```
-
-## RHEL / CentOS 7
-
-```bash
-yum install -y sudo git python3 epel-release
-yum install -y python36-distro
-
-# Installing the prerequistes must be done before enabling the GCC compiler
-# environment.
-./install_prerequisites.py
-
-# Enable the GCC 10 compiler tools.
-scl enable devtoolset-10 bash
-export IRODS_EXTERNALS_GCC_PREFIX="/opt/rh/devtoolset-10/root/usr"
 
 make # or "make server" for packages specific to building the iRODS server.
 ```
