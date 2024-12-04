@@ -78,10 +78,13 @@ def main():
             'libbz2-dev',
             'libcurl4-gnutls-dev',
             'libfuse-dev',
+            'libicu-dev',
+            'liblzma-dev',
             'libmicrohttpd-dev',
             'libssl-dev',
             'libtool',
             'libxml2-dev',
+            'libzstd-dev',
             'lsb-release',
             'make',
             'patch',
@@ -121,6 +124,7 @@ def main():
             'automake',
             'bzip2-devel',
             'ca-certificates',
+            'cmake',
             'fuse',
             'fuse-devel',
             'gcc',
@@ -129,10 +133,12 @@ def main():
             'glibc-devel',
             'help2man',
             'libcurl-devel',
+            'libicu-devel',
             'libmicrohttpd-devel',
             'libtool',
             'libuuid-devel',
             'libxml2-devel',
+            'libzstd-devel',
             'openssl',
             'openssl-devel',
             'patch',
@@ -145,60 +151,37 @@ def main():
             'texinfo',
             'unixODBC-devel',
             'wget',
+            'xz-devel',
             'zlib-devel',
         ]
 
-        if distro_version >= DistroVersion('8'):
-            cmd = ['sudo', 'dnf', 'clean', 'all']
-            build.run_cmd(cmd, check_rc='dnf clean failed')
+        cmd = ['sudo', 'dnf', 'clean', 'all']
+        build.run_cmd(cmd, check_rc='dnf clean failed')
 
-            cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
-            build.run_cmd(cmd, check_rc='dnf install repos failed')
+        cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
+        build.run_cmd(cmd, check_rc='dnf install repos failed')
 
-            codeready_repo_name = 'powertools' if distro_version < DistroVersion('9') else 'crb'
-            cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
-            build.run_cmd(cmd, check_rc='dnf config-manager failed')
+        codeready_repo_name = 'powertools' if distro_version < DistroVersion('9') else 'crb'
+        cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
+        build.run_cmd(cmd, check_rc='dnf config-manager failed')
 
-            package_list.extend([
-                'cmake',
-            ])
-
-            if distro_version < DistroVersion('9'):
-                package_list.extend([
-                    'curl',
-                    'gcc-toolset-11-gcc',
-                    'gcc-toolset-11-gcc-c++',
-                    'gcc-toolset-11-libstdc++-devel',
-                    'redhat-lsb-core',
-                ])
-            else:
-                # Starting with EL9, curl is provided by curl-minimal by default.
-                # We don't need the full package, so let's just ensure curl-minimal is installed.
-                package_list.extend([
-                    'curl-minimal',
-                ])
-
-            cmd = ['sudo', 'dnf', 'install', '-y']
-            build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
-
-        else:
-            cmd = ['sudo', 'rpm', '--rebuilddb']
-            build.run_cmd(cmd, check_rc='rpm rebuild failed')
-            cmd = ['sudo', 'yum', 'clean', 'all']
-            build.run_cmd(cmd, check_rc='yum clean failed')
-
-            cmd = ['sudo', 'yum', 'install', '-y', 'epel-release', 'centos-release-scl']
-            build.run_cmd(cmd, check_rc='yum install repos failed')
-
+        if distro_version < DistroVersion('9'):
             package_list.extend([
                 'curl',
-                'devtoolset-10-gcc',
-                'devtoolset-10-gcc-c++',
-                'devtoolset-10-libstdc++-devel',
+                'gcc-toolset-11-gcc',
+                'gcc-toolset-11-gcc-c++',
+                'gcc-toolset-11-libstdc++-devel',
+                'redhat-lsb-core',
+            ])
+        else:
+            # Starting with EL9, curl is provided by curl-minimal by default.
+            # We don't need the full package, so let's just ensure curl-minimal is installed.
+            package_list.extend([
+                'curl-minimal',
             ])
 
-            cmd = ['sudo', 'yum', 'install', '-y']
-            build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
+        cmd = ['sudo', 'dnf', 'install', '-y']
+        build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
     else:
         log.error('Cannot determine prerequisites for platform [{0}]'.format(distro_id))

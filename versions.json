@@ -21,11 +21,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -92,10 +87,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -137,7 +128,7 @@
         "version_string": "1.81.0",
         "license": "BSL-1.0",
         "consortium_build_number": "1",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "patches": [
             "boost/from-debian/15.patch",
@@ -149,9 +140,9 @@
         ],
         "build_steps": [
             "git submodule update --init",
-            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
+            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3 --with-icu",
             "./b2 headers",
-            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED' linkflags='-Wl,-rpath,/TEMPLATE_BOOST_RPATH' -jTEMPLATE_JOBS"
+            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxstd=20 cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -Dconsteval=constexpr' linkflags='-Wl,-rpath,/TEMPLATE_BOOST_RPATH' -jTEMPLATE_JOBS"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -159,14 +150,6 @@
         "fpm_directories": ["include","lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "zlib",
-                    "libstdc++",
-                    "bzip2-libs",
-                    "xz-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -174,7 +157,8 @@
                     "libstdc++",
                     "bzip2-libs",
                     "xz-libs",
-                    "libzstd"
+                    "libzstd",
+                    "libicu"
                 ],
                 "9": [
                     "glibc",
@@ -182,7 +166,9 @@
                     "zlib",
                     "libstdc++",
                     "bzip2-libs",
-                    "xz-libs"
+                    "xz-libs",
+                    "libzstd",
+                    "libicu"
                 ]
             },
             "debian": {
@@ -192,6 +178,8 @@
                     "libz1",
                     "libstdc++6",
                     "libbz2-1.0",
+                    "liblzma5",
+                    "libzstd1",
                     "libicu67"
                 ],
                 "12": [
@@ -200,6 +188,8 @@
                     "libz1",
                     "libstdc++6",
                     "libbz2-1.0",
+                    "liblzma5",
+                    "libzstd1",
                     "libicu72"
                 ]
             },
@@ -210,6 +200,8 @@
                     "libz1",
                     "libstdc++6",
                     "libbz2-1.0",
+                    "liblzma5",
+                    "libzstd1",
                     "libicu66"
                 ],
                 "22.04": [
@@ -218,6 +210,8 @@
                     "libz1",
                     "libstdc++6",
                     "libbz2-1.0",
+                    "liblzma5",
+                    "libzstd1",
                     "libicu70"
                 ],
                 "24.04": [
@@ -226,6 +220,8 @@
                     "libz1",
                     "libstdc++6",
                     "libbz2-1.0",
+                    "liblzma5",
+                    "libzstd1",
                     "libicu74"
                 ]
             }
@@ -237,7 +233,7 @@
         "version_string": "1.81.0",
         "license": "BSL-1.0",
         "consortium_build_number": "1",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "patches": [
             "boost/from-debian/15.patch",
@@ -249,9 +245,9 @@
         ],
         "build_steps": [
             "git submodule update --init",
-            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3",
+            "./bootstrap.sh --prefix=TEMPLATE_INSTALL_PREFIX --with-python=/usr/bin/python3 --without-icu",
             "./b2 headers",
-            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -stdlib=libc++ -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' linkflags='-stdlib=libc++ -Wl,-rpath,/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_LIBCXX_RPATH' -jTEMPLATE_JOBS"
+            "./b2 install toolset=clang --without-mpi threading=multi link=shared cxxstd=20 --disable-icu boost.locale.icu=off cxxflags='-fPIC -DBOOST_SYSTEM_NO_DEPRECATED -Dconsteval=constexpr -stdlib=libc++ -nostdinc++ -ITEMPLATE_CLANG_CPP_HEADERS' linkflags='-stdlib=libc++ -Wl,-rpath,/TEMPLATE_CLANG_RUNTIME_RPATH:/TEMPLATE_BOOST_LIBCXX_RPATH' -jTEMPLATE_JOBS"
         ],
         "external_build_steps": [
             "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
@@ -262,13 +258,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "zlib",
-                    "bzip2-libs",
-                    "xz-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -282,7 +271,8 @@
                     "libgcc",
                     "zlib",
                     "bzip2-libs",
-                    "xz-libs"
+                    "xz-libs",
+                    "libzstd"
                 ]
             },
             "debian": {
@@ -291,14 +281,16 @@
                     "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
-                    "libicu67"
+                    "liblzma5",
+                    "libzstd1"
                 ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
-                    "libicu72"
+                    "liblzma5",
+                    "libzstd1"
                 ]
             },
             "ubuntu": {
@@ -307,21 +299,24 @@
                     "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
-                    "libicu66"
+                    "liblzma5",
+                    "libzstd1"
                 ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
-                    "libicu70"
+                    "liblzma5",
+                    "libzstd1"
                 ],
                 "24.04": [
                     "libc6",
                     "libgcc-s1",
                     "libz1",
                     "libbz2-1.0",
-                    "libicu74"
+                    "liblzma5",
+                    "libzstd1"
                 ]
             }
         }
@@ -406,18 +401,6 @@
         "fpm_directories": ["bin","include","lib","share"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "glibc-devel",
-                    "libgcc",
-                    "zlib",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "libxml2",
-                    "devtoolset-10-gcc",
-                    "devtoolset-10-gcc-c++",
-                    "devtoolset-10-libstdc++-devel"
-                ],
                 "8": [
                     "glibc",
                     "glibc-devel",
@@ -524,10 +507,6 @@
         "fpm_directories": ["lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -586,13 +565,6 @@
         "fpm_directories": ["bin","doc","share"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "openssl-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -695,11 +667,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -767,10 +734,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -890,14 +853,6 @@
         "fpm_directories": ["bin","include","lib","share"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "zlib",
-                    "bzip2-libs",
-                    "openssl-libs",
-                    "libxml2",
-                    "xz-libs >= 5.2.2"
-                ],
                 "8": [
                     "glibc",
                     "zlib",
@@ -981,12 +936,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "fuse-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1058,12 +1007,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "unixODBC"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1135,11 +1078,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "unixODBC"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1200,12 +1138,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "openssl-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1277,11 +1209,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "openssl-libs"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1341,9 +1268,6 @@
         "fpm_directories": ["bin"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc"
-                ],
                 "8": [
                     "glibc"
                 ],
@@ -1393,11 +1317,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1463,10 +1382,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
@@ -1520,11 +1435,6 @@
         "fpm_directories": ["bin","include","lib"],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "8": [
                     "glibc",
                     "libgcc",
@@ -1589,10 +1499,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "7": [
-                    "glibc",
-                    "libgcc"
-                ],
                 "8": [
                     "glibc",
                     "libgcc"
