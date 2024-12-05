@@ -1,0 +1,47 @@
+fix(clang-tools-extra/**.py): fix invalid escape sequences
+
+Based on commit d63be475e889ba3361799f6907b3c95354684c7d from upstream.
+Upstream commit Author: Eisuke Kawashima <e.kawaschima+github@gmail.com>
+Upstream commit Author Date: Tue, 11 Jun 2024 04:05:40 +0900
+Upstream commit Committer: Piotr Zegar <me@piotrzegar.pl>
+Upstream commit Commit Date: Mon, 10 Jun 2024 21:05:40 +0200
+---
+ clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py                 |    4 ++--
+ clang-tools-extra/docs/clang-tidy/checks/gen-static-analyzer-docs.py |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff -pru llvm-project.orig/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py llvm-project/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
+--- llvm-project.orig/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py	2024-12-04 18:23:06.038522255 -0500
++++ llvm-project/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py	2024-12-04 18:29:38.919426287 -0500
+@@ -172,7 +172,7 @@ def main():
+   filename = None
+   lines_by_file = {}
+   for line in sys.stdin:
+-    match = re.search('^\+\+\+\ \"?(.*?/){%s}([^ \t\n\"]*)' % args.p, line)
++    match = re.search('^\\+\\+\\+\\ \"?(.*?/){%s}([^ \t\n\"]*)' % args.p, line)
+     if match:
+       filename = match.group(2)
+     if filename is None:
+@@ -185,7 +185,7 @@ def main():
+       if not re.match('^%s$' % args.iregex, filename, re.IGNORECASE):
+         continue
+ 
+-    match = re.search('^@@.*\+(\d+)(,(\d+))?', line)
++    match = re.search(r'^@@.*\+(\d+)(,(\d+))?', line)
+     if match:
+       start_line = int(match.group(1))
+       line_count = 1
+diff -pru llvm-project.orig/clang-tools-extra/docs/clang-tidy/checks/gen-static-analyzer-docs.py llvm-project/clang-tools-extra/docs/clang-tidy/checks/gen-static-analyzer-docs.py
+--- llvm-project.orig/clang-tools-extra/docs/clang-tidy/checks/gen-static-analyzer-docs.py	2024-12-04 18:23:06.166522549 -0500
++++ llvm-project/clang-tools-extra/docs/clang-tidy/checks/gen-static-analyzer-docs.py	2024-12-04 18:30:28.843541054 -0500
+@@ -44,7 +44,7 @@ def get_checkers(checkers_td_directory):
+       parent_package_ = parent_package["ParentPackage"]
+ 
+     full_package_name = "clang-analyzer-" + checker_package_prefix + "." + checker_name
+-    anchor_url = re.sub("\.", "-", checker_package_prefix + "." + checker_name).lower()
++    anchor_url = re.sub(r"\.", "-", checker_package_prefix + "." + checker_name).lower()
+ 
+     if(not hidden and "alpha" not in full_package_name.lower()):
+       checker["FullPackageName"] = full_package_name
+-- 
+

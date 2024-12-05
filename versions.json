@@ -343,7 +343,7 @@
         "version_string": "13.0.1",
         "license": "Apache-2.0 WITH LLVM-exception",
         "consortium_build_number": "0",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "patches": [
             "clang/from-debian/declare_clear_cache.diff",
@@ -384,7 +384,9 @@
             "clang/1002-libcxx-Prefer-__has_builtin-for-detecting-compiler-p.patch",
             "clang/1003-more-__has_builtin-replacements.patch",
             "clang/1004-libcxx-Use-__is_convertible-built-in-when-available.patch",
-            "clang/1005-libcxx-fix-remove_reference_t.patch"
+            "clang/1005-libcxx-fix-remove_reference_t.patch",
+            "clang/1006-clang-tools-extra-py-fix-invalid-escape-sequences.patch",
+            "clang/1007-opt-viewer-fix-invalid-escape-sequence.patch"
         ],
         "build_steps": [
             "mkdir -p ../build",
