@@ -826,104 +826,16 @@
             "json"
         ]
     },
-    "libarchive": {
-        "commitish": "v3.5.2",
-        "version_string": "3.5.2",
-        "license": "BSD-2-Clause",
-        "consortium_build_number": "0",
-        "package_revision": "5",
-        "externals_root": "opt/irods-externals",
-        "patches": [
-            "libarchive/from-debian/typos.patch",
-            "libarchive/from-debian/lzip-large-dict.patch",
-            "libarchive/from-debian/upstream-fixup-symlinks.patch",
-            "libarchive/from-debian/upstream-fixup-file-flags.patch",
-            "libarchive/from-debian/upstream-fix-32bit-size-cast.patch",
-            "libarchive/from-rhel/openssl3-rmd160failure.patch",
-            "libarchive/from-rhel/libarchive-3.5.3-Fix-CVE-2022-26280.patch",
-            "libarchive/from-rhel/libarchive-3.5.3-Fix-size-filed-in-pax-header.patch",
-            "libarchive/from-rhel/libarchive-3.5.3-Fix-CVE-2022-36227.patch"
-        ],
-        "build_steps": [
-            "TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_C_FLAGS:STRING=-fPIC -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX .",
-            "make -jTEMPLATE_JOBS",
-            "make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin","include","lib","share"],
-        "distro_dependencies": {
-            "rhel": {
-                "8": [
-                    "glibc",
-                    "zlib",
-                    "bzip2-libs",
-                    "openssl-libs",
-                    "libxml2",
-                    "xz-libs >= 5.2.2",
-                    "libzstd"
-                ],
-                "9": [
-                    "glibc",
-                    "zlib",
-                    "bzip2-libs",
-                    "openssl-libs",
-                    "libxml2",
-                    "xz-libs >= 5.2.2"
-                ]
-            },
-            "debian": {
-                "11": [
-                    "libc6",
-                    "libz1",
-                    "libbz2-1.0",
-                    "libssl1.1",
-                    "libxml2"
-                ],
-                "12": [
-                    "libc6",
-                    "libz1",
-                    "libbz2-1.0",
-                    "libssl3",
-                    "libxml2"
-                ]
-            },
-            "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libz1",
-                    "libbz2-1.0",
-                    "libssl1.1",
-                    "libxml2"
-                ],
-                "22.04": [
-                    "libc6",
-                    "libz1",
-                    "libbz2-1.0",
-                    "libssl3",
-                    "libxml2"
-                ],
-                "24.04": [
-                    "libc6",
-                    "libz1",
-                    "libbz2-1.0",
-                    "libssl3",
-                    "libxml2"
-                ]
-            }
-        }
-    },
     "mungefs": {
         "commitish": "1.0.7",
         "version_string": "1.0.7",
         "license": "BSD-3-Clause",
         "consortium_build_number": "1",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DLibArchive_INCLUDE_DIRS=TEMPLATE_LIBARCHIVE_PATH/include -DLibArchive_LIBRARIES=TEMPLATE_LIBARCHIVE_PATH/lib/libarchive.so -DLibArchive_INCLUDE_DIR=TEMPLATE_LIBARCHIVE_PATH/include -DLibArchive_LIBRARY=TEMPLATE_LIBARCHIVE_PATH/lib/libarchive.so -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH\\;/TEMPLATE_ZMQ_RPATH\\;/TEMPLATE_LIBARCHIVE_RPATH ..",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH\\;/TEMPLATE_ZMQ_RPATH ..",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_BOOST_ROOT/lib make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -932,7 +844,6 @@
         "fpm_directories": ["bin"],
         "interdependencies": [
             "boost",
-            "libarchive",
             "avro",
             "zeromq4-1"
         ],
@@ -942,12 +853,14 @@
                     "glibc",
                     "libgcc",
                     "libstdc++",
+                    "libarchive",
                     "fuse-libs"
                 ],
                 "9": [
                     "glibc",
                     "libgcc",
                     "libstdc++",
+                    "libarchive",
                     "fuse-libs"
                 ]
             },
@@ -956,12 +869,14 @@
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
+                    "libarchive13",
                     "libfuse2"
                 ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
+                    "libarchive13",
                     "libfuse2"
                 ]
             },
@@ -970,18 +885,21 @@
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
+                    "libarchive13",
                     "libfuse2"
                 ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
+                    "libarchive13",
                     "libfuse2"
                 ],
                 "24.04": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
+                    "libarchive13",
                     "libfuse2"
                 ]
             }
