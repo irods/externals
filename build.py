@@ -224,8 +224,6 @@ def build_package(target, build_native_package):
     log.debug('fmt_libcxx_root: [{0}]'.format(fmt_libcxx_root))
     json_root = get_local_path('json',[])
     log.debug('json_root: [{0}]'.format(json_root))
-    libarchive_root = get_local_path('libarchive',[])
-    log.debug('libarchive_root: [{0}]'.format(libarchive_root))
 
     # build boost install path
     boost_info = get_versions()['boost']
@@ -257,11 +255,6 @@ def build_package(target, build_native_package):
     avro_libcxx_subdirectory = '{0}{1}-{2}'.format('avro-libcxx', avro_libcxx_info['version_string'], avro_libcxx_info['consortium_build_number'])
     avro_libcxx_install_prefix = os.path.join(avro_libcxx_info['externals_root'], avro_libcxx_subdirectory)
     avro_libcxx_rpath = os.path.join(avro_libcxx_install_prefix, 'lib')
-
-    libarchive_info = get_versions()['libarchive']
-    libarchive_subdirectory = '{0}{1}-{2}'.format('libarchive', libarchive_info['version_string'], libarchive_info['consortium_build_number'])
-    libarchive_install_prefix = os.path.join(libarchive_info['externals_root'], libarchive_subdirectory)
-    libarchive_rpath = os.path.join(libarchive_install_prefix, 'lib')
 
     zmq_info = get_versions()['zeromq4-1']
     zmq_subdirectory = '{0}{1}-{2}'.format('zeromq4-1', zmq_info['version_string'], zmq_info['consortium_build_number'])
@@ -384,8 +377,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_BOOST_LIBCXX_ROOT", boost_libcxx_root, i)
         i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
         i = re.sub("TEMPLATE_BOOST_LIBCXX_RPATH", boost_libcxx_rpath, i)
-        i = re.sub("TEMPLATE_LIBARCHIVE_PATH", libarchive_root, i)
-        i = re.sub("TEMPLATE_LIBARCHIVE_RPATH", libarchive_rpath, i)
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_AVRO_LIBCXX_RPATH", avro_libcxx_rpath, i)
