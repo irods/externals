@@ -85,6 +85,7 @@ def main():
             'libssl-dev',
             'libtool',
             'libxml2-dev',
+            'libzmq3-dev',
             'libzstd-dev',
             'lsb-release',
             'make',
@@ -154,6 +155,7 @@ def main():
             'unixODBC-devel',
             'wget',
             'xz-devel',
+            'zeromq-devel',
             'zlib-devel',
         ]
 
