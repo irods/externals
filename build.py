@@ -208,8 +208,6 @@ def build_package(target, build_native_package):
     # prepare libraries
     cppzmq_root = get_local_path('cppzmq',[])
     log.debug('cppzmq_root: [{0}]'.format(cppzmq_root))
-    zmq_root = get_local_path('zeromq4-1',[])
-    log.debug('zmq_root: [{0}]'.format(zmq_root))
     avro_root = get_local_path('avro',[])
     log.debug('avro_root: [{0}]'.format(avro_root))
     avro_libcxx_root = get_local_path('avro-libcxx',[])
@@ -255,11 +253,6 @@ def build_package(target, build_native_package):
     avro_libcxx_subdirectory = '{0}{1}-{2}'.format('avro-libcxx', avro_libcxx_info['version_string'], avro_libcxx_info['consortium_build_number'])
     avro_libcxx_install_prefix = os.path.join(avro_libcxx_info['externals_root'], avro_libcxx_subdirectory)
     avro_libcxx_rpath = os.path.join(avro_libcxx_install_prefix, 'lib')
-
-    zmq_info = get_versions()['zeromq4-1']
-    zmq_subdirectory = '{0}{1}-{2}'.format('zeromq4-1', zmq_info['version_string'], zmq_info['consortium_build_number'])
-    zmq_install_prefix = os.path.join(zmq_info['externals_root'], zmq_subdirectory)
-    zmq_rpath = os.path.join(zmq_install_prefix, 'lib')
 
     zmq_libcxx_info = get_versions()['zeromq4-1-libcxx']
     zmq_libcxx_subdirectory = '{0}{1}-{2}'.format('zeromq4-1-libcxx', zmq_libcxx_info['version_string'], zmq_libcxx_info['consortium_build_number'])
@@ -381,8 +374,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_AVRO_LIBCXX_RPATH", avro_libcxx_rpath, i)
         i = re.sub("TEMPLATE_AVRO_LIBCXX_PATH", avro_libcxx_root, i)
-        i = re.sub("TEMPLATE_ZMQ_RPATH", zmq_rpath, i)
-        i = re.sub("TEMPLATE_ZMQ_PATH", zmq_root, i)
         i = re.sub("TEMPLATE_ZMQ_LIBCXX_RPATH", zmq_libcxx_rpath, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
         i = re.sub("TEMPLATE_FMT_PATH", fmt_root, i)

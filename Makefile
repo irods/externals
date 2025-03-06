@@ -1,7 +1,7 @@
-all : avro avro-libcxx boost boost-libcxx catch2 clang clang-runtime cmake cppzmq fmt fmt-libcxx json jsoncons jwt-cpp mungefs nanodbc nanodbc-libcxx qpid-proton qpid-proton-libcxx redis spdlog spdlog-libcxx zeromq4-1 zeromq4-1-libcxx
+all : avro avro-libcxx boost boost-libcxx catch2 clang clang-runtime cmake cppzmq fmt fmt-libcxx json jsoncons jwt-cpp mungefs nanodbc nanodbc-libcxx qpid-proton qpid-proton-libcxx redis spdlog spdlog-libcxx zeromq4-1-libcxx
 
 
-server-libstdcxx : avro boost catch2 clang cppzmq fmt json jsoncons nanodbc spdlog zeromq4-1
+server-libstdcxx : avro boost catch2 clang cppzmq fmt json jsoncons nanodbc spdlog
 
 server-libcxx : avro-libcxx boost-libcxx catch2 clang clang-runtime cppzmq fmt-libcxx json jsoncons nanodbc-libcxx spdlog-libcxx zeromq4-1-libcxx
 
@@ -72,7 +72,7 @@ cmake_clean :
 	@rm -rf cmake*
 	@rm -rf $(CMAKE_PACKAGE)
 
-$(CPPZMQ_PACKAGE) : $(ZEROMQ4-1_PACKAGE)
+$(CPPZMQ_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) cppzmq > cppzmq.log 2>&1
 cppzmq : $(CPPZMQ_PACKAGE)
 cppzmq_clean :
@@ -115,7 +115,7 @@ jwt-cpp_clean :
 	@rm -rf jwt-cpp*
 	@rm -rf $(JWT-CPP_PACKAGE)
 
-$(MUNGEFS_PACKAGE) : $(CPPZMQ_PACKAGE) $(AVRO_PACKAGE) $(CLANG-RUNTIME_PACKAGE) $(ZEROMQ4-1_PACKAGE)
+$(MUNGEFS_PACKAGE) : $(CPPZMQ_PACKAGE) $(AVRO_PACKAGE) $(CLANG-RUNTIME_PACKAGE)
 	./build.py $(BUILD_OPTIONS) mungefs > mungefs.log 2>&1
 mungefs : $(MUNGEFS_PACKAGE)
 mungefs_clean :
@@ -164,16 +164,13 @@ spdlog_clean :
 	@rm -rf spdlog*
 	@rm -rf $(SPDLOG_PACKAGE) $(SPDLOG-LIBCXX_PACKAGE)
 
-$(ZEROMQ4-1_PACKAGE) : $(CLANG_PACKAGE)
-	./build.py $(BUILD_OPTIONS) zeromq4-1 > zeromq4-1.log 2>&1
-zeromq4-1 : $(ZEROMQ4-1_PACKAGE)
 $(ZEROMQ4-1-LIBCXX_PACKAGE) : $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) zeromq4-1-libcxx > zeromq4-1-libcxx.log 2>&1
 zeromq4-1-libcxx : $(ZEROMQ4-1-LIBCXX_PACKAGE)
 zeromq4-1_clean :
 	@echo "Cleaning zeromq4-1..."
 	@rm -rf zeromq4-1*
-	@rm -rf $(ZEROMQ4-1_PACKAGE) $(ZEROMQ4-1-LIBCXX_PACKAGE)
+	@rm -rf $(ZEROMQ4-1-LIBCXX_PACKAGE)
 
 clean : avro_clean boost_clean catch2_clean clang_clean clang-runtime_clean cmake_clean cppzmq_clean fmt_clean json_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean spdlog_clean zeromq4-1_clean
 	@echo "Cleaning generated files..."

@@ -640,7 +640,7 @@
         ],
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -Dpkgcfg_lib_PC_LIBZMQ_zmq=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DCPPZMQ_BUILD_TESTS=OFF -DCPPZMQ_CMAKECONFIG_INSTALL_DIR=lib/cmake/cppzmq",
+            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCPPZMQ_BUILD_TESTS=OFF -DCPPZMQ_CMAKECONFIG_INSTALL_DIR=lib/cmake/cppzmq",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -835,7 +835,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DZeroMQ_INCLUDE_DIR=TEMPLATE_ZMQ_PATH/include -DZeroMQ_LIBRARY=TEMPLATE_ZMQ_PATH/lib/libzmq.so -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH\\;/TEMPLATE_ZMQ_RPATH ..",
+            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH ..",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_BOOST_ROOT/lib make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -844,8 +844,7 @@
         "fpm_directories": ["bin"],
         "interdependencies": [
             "boost",
-            "avro",
-            "zeromq4-1"
+            "avro"
         ],
         "distro_dependencies": {
             "rhel": {
@@ -854,14 +853,16 @@
                     "libgcc",
                     "libstdc++",
                     "libarchive",
-                    "fuse-libs"
+                    "fuse-libs",
+                    "zeromq"
                 ],
                 "9": [
                     "glibc",
                     "libgcc",
                     "libstdc++",
                     "libarchive",
-                    "fuse-libs"
+                    "fuse-libs",
+                    "zeromq"
                 ]
             },
             "debian": {
@@ -870,14 +871,16 @@
                     "libgcc-s1",
                     "libstdc++6",
                     "libarchive13",
-                    "libfuse2"
+                    "libfuse2",
+                    "libzmq5"
                 ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
                     "libarchive13",
-                    "libfuse2"
+                    "libfuse2",
+                    "libzmq5"
                 ]
             },
             "ubuntu": {
@@ -886,21 +889,24 @@
                     "libgcc-s1",
                     "libstdc++6",
                     "libarchive13",
-                    "libfuse2"
+                    "libfuse2",
+                    "libzmq5"
                 ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
                     "libarchive13",
-                    "libfuse2"
+                    "libfuse2",
+                    "libzmq5"
                 ],
                 "24.04": [
                     "libc6",
                     "libgcc-s1",
                     "libstdc++6",
                     "libarchive13",
-                    "libfuse2"
+                    "libfuse2",
+                    "libzmq5"
                 ]
             }
         }
@@ -1333,66 +1339,6 @@
                 "24.04": [
                     "libc6",
                     "libgcc-s1"
-                ]
-            }
-        }
-    },
-    "zeromq4-1": {
-        "commitish": "v4.1.8",
-        "version_string": "4.1.8",
-        "license": "LGPL-3.0-or-later",
-        "consortium_build_number": "1",
-        "package_revision": "1",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-            "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DZMQ_BUILD_TESTS=OFF -DCMAKE_INSTALL_RPATH=/TEMPLATE_ZMQ_RPATH ..",
-            "cd build; make -jTEMPLATE_JOBS; make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin","include","lib"],
-        "distro_dependencies": {
-            "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
-                "9": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ]
-            },
-            "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
-                "12": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ]
-            },
-            "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
-                "22.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
-                "24.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
                 ]
             }
         }
