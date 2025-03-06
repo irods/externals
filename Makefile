@@ -115,7 +115,7 @@ jwt-cpp_clean :
 	@rm -rf jwt-cpp*
 	@rm -rf $(JWT-CPP_PACKAGE)
 
-$(MUNGEFS_PACKAGE) : $(CPPZMQ_PACKAGE) $(AVRO_PACKAGE) $(CLANG-RUNTIME_PACKAGE)
+$(MUNGEFS_PACKAGE) : $(CPPZMQ_PACKAGE) $(AVRO_PACKAGE)
 	./build.py $(BUILD_OPTIONS) mungefs > mungefs.log 2>&1
 mungefs : $(MUNGEFS_PACKAGE)
 mungefs_clean :
