@@ -11,6 +11,7 @@ import os
 import re
 import subprocess
 import sys
+from shutil import which
 
 import distro_info
 
@@ -387,8 +388,11 @@ def build_package(target, build_native_package):
     if not build_native_package:
         return
 
-    fpmbinary='fpm'
-    run_cmd(['which', fpmbinary], check_rc='fpm not found, try "gem install fpm"')
+    fpmbinary = 'fpm'
+    fpmbinary = which(fpmbinary)
+    if fpmbinary is None:
+        log.error('fmp not found, try "gem install fpm"')
+        sys.exit(1)
     os.chdir(script_path)
     package_cmd = [fpmbinary, '-f', '-s', 'dir']
     package_cmd.extend(['-t', distro_info.package_type()])
