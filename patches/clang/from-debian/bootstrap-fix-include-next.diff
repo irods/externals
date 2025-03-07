@@ -13,10 +13,10 @@ include search path, clang's header will call itself without any effect.
 Therefore, it will do include_next until the define from the libc is existing (ex: _INTTYPES_H)
 
 
-Index: llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/lib/Headers/inttypes.h
+Index: llvm-toolchain-snapshot_15~++20220407011631+46f0e2ceb487/clang/lib/Headers/inttypes.h
 ===================================================================
---- llvm-toolchain-snapshot_11~++20200326111000+4673699a470.orig/clang/lib/Headers/inttypes.h
-+++ llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/lib/Headers/inttypes.h
+--- llvm-toolchain-snapshot_15~++20220407011631+46f0e2ceb487.orig/clang/lib/Headers/inttypes.h
++++ llvm-toolchain-snapshot_15~++20220407011631+46f0e2ceb487/clang/lib/Headers/inttypes.h
 @@ -6,7 +6,7 @@
   *
  \*===----------------------------------------------------------------------===*/
@@ -26,10 +26,10 @@ Index: llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/lib/Headers
  // AIX system headers need inttypes.h to be re-enterable while _STD_TYPES_T
  // is defined until an inclusion of it without _STD_TYPES_T occurs, in which
  // case the header guard macro is defined.
-Index: llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/lib/Headers/limits.h
+Index: llvm-toolchain-snapshot_15~++20220407011631+46f0e2ceb487/clang/lib/Headers/limits.h
 ===================================================================
---- llvm-toolchain-snapshot_11~++20200326111000+4673699a470.orig/clang/lib/Headers/limits.h
-+++ llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/lib/Headers/limits.h
+--- llvm-toolchain-snapshot_15~++20220407011631+46f0e2ceb487.orig/clang/lib/Headers/limits.h
++++ llvm-toolchain-snapshot_15~++20220407011631+46f0e2ceb487/clang/lib/Headers/limits.h
 @@ -6,7 +6,7 @@
   *
  \*===----------------------------------------------------------------------===*/

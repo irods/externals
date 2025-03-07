@@ -12,20 +12,20 @@ Partially addresses PR37128
  cmake/modules/CMakeLists.txt | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Index: llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/cmake/modules/CMakeLists.txt
+Index: llvm-toolchain-snapshot_15~++20220726081233+0df7d8bc355d/cmake/Modules/FindPrefixFromConfig.cmake
 ===================================================================
---- llvm-toolchain-snapshot_11~++20200326111000+4673699a470.orig/clang/cmake/modules/CMakeLists.txt
-+++ llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/cmake/modules/CMakeLists.txt
-@@ -30,10 +30,10 @@ set(CLANG_CONFIG_EXPORTS_FILE)
- # Generate ClangConfig.cmake for the install tree.
- set(CLANG_CONFIG_CODE "
- # Compute the installation prefix from this LLVMConfig.cmake file location.
--get_filename_component(CLANG_INSTALL_PREFIX \"\${CMAKE_CURRENT_LIST_FILE}\" PATH)")
-+get_filename_component(CLANG_INSTALL_PREFIX \"\${CMAKE_CURRENT_LIST_FILE}\" REALPATH)")
- # Construct the proper number of get_filename_component(... PATH)
- # calls to compute the installation prefix.
--string(REGEX REPLACE "/" ";" _count "${CLANG_INSTALL_PACKAGE_DIR}")
-+string(REGEX REPLACE "/" ";" _count "prefix/${CLANG_INSTALL_PACKAGE_DIR}")
- foreach(p ${_count})
-   set(CLANG_CONFIG_CODE "${CLANG_CONFIG_CODE}
- get_filename_component(CLANG_INSTALL_PREFIX \"\${CLANG_INSTALL_PREFIX}\" PATH)")
+--- llvm-toolchain-snapshot_15~++20220726081233+0df7d8bc355d.orig/cmake/Modules/FindPrefixFromConfig.cmake
++++ llvm-toolchain-snapshot_15~++20220726081233+0df7d8bc355d/cmake/Modules/FindPrefixFromConfig.cmake
+@@ -39,10 +39,10 @@ function(find_prefix_from_config out_var
+     # install prefix, and avoid hard-coding any absolute paths.
+     set(config_code
+       "# Compute the installation prefix from this LLVMConfig.cmake file location."
+-      "get_filename_component(${prefix_var} \"\${CMAKE_CURRENT_LIST_FILE}\" PATH)")
++      "get_filename_component(${prefix_var} \"\${CMAKE_CURRENT_LIST_FILE}\" REALPATH)")
+     # Construct the proper number of get_filename_component(... PATH)
+     # calls to compute the installation prefix.
+-    string(REGEX REPLACE "/" ";" _count "${path_to_leave}")
++    string(REGEX REPLACE "/" ";" _count "prefix/${path_to_leave}")
+     foreach(p ${_count})
+       list(APPEND config_code
+         "get_filename_component(${prefix_var} \"\${${prefix_var}}\" PATH)")

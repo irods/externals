@@ -1,13 +1,13 @@
-Index: llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/include/clang/Basic/X86Target.def
+Index: llvm-toolchain-snapshot_16~++20221220013513+bb7940e25f6c/llvm/include/llvm/TargetParser/X86TargetParser.def
 ===================================================================
---- llvm-toolchain-snapshot_11~++20200326111000+4673699a470.orig/clang/include/clang/Basic/X86Target.def
-+++ llvm-toolchain-snapshot_11~++20200326111000+4673699a470/clang/include/clang/Basic/X86Target.def
-@@ -312,7 +312,7 @@ CPU_SPECIFIC("pentium_mmx", 'D', "+mmx")
- CPU_SPECIFIC("pentium_ii", 'E', "+cmov,+mmx")
- CPU_SPECIFIC("pentium_iii", 'H', "+cmov,+mmx,+sse")
- CPU_SPECIFIC_ALIAS("pentium_iii_no_xmm_regs", "pentium_iii")
--CPU_SPECIFIC("pentium_4", 'J', "+cmov,+mmx,+sse,+sse2")
-+CPU_SPECIFIC("pentium_4", 'J', "+cmov,+mmx,+sse")
- CPU_SPECIFIC("pentium_m", 'K', "+cmov,+mmx,+sse,+sse2")
- CPU_SPECIFIC("pentium_4_sse3", 'L', "+cmov,+mmx,+sse,+sse2,+sse3")
- CPU_SPECIFIC("core_2_duo_ssse3", 'M', "+cmov,+mmx,+sse,+sse2,+sse3,+ssse3")
+--- llvm-toolchain-snapshot_16~++20221220013513+bb7940e25f6c.orig/llvm/include/llvm/TargetParser/X86TargetParser.def
++++ llvm-toolchain-snapshot_16~++20221220013513+bb7940e25f6c/llvm/include/llvm/TargetParser/X86TargetParser.def
+@@ -249,7 +249,7 @@ CPU_SPECIFIC("pentium_mmx", "pentium-mmx
+ CPU_SPECIFIC("pentium_ii", "pentium2", 'E', "+cmov,+mmx")
+ CPU_SPECIFIC("pentium_iii", "pentium3", 'H', "+cmov,+mmx,+sse")
+ CPU_SPECIFIC_ALIAS("pentium_iii_no_xmm_regs", "pentium3", "pentium_iii")
+-CPU_SPECIFIC("pentium_4", "pentium4", 'J', "+cmov,+mmx,+sse,+sse2")
++CPU_SPECIFIC("pentium_4", "pentium4", 'J', "+cmov,+mmx,+sse")
+ CPU_SPECIFIC("pentium_m", "pentium-m", 'K', "+cmov,+mmx,+sse,+sse2")
+ CPU_SPECIFIC("pentium_4_sse3", "prescott", 'L', "+cmov,+mmx,+sse,+sse2,+sse3")
+ CPU_SPECIFIC("core_2_duo_ssse3", "core2", 'M', "+cmov,+mmx,+sse,+sse2,+sse3,+ssse3")

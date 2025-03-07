@@ -105,17 +105,13 @@ def main():
 
         # Compiling LLVM 13's libcxx doesn't work with GCC 8/9.
         if distro_type == 'ubuntu':
-            if DistroVersion('18.10') <= distro_version < DistroVersion('20.04'):
-                package_list.extend(['gcc-7', 'g++-7'])
-            elif DistroVersion('20.04') <= distro_version < DistroVersion('20.10'):
+            if DistroVersion('20.04') <= distro_version < DistroVersion('20.10'):
+                #Ubuntu 20.04 defaults to GCC 9
                 package_list.extend(['gcc-10', 'g++-10'])
             else:
                 package_list.extend(['gcc', 'g++'])
         else:
-            if distro_version < DistroVersion('11'):
-                package_list.extend(['gcc-7', 'g++-7'])
-            else:
-                package_list.extend(['gcc', 'g++'])
+            package_list.extend(['gcc', 'g++'])
 
         cmd = ['sudo', 'DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', '-y']
         build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
@@ -172,10 +168,14 @@ def main():
         if distro_version < DistroVersion('9'):
             package_list.extend([
                 'curl',
+                'redhat-lsb-core',
+            ])
+
+            # EL8 defaults to gcc 8
+            package_list.extend([
                 'gcc-toolset-11-gcc',
                 'gcc-toolset-11-gcc-c++',
                 'gcc-toolset-11-libstdc++-devel',
-                'redhat-lsb-core',
             ])
         else:
             # Starting with EL9, curl is provided by curl-minimal by default.
@@ -183,6 +183,11 @@ def main():
             package_list.extend([
                 'curl-minimal',
             ])
+
+            # Starting with EL9, redhat-lsb-core is in the devel repo, which we don't want to
+            # leave enabled.
+            cmd = ['sudo', 'dnf', '--enablerepo=devel', 'install', '-y', 'redhat-lsb-core']
+            build.run_cmd(cmd, check_rc='dnf install redhat-lsb-core failed')
 
         cmd = ['sudo', 'dnf', 'install', '-y']
         build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')

@@ -1,0 +1,161 @@
+From ddfb974d0fca62e3eaeb98b79b5e29738c9082d2 Mon Sep 17 00:00:00 2001
+From: Sylvestre Ledru <sylvestre@debian.org>
+Date: Wed, 10 May 2023 16:31:53 +0200
+Subject: [PATCH] Add support of the next Ubuntu (Ubuntu 23.10 - Mantic
+ Minotaur)
+
+---
+ clang/include/clang/Driver/Distro.h | 3 ++-
+ clang/lib/Driver/Distro.cpp         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/clang/include/clang/Driver/Distro.h b/clang/include/clang/Driver/Distro.h
+index 0c858b3d716f19..8291f6575a7114 100644
+--- a/clang/include/clang/Driver/Distro.h
++++ b/clang/include/clang/Driver/Distro.h
+@@ -77,6 +77,7 @@ class Distro {
+     UbuntuJammy,
+     UbuntuKinetic,
+     UbuntuLunar,
++    UbuntuMantic,
+     UnknownDistro
+   };
+ 
+@@ -128,7 +129,7 @@ class Distro {
+   }
+ 
+   bool IsUbuntu() const {
+-    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuLunar;
++    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuMantic;
+   }
+ 
+   bool IsAlpineLinux() const { return DistroVal == AlpineLinux; }
+diff --git a/clang/lib/Driver/Distro.cpp b/clang/lib/Driver/Distro.cpp
+index 85d82180a805c6..e86b589a1cfb5e 100644
+--- a/clang/lib/Driver/Distro.cpp
++++ b/clang/lib/Driver/Distro.cpp
+@@ -93,6 +93,7 @@ static Distro::DistroType DetectLsbRelease(llvm::vfs::FileSystem &VFS) {
+                     .Case("jammy", Distro::UbuntuJammy)
+                     .Case("kinetic", Distro::UbuntuKinetic)
+                     .Case("lunar", Distro::UbuntuLunar)
++                    .Case("mantic", Distro::UbuntuMantic)
+                     .Default(Distro::UnknownDistro);
+   return Version;
+ }
+From 6266b964202336a02f40007928719e060bc81694 Mon Sep 17 00:00:00 2001
+From: Graham Inggs <ginggs@debian.org>
+Date: Wed, 1 Nov 2023 20:59:53 +0100
+Subject: [PATCH] Add support of the next Ubuntu (Ubuntu 24.04 - Noble Numbat)
+
+Co-authored-by: Sylvestre Ledru <sylvestre@debian.org>
+---
+ clang/include/clang/Driver/Distro.h | 3 ++-
+ clang/lib/Driver/Distro.cpp         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/clang/include/clang/Driver/Distro.h b/clang/include/clang/Driver/Distro.h
+index 8291f6575a7114..a8de94163e8b0b 100644
+--- a/clang/include/clang/Driver/Distro.h
++++ b/clang/include/clang/Driver/Distro.h
+@@ -78,6 +78,7 @@ class Distro {
+     UbuntuKinetic,
+     UbuntuLunar,
+     UbuntuMantic,
++    UbuntuNoble,
+     UnknownDistro
+   };
+ 
+@@ -129,7 +130,7 @@ class Distro {
+   }
+ 
+   bool IsUbuntu() const {
+-    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuMantic;
++    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuNoble;
+   }
+ 
+   bool IsAlpineLinux() const { return DistroVal == AlpineLinux; }
+diff --git a/clang/lib/Driver/Distro.cpp b/clang/lib/Driver/Distro.cpp
+index 005c31bd38893c..36f828f8cae26d 100644
+--- a/clang/lib/Driver/Distro.cpp
++++ b/clang/lib/Driver/Distro.cpp
+@@ -94,6 +94,7 @@ static Distro::DistroType DetectLsbRelease(llvm::vfs::FileSystem &VFS) {
+                     .Case("kinetic", Distro::UbuntuKinetic)
+                     .Case("lunar", Distro::UbuntuLunar)
+                     .Case("mantic", Distro::UbuntuMantic)
++                    .Case("noble", Distro::UbuntuNoble)
+                     .Default(Distro::UnknownDistro);
+   return Version;
+ }
+From 90bd7234e36e5b3d63155f481b739ea463985631 Mon Sep 17 00:00:00 2001
+From: Sylvestre Ledru <sylvestre@debian.org>
+Date: Thu, 2 May 2024 22:54:08 +0200
+Subject: [PATCH] Add support of the next Ubuntu (Ubuntu 24.10 - Oracular
+ Oriol)
+
+---
+ clang/include/clang/Driver/Distro.h | 3 ++-
+ clang/lib/Driver/Distro.cpp         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/clang/include/clang/Driver/Distro.h b/clang/include/clang/Driver/Distro.h
+index a8de94163e8b0b..1404e168684821 100644
+--- a/clang/include/clang/Driver/Distro.h
++++ b/clang/include/clang/Driver/Distro.h
+@@ -79,6 +79,7 @@ class Distro {
+     UbuntuLunar,
+     UbuntuMantic,
+     UbuntuNoble,
++    UbuntuOracular,
+     UnknownDistro
+   };
+ 
+@@ -130,7 +131,7 @@ class Distro {
+   }
+ 
+   bool IsUbuntu() const {
+-    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuNoble;
++    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuOracular;
+   }
+ 
+   bool IsAlpineLinux() const { return DistroVal == AlpineLinux; }
+diff --git a/clang/lib/Driver/Distro.cpp b/clang/lib/Driver/Distro.cpp
+index a7e7f169dc1419..6f49e641104ccd 100644
+--- a/clang/lib/Driver/Distro.cpp
++++ b/clang/lib/Driver/Distro.cpp
+@@ -95,6 +95,7 @@ static Distro::DistroType DetectLsbRelease(llvm::vfs::FileSystem &VFS) {
+                     .Case("lunar", Distro::UbuntuLunar)
+                     .Case("mantic", Distro::UbuntuMantic)
+                     .Case("noble", Distro::UbuntuNoble)
++                    .Case("oracular", Distro::UbuntuOracular)
+                     .Default(Distro::UnknownDistro);
+   return Version;
+ }
+--- a/clang/include/clang/Driver/Distro.h
++++ b/clang/include/clang/Driver/Distro.h
+@@ -80,6 +80,7 @@
+     UbuntuMantic,
+     UbuntuNoble,
+     UbuntuOracular,
++    UbuntuPlucky,
+     UnknownDistro
+   };
+ 
+@@ -131,7 +132,7 @@
+   }
+ 
+   bool IsUbuntu() const {
+-    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuOracular;
++    return DistroVal >= UbuntuHardy && DistroVal <= UbuntuPlucky;
+   }
+ 
+   bool IsAlpineLinux() const { return DistroVal == AlpineLinux; }
+--- a/clang/lib/Driver/Distro.cpp
++++ b/clang/lib/Driver/Distro.cpp
+@@ -96,6 +96,7 @@
+                     .Case("mantic", Distro::UbuntuMantic)
+                     .Case("noble", Distro::UbuntuNoble)
+                     .Case("oracular", Distro::UbuntuOracular)
++                    .Case("plucky", Distro::UbuntuPlucky)
+                     .Default(Distro::UnknownDistro);
+   return Version;
+ }

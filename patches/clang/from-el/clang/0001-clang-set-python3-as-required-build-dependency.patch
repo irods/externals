@@ -1,0 +1,39 @@
+From 96962d5512fbc6af0ada0f13e6be332c026529cb Mon Sep 17 00:00:00 2001
+From: Petr Hosek <phosek@google.com>
+Date: Fri, 9 Jun 2023 07:51:40 +0000
+Subject: [PATCH] [clang] set python3 as required build dependency
+
+The required HTMLLogger include file needs python3 to run
+resource_bundle.py to bundle all the html/css/js resources. However, if
+user sets -DLLVM_INCLUDE_TESTS=OFF, CMake will not find python3 and the
+resource bundler will never be executed. This patch set the python3 as a
+required build dependency to fix this problem.
+
+Patch By: Avimitin
+
+Differential Revision: https://reviews.llvm.org/D152418
+---
+ clang/CMakeLists.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/clang/CMakeLists.txt b/clang/CMakeLists.txt
+index 8220a9dbfd4d..f7936d72e088 100644
+--- a/clang/CMakeLists.txt
++++ b/clang/CMakeLists.txt
+@@ -82,10 +82,10 @@ if(CLANG_BUILT_STANDALONE)
+   set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib${LLVM_LIBDIR_SUFFIX} )
+   set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib${LLVM_LIBDIR_SUFFIX} )
+ 
+-  if(LLVM_INCLUDE_TESTS)
+-    find_package(Python3 ${LLVM_MINIMUM_PYTHON_VERSION} REQUIRED
+-      COMPONENTS Interpreter)
++  find_package(Python3 ${LLVM_MINIMUM_PYTHON_VERSION} REQUIRED
++    COMPONENTS Interpreter)
+ 
++  if(LLVM_INCLUDE_TESTS)
+     # Check prebuilt llvm/utils.
+     if(EXISTS ${LLVM_TOOLS_BINARY_DIR}/FileCheck${CMAKE_EXECUTABLE_SUFFIX}
+         AND EXISTS ${LLVM_TOOLS_BINARY_DIR}/count${CMAKE_EXECUTABLE_SUFFIX}
+-- 
+2.41.0
+

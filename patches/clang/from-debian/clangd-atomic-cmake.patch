@@ -1,10 +1,10 @@
-Index: llvm-toolchain-snapshot_13~++20210714114159+03a4702c884a/clang-tools-extra/clangd/CMakeLists.txt
+Index: llvm-toolchain-snapshot_16~++20230120073736+259fa70885e9/clang-tools-extra/clangd/CMakeLists.txt
 ===================================================================
---- llvm-toolchain-snapshot_13~++20210714114159+03a4702c884a.orig/clang-tools-extra/clangd/CMakeLists.txt
-+++ llvm-toolchain-snapshot_13~++20210714114159+03a4702c884a/clang-tools-extra/clangd/CMakeLists.txt
-@@ -52,6 +52,11 @@ endif()
- 
+--- llvm-toolchain-snapshot_16~++20230120073736+259fa70885e9.orig/clang-tools-extra/clangd/CMakeLists.txt
++++ llvm-toolchain-snapshot_16~++20230120073736+259fa70885e9/clang-tools-extra/clangd/CMakeLists.txt
+@@ -61,6 +61,11 @@ endif()
  include_directories(BEFORE "${CMAKE_CURRENT_BINARY_DIR}/../clang-tidy")
+ include_directories(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}/../include-cleaner/include")
  
 +if(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "i386" OR
 +   CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "i686")
@@ -14,11 +14,11 @@ Index: llvm-toolchain-snapshot_13~++20210714114159+03a4702c884a/clang-tools-extr
  add_clang_library(clangDaemon
    AST.cpp
    ASTSignals.cpp
-@@ -163,6 +168,7 @@ clang_target_link_libraries(clangDaemon
+@@ -177,6 +182,7 @@ clang_target_link_libraries(clangDaemon
  target_link_libraries(clangDaemon
    PRIVATE
    ${LLVM_PTHREAD_LIB}
 +  ${CLANGD_ATOMIC_LIB}
  
-   clangTidy
- 
+   clangIncludeCleaner
+   clangPseudo

@@ -1,0 +1,17 @@
+Index: llvm-toolchain-16_16.0.0~+rc4/compiler-rt/lib/builtins/CMakeLists.txt
+===================================================================
+--- llvm-toolchain-16_16.0.0~+rc4.orig/compiler-rt/lib/builtins/CMakeLists.txt
++++ llvm-toolchain-16_16.0.0~+rc4/compiler-rt/lib/builtins/CMakeLists.txt
+@@ -750,6 +750,12 @@ else ()
+     append_list_if(COMPILER_RT_ENABLE_CET -fcf-protection=full BUILTIN_CFLAGS)
+   endif()
+ 
++  if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
++    append_list_if(COMPILER_RT_HAS_FLOAT16 -msse2 -DCOMPILER_RT_HAS_FLOAT16 BUILTIN_CFLAGS)
++  else ()
++    append_list_if(COMPILER_RT_HAS_FLOAT16 -DCOMPILER_RT_HAS_FLOAT16 BUILTIN_CFLAGS)
++  endif()
++
+   append_list_if(COMPILER_RT_HAS_STD_C11_FLAG -std=c11 BUILTIN_CFLAGS)
+ 
+   # These flags would normally be added to CMAKE_C_FLAGS by the llvm
