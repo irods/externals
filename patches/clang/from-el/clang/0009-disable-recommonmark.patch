@@ -1,0 +1,38 @@
+From f4e2d711e5cfd8e357d770e2da7a114086ee8659 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Timm=20B=C3=A4der?= <tbaeder@redhat.com>
+Date: Thu, 22 Sep 2022 10:49:43 +0200
+Subject: disable recommonmark
+
+---
+ clang/docs/conf.py | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
+
+diff --git a/clang/docs/conf.py b/clang/docs/conf.py
+index b8a42018191a..912449a7f792 100644
+--- a/clang/docs/conf.py
++++ b/clang/docs/conf.py
+@@ -37,20 +37,7 @@ source_suffix = {
+     '.rst': 'restructuredtext',
+ }
+ 
+-try:
+-  import recommonmark
+-except ImportError:
+-  # manpages do not use any .md sources
+-  if not tags.has('builder-man'):
+-    raise
+-else:
+-  import sphinx
+-  if sphinx.version_info >= (3, 0):
+-    # This requires 0.5 or later.
+-    extensions.append('recommonmark')
+-  else:
+-    source_parsers = {'.md': 'recommonmark.parser.CommonMarkParser'}
+-  source_suffix['.md'] = 'markdown'
++import sphinx
+ 
+ # The encoding of source files.
+ #source_encoding = 'utf-8-sig'
+-- 
+2.37.1
+

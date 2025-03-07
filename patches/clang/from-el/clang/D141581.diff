@@ -1,0 +1,25 @@
+diff --git a/clang/lib/Basic/CMakeLists.txt b/clang/lib/Basic/CMakeLists.txt
+--- a/clang/lib/Basic/CMakeLists.txt
++++ b/clang/lib/Basic/CMakeLists.txt
+@@ -110,7 +110,7 @@
+ 
+   DEPENDS
+   omp_gen
+-  RISCVTargetParserTableGen
++  LLVMTargetParser
+   )
+ 
+ target_link_libraries(clangBasic
+diff --git a/clang/lib/Driver/CMakeLists.txt b/clang/lib/Driver/CMakeLists.txt
+--- a/clang/lib/Driver/CMakeLists.txt
++++ b/clang/lib/Driver/CMakeLists.txt
+@@ -93,7 +93,7 @@
+ 
+   DEPENDS
+   ClangDriverOptions
+-  RISCVTargetParserTableGen
++  LLVMTargetParser
+ 
+   LINK_LIBS
+   clangBasic
+

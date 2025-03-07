@@ -1,0 +1,10 @@
+--- a/clang/tools/scan-view/bin/scan-view
++++ b/clang/tools/scan-view/bin/scan-view
+@@ -6,7 +6,6 @@
+ """
+ 
+ import sys
+-import imp
+ import os
+ import posixpath
+ import threading

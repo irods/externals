@@ -1,0 +1,17 @@
+if LIBCXXABI_USE_COMPILER_RT=ON, add builtins to libcxxabi library
+flags, otherwise add libgcc following how libunwind does the same
+Index: llvm-toolchain-snapshot_15~++20220517092516+a09af8669396/libcxxabi/src/CMakeLists.txt
+===================================================================
+--- llvm-toolchain-snapshot_15~++20220517092516+a09af8669396.orig/libcxxabi/src/CMakeLists.txt
++++ llvm-toolchain-snapshot_15~++20220517092516+a09af8669396/libcxxabi/src/CMakeLists.txt
+@@ -77,7 +77,9 @@ else()
+   add_library_flags_if(LIBCXXABI_HAS_C_LIB c)
+ endif()
+ 
+-if (NOT LIBCXXABI_USE_COMPILER_RT)
++if (LIBCXXABI_USE_COMPILER_RT)
++  add_library_flags("${LIBCXXABI_BUILTINS_LIBRARY}")
++else()
+   add_library_flags_if(LIBCXXABI_HAS_GCC_LIB gcc)
+ endif()
+ if (NOT LIBCXXABI_USE_LLVM_UNWINDER)
