@@ -196,7 +196,6 @@ def build_package(target, build_native_package):
             log.info(f'Applying patch [{patch}]')
             patch_path = os.path.join(patch_dir, patch)
             patch_cmd = ['patch', '-Nt', '-p1', '-i', patch_path]
-            run_cmd(patch_cmd + ['--dry-run'], check_rc='failed to apply patch') # test it first
             run_cmd(patch_cmd, check_rc='failed to apply patch (patch may be partially applied)')
 
     # prepare executables
