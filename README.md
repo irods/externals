@@ -2,13 +2,9 @@
 
 Currently tested on:
 
-- Ubuntu 20.04
 - Ubuntu 22.04
 - Ubuntu 24.04
-- AlmaLinux 8
-- Rocky Linux 8
 - Rocky Linux 9
-- Debian 11
 - Debian 12
 
 # Assumptions
@@ -19,42 +15,12 @@ The automated scripts run commands as `sudo` and update system libraries and com
 
 In a new container, run the following:
 
-## Ubuntu 20.04
-
-```bash
-apt-get update
-apt-get install -y sudo git python3 python3-distro python3-distutils
-./install_prerequisites.py
-
-update-alternatives --install /usr/local/bin/gcc gcc /usr/bin/gcc-10 1
-update-alternatives --install /usr/local/bin/g++ g++ /usr/bin/g++-10 1
-hash -r
-
-make # or "make server" for packages specific to building the iRODS server.
-```
-
-## Ubuntu 22.04, Ubuntu 24.04, Debian 11, and Debian 12
+## Ubuntu 22.04, Ubuntu 24.04, and Debian 12
 
 ```bash
 apt-get update
 apt-get install -y sudo git python3 python3-distro python3-setuptools
 ./install_prerequisites.py
-
-make # or "make server" for packages specific to building the iRODS server.
-```
-
-## RHEL / AlmaLinux / Rocky Linux 8
-
-```bash
-dnf install -y sudo git python3 python3-distro
-
-# Installing the prerequistes must be done before enabling the GCC compiler
-# environment.
-./install_prerequisites.py
-
-# Enable the GCC 11 compiler tools.
-scl enable gcc-toolset-11 bash
-export IRODS_EXTERNALS_GCC_PREFIX="/opt/rh/gcc-toolset-11/root/usr"
 
 make # or "make server" for packages specific to building the iRODS server.
 ```
