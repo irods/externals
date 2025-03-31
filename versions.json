@@ -21,11 +21,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -33,11 +28,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -45,11 +35,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -91,16 +76,6 @@
         "fpm_directories": ["include","lib"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "zlib",
-                    "libstdc++",
-                    "bzip2-libs",
-                    "xz-libs",
-                    "libzstd",
-                    "libicu"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -113,16 +88,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libz1",
-                    "libstdc++6",
-                    "libbz2-1.0",
-                    "liblzma5",
-                    "libzstd1",
-                    "libicu67"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -135,16 +100,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libz1",
-                    "libstdc++6",
-                    "libbz2-1.0",
-                    "liblzma5",
-                    "libzstd1",
-                    "libicu66"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -249,18 +204,6 @@
         "fpm_directories": ["bin","include","lib","share"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "glibc-devel",
-                    "libgcc",
-                    "zlib",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "libxml2",
-                    "gcc-toolset-11-gcc",
-                    "gcc-toolset-11-gcc-c++",
-                    "gcc-toolset-11-libstdc++-devel"
-                ],
                 "9": [
                     "glibc",
                     "glibc-devel",
@@ -275,17 +218,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libc6-dev",
-                    "libgcc-s1",
-                    "libgcc-10-dev",
-                    "libz1",
-                    "libstdc++6",
-                    "libstdc++-10-dev",
-                    "libtinfo6",
-                    "libxml2"
-                ],
                 "12": [
                     "libc6",
                     "libc6-dev",
@@ -299,17 +231,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libc6-dev",
-                    "libgcc-s1",
-                    "libgcc-10-dev",
-                    "libz1",
-                    "libstdc++6",
-                    "libstdc++-10-dev",
-                    "libtinfo6",
-                    "libxml2"
-                ],
                 "22.04": [
                     "libc6",
                     "libc6-dev",
@@ -358,13 +279,6 @@
         "fpm_directories": ["bin","doc","share"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "openssl-libs"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -374,14 +288,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libncurses6",
-                    "libstdc++6",
-                    "libssl1.1",
-                    "libtinfo6"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -392,14 +298,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libncurses6",
-                    "libstdc++6",
-                    "libssl1.1",
-                    "libtinfo6"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -460,11 +358,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -472,11 +365,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -484,11 +372,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -579,14 +462,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "libarchive",
-                    "fuse-libs",
-                    "zeromq"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -597,14 +472,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6",
-                    "libarchive13",
-                    "libfuse2",
-                    "libzmq5"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -615,14 +482,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6",
-                    "libarchive13",
-                    "libfuse2",
-                    "libzmq5"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -664,12 +523,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "unixODBC"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -678,12 +531,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6",
-                    "libodbc1"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -692,12 +539,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6",
-                    "libodbc1"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -731,12 +572,6 @@
         "fpm_directories": ["include", "lib"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "openssl-libs"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -745,12 +580,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6",
-                    "libssl1.1"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -759,12 +588,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6",
-                    "libssl1.1"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
@@ -797,25 +620,16 @@
         "fpm_directories": ["bin"],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc"
-                ],
                 "9": [
                     "glibc"
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6"
-                ],
                 "12": [
                     "libc6"
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6"
-                ],
                 "22.04": [
                     "libc6"
                 ],
@@ -846,11 +660,6 @@
         ],
         "distro_dependencies": {
             "rhel": {
-                "8": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ],
                 "9": [
                     "glibc",
                     "libgcc",
@@ -858,11 +667,6 @@
                 ]
             },
             "debian": {
-                "11": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
                 "12": [
                     "libc6",
                     "libgcc-s1",
@@ -870,11 +674,6 @@
                 ]
             },
             "ubuntu": {
-                "20.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
