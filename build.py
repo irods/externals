@@ -210,16 +210,10 @@ def build_package(target, build_native_package):
     log.debug('cppzmq_root: [{0}]'.format(cppzmq_root))
     avro_root = get_local_path('avro',[])
     log.debug('avro_root: [{0}]'.format(avro_root))
-    avro_libcxx_root = get_local_path('avro-libcxx',[])
-    log.debug('avro_libcxx_root: [{0}]'.format(avro_libcxx_root))
     boost_root = get_local_path('boost',[])
     log.debug('boost_root: [{0}]'.format(boost_root))
-    boost_libcxx_root = get_local_path('boost-libcxx',[])
-    log.debug('boost_libcxx_root: [{0}]'.format(boost_libcxx_root))
     fmt_root = get_local_path('fmt',[])
     log.debug('fmt_root: [{0}]'.format(fmt_root))
-    fmt_libcxx_root = get_local_path('fmt-libcxx',[])
-    log.debug('fmt_libcxx_root: [{0}]'.format(fmt_libcxx_root))
     json_root = get_local_path('json',[])
     log.debug('json_root: [{0}]'.format(json_root))
 
@@ -229,35 +223,15 @@ def build_package(target, build_native_package):
     boost_install_prefix = os.path.join(boost_info['externals_root'], boost_subdirectory)
     boost_rpath = os.path.join(boost_install_prefix, 'lib')
 
-    boost_libcxx_info = get_versions()['boost-libcxx']
-    boost_libcxx_subdirectory = '{0}{1}-{2}'.format('boost-libcxx', boost_libcxx_info['version_string'], boost_libcxx_info['consortium_build_number'])
-    boost_libcxx_install_prefix = os.path.join(boost_libcxx_info['externals_root'], boost_libcxx_subdirectory)
-    boost_libcxx_rpath = os.path.join(boost_libcxx_install_prefix, 'lib')
-
     fmt_info = get_versions()['fmt']
     fmt_subdirectory = '{0}{1}-{2}'.format('fmt', fmt_info['version_string'], fmt_info['consortium_build_number'])
     fmt_install_prefix = os.path.join(fmt_info['externals_root'], fmt_subdirectory)
     fmt_rpath = os.path.join(fmt_install_prefix, 'lib')
 
-    fmt_libcxx_info = get_versions()['fmt-libcxx']
-    fmt_libcxx_subdirectory = '{0}{1}-{2}'.format('fmt-libcxx', fmt_libcxx_info['version_string'], fmt_libcxx_info['consortium_build_number'])
-    fmt_libcxx_install_prefix = os.path.join(fmt_libcxx_info['externals_root'], fmt_libcxx_subdirectory)
-    fmt_libcxx_rpath = os.path.join(fmt_libcxx_install_prefix, 'lib')
-
     avro_info = get_versions()['avro']
     avro_subdirectory = '{0}{1}-{2}'.format('avro', avro_info['version_string'], avro_info['consortium_build_number'])
     avro_install_prefix = os.path.join(avro_info['externals_root'], avro_subdirectory)
     avro_rpath = os.path.join(avro_install_prefix, 'lib')
-
-    avro_libcxx_info = get_versions()['avro-libcxx']
-    avro_libcxx_subdirectory = '{0}{1}-{2}'.format('avro-libcxx', avro_libcxx_info['version_string'], avro_libcxx_info['consortium_build_number'])
-    avro_libcxx_install_prefix = os.path.join(avro_libcxx_info['externals_root'], avro_libcxx_subdirectory)
-    avro_libcxx_rpath = os.path.join(avro_libcxx_install_prefix, 'lib')
-
-    zmq_libcxx_info = get_versions()['zeromq4-1-libcxx']
-    zmq_libcxx_subdirectory = '{0}{1}-{2}'.format('zeromq4-1-libcxx', zmq_libcxx_info['version_string'], zmq_libcxx_info['consortium_build_number'])
-    zmq_libcxx_install_prefix = os.path.join(zmq_libcxx_info['externals_root'], zmq_libcxx_subdirectory)
-    zmq_libcxx_rpath = os.path.join(zmq_libcxx_install_prefix, 'lib')
 
     clang_info = get_versions()['clang']
     clang_subdirectory = '{0}{1}-{2}'.format('clang', clang_info['version_string'], clang_info['consortium_build_number'])
@@ -266,19 +240,10 @@ def build_package(target, build_native_package):
     clang_cpp_headers = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'include', 'c++', 'v1')
     clang_cpp_libraries = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'lib')
 
-    clang_runtime_subdirectory = '{0}{1}-{2}'.format('clang-runtime', clang_info['version_string'], clang_info['consortium_build_number'])
-    clang_runtime_install_prefix = os.path.join(clang_info['externals_root'], clang_runtime_subdirectory)
-    clang_runtime_rpath = os.path.join(clang_runtime_install_prefix, 'lib')
-
     qpid_proton_info = get_versions()['qpid-proton']
     qpid_proton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpid_proton_info['version_string'], qpid_proton_info['consortium_build_number'])
     qpid_proton_install_prefix = os.path.join(qpid_proton_info['externals_root'], qpid_proton_subdirectory)
     qpid_proton_rpath = os.path.join(qpid_proton_install_prefix, 'lib')
-
-    qpid_proton_libcxx_info = get_versions()['qpid-proton-libcxx']
-    qpid_proton_libcxx_subdirectory = '{0}{1}-{2}'.format('qpid-proton-libcxx', qpid_proton_libcxx_info['version_string'], qpid_proton_libcxx_info['consortium_build_number'])
-    qpid_proton_libcxx_install_prefix = os.path.join(qpid_proton_libcxx_info['externals_root'], qpid_proton_libcxx_subdirectory)
-    qpid_proton_libcxx_rpath = os.path.join(qpid_proton_libcxx_install_prefix, 'lib')
 
     clang_gcc_install_prefix = os.getenv('IRODS_EXTERNALS_GCC_PREFIX', default='')
 
@@ -297,9 +262,6 @@ def build_package(target, build_native_package):
             run_cmd(['git', 'fetch'], check_rc='git fetch failed')
             run_cmd(['git', 'checkout', v['commitish']], check_rc='git checkout failed')
             apply_patches()
-    elif target == 'clang-runtime':
-        if not os.path.isdir(os.path.join(build_dir, target)):
-            os.makedirs(os.path.join(build_dir, target))
     else:
         target_dir = os.path.join(build_dir, target)
 
@@ -331,7 +293,7 @@ def build_package(target, build_native_package):
             apply_patches()
 
     # set environment
-    if target == 'boost' or target == 'boost-libcxx':
+    if target == 'boost':
         set_clang_path()
 
     myenv = os.environ.copy()
@@ -360,26 +322,17 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
         i = re.sub("TEMPLATE_CLANG_EXECUTABLE", clang_executable, i)
         i = re.sub("TEMPLATE_CLANGPP_EXECUTABLE", clangpp_executable, i)
-        i = re.sub("TEMPLATE_CLANG_RUNTIME_RPATH", clang_runtime_rpath, i)
         i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpid_proton_subdirectory, i)
         i = re.sub("TEMPLATE_QPID_PROTON_RPATH", qpid_proton_rpath, i)
-        i = re.sub("TEMPLATE_QPID_PROTON_LIBCXX_RPATH", qpid_proton_libcxx_rpath, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
         i = re.sub("TEMPLATE_BOOST_ROOT", boost_root, i)
-        i = re.sub("TEMPLATE_BOOST_LIBCXX_ROOT", boost_libcxx_root, i)
         i = re.sub("TEMPLATE_BOOST_RPATH", boost_rpath, i)
-        i = re.sub("TEMPLATE_BOOST_LIBCXX_RPATH", boost_libcxx_rpath, i)
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
-        i = re.sub("TEMPLATE_AVRO_LIBCXX_RPATH", avro_libcxx_rpath, i)
-        i = re.sub("TEMPLATE_AVRO_LIBCXX_PATH", avro_libcxx_root, i)
-        i = re.sub("TEMPLATE_ZMQ_LIBCXX_RPATH", zmq_libcxx_rpath, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
         i = re.sub("TEMPLATE_FMT_PATH", fmt_root, i)
         i = re.sub("TEMPLATE_FMT_RPATH", fmt_rpath, i)
-        i = re.sub("TEMPLATE_FMT_LIBCXX_PATH", fmt_libcxx_root, i)
-        i = re.sub("TEMPLATE_FMT_LIBCXX_RPATH", fmt_libcxx_rpath, i)
         i = re.sub("TEMPLATE_JSON_PATH", json_root, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
@@ -396,10 +349,6 @@ def build_package(target, build_native_package):
     package_cmd = [fpmbinary, '-f', '-s', 'dir']
     package_cmd.extend(['-t', distro_info.package_type()])
     package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
-    if distro_info.package_type() == 'rpm' and target == 'clang-runtime':
-        # Do not include .build-id links in the package. These links will cause package
-        # conflicts between the clang and clang-runtime packages being produced.
-        package_cmd.extend(['--rpm-tag', '%define _build_id_links none'])
     for d in get_package_dependencies(v):
         package_cmd.extend(['-d', d])
     package_cmd.extend(['-m', '<packages@irods.org>'])
