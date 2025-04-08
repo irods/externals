@@ -1,4 +1,4 @@
-all : avro boost catch2 clang cmake cppzmq fmt json jsoncons jwt-cpp mungefs nanodbc qpid-proton redis spdlog
+all : avro boost catch2 clang cppzmq fmt json jsoncons jwt-cpp mungefs nanodbc qpid-proton redis spdlog
 
 server : boost catch2 clang fmt json jsoncons nanodbc spdlog
 
@@ -13,7 +13,7 @@ packages.mk : Makefile versions.json build.py
 
 $(all) : packages.mk
 
-$(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
+$(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) avro > avro.log 2>&1
 avro : $(AVRO_PACKAGE)
 avro_clean :
@@ -29,7 +29,7 @@ boost_clean :
 	@rm -rf boost*
 	@rm -rf $(BOOST_PACKAGE)
 
-$(CATCH2_PACKAGE) : $(CMAKE_PACKAGE)
+$(CATCH2_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) catch2 > catch2.log 2>&1
 catch2 : $(CATCH2_PACKAGE)
 catch2_clean :
@@ -37,21 +37,13 @@ catch2_clean :
 	@rm -rf catch2*
 	@rm -rf $(CATCH2_PACKAGE)
 
-$(CLANG_PACKAGE) : $(CMAKE_PACKAGE)
+$(CLANG_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) clang > clang.log 2>&1
 clang : $(CLANG_PACKAGE)
 clang_clean :
 	@echo "Cleaning clang..."
 	@rm -rf clang*
 	@rm -rf $(CLANG_PACKAGE)
-
-$(CMAKE_PACKAGE) :
-	./build.py $(BUILD_OPTIONS) cmake > cmake.log 2>&1
-cmake : $(CMAKE_PACKAGE)
-cmake_clean :
-	@echo "Cleaning cmake..."
-	@rm -rf cmake*
-	@rm -rf $(CMAKE_PACKAGE)
 
 $(CPPZMQ_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) cppzmq > cppzmq.log 2>&1
@@ -69,7 +61,7 @@ fmt_clean :
 	@rm -rf fmt*
 	@rm -rf $(FMT_PACKAGE)
 
-$(JSON_PACKAGE) : $(CMAKE_PACKAGE)
+$(JSON_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) json > json.log 2>&1
 json : $(JSON_PACKAGE)
 json_clean :
@@ -77,7 +69,7 @@ json_clean :
 	@rm -rf json*
 	@rm -rf $(JSON_PACKAGE)
 
-$(JSONCONS_PACKAGE) : $(CMAKE_PACKAGE)
+$(JSONCONS_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) jsoncons > jsoncons.log 2>&1
 jsoncons : $(JSONCONS_PACKAGE)
 jsoncons_clean :
@@ -85,7 +77,7 @@ jsoncons_clean :
 	@rm -rf jsoncons*
 	@rm -rf $(JSONCONS_PACKAGE)
 
-$(JWT-CPP_PACKAGE) : $(CMAKE_PACKAGE) $(JSON_PACKAGE)
+$(JWT-CPP_PACKAGE) : $(JSON_PACKAGE)
 	./build.py $(BUILD_OPTIONS) jwt-cpp > jwt-cpp.log 2>&1
 jwt-cpp : $(JWT-CPP_PACKAGE)
 jwt-cpp_clean :
@@ -133,7 +125,7 @@ spdlog_clean :
 	@rm -rf spdlog*
 	@rm -rf $(SPDLOG_PACKAGE)
 
-clean : avro_clean boost_clean catch2_clean clang_clean cmake_clean cppzmq_clean fmt_clean json_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean spdlog_clean
+clean : avro_clean boost_clean catch2_clean clang_clean cppzmq_clean fmt_clean json_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean spdlog_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
