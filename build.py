@@ -343,7 +343,7 @@ def build_package(target, build_native_package):
     fpmbinary = 'fpm'
     fpmbinary = which(fpmbinary)
     if fpmbinary is None:
-        log.error('fmp not found, try "gem install fpm"')
+        log.error('fpm not found, try "gem install fpm"')
         sys.exit(1)
     os.chdir(script_path)
     package_cmd = [fpmbinary, '-f', '-s', 'dir']
