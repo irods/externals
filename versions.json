@@ -8,7 +8,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE ..",
+            "cd lang/c++/build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE ..",
             "cd lang/c++/build; env LD_LIBRARY_PATH='/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -174,7 +174,7 @@
         ],
         "build_steps": [
             "mkdir -p ../build",
-            "cd ../build; TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPLER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt' -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi' -DLLVM_TARGETS_TO_BUILD='X86' -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF -DBUILTINS_CMAKE_ARGS='-DCMAKE_C_COMPILER=gcc;-DCMAKE_CXX_COMPLER=g++;-DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE;-DLIBCXX_INCLUDE_BENCHMARKS=OFF;-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF' -DRUNTIMES_CMAKE_ARGS='-DCMAKE_C_COMPILER=gcc;-DCMAKE_CXX_COMPLER=g++;-DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE;-DLIBCXX_INCLUDE_BENCHMARKS=OFF;-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF;-DLIBCXXABI_ADDITIONAL_LIBRARIES=pthread' ../llvm-project/llvm",
+            "cd ../build; cmake -G 'Unix Makefiles' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPLER=g++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE -DLIBCXX_INCLUDE_BENCHMARKS=OFF -DGCC_INSTALL_PREFIX=TEMPLATE_GCC_INSTALL_PREFIX -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt' -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi' -DLLVM_TARGETS_TO_BUILD='X86' -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF -DBUILTINS_CMAKE_ARGS='-DCMAKE_C_COMPILER=gcc;-DCMAKE_CXX_COMPLER=g++;-DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE;-DLIBCXX_INCLUDE_BENCHMARKS=OFF;-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF' -DRUNTIMES_CMAKE_ARGS='-DCMAKE_C_COMPILER=gcc;-DCMAKE_CXX_COMPLER=g++;-DPYTHON_EXECUTABLE=TEMPLATE_PYTHON_EXECUTABLE;-DLIBCXX_INCLUDE_BENCHMARKS=OFF;-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF;-DLIBCXXABI_ADDITIONAL_LIBRARIES=pthread' ../llvm-project/llvm",
             "cd ../build; make -jTEMPLATE_JOBS",
             "cd ../build; make -jTEMPLATE_JOBS check-clang-tools",
             "cd ../build; make -jTEMPLATE_JOBS install",
@@ -239,67 +239,6 @@
             }
         }
     },
-    "cmake": {
-        "commitish": "v3.21.4",
-        "version_string": "3.21.4",
-        "license": "BSD-3-Clause",
-        "consortium_build_number": "0",
-        "package_revision": "5",
-        "externals_root": "opt/irods-externals",
-        "patches": [
-            "cmake/from-debian/0004-Make-FindFLTK-safe-to-include-multiple-times.patch",
-            "cmake/from-debian/0005-Fix-check_symbol_exists-with-pedantic-errors.patch",
-            "cmake/from-rhel/cmake-mingw-dl.patch"
-        ],
-        "build_steps": [
-            "./configure --prefix=TEMPLATE_INSTALL_PREFIX --parallel=TEMPLATE_JOBS",
-            "make -jTEMPLATE_JOBS",
-            "make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["bin","doc","share"],
-        "distro_dependencies": {
-            "rhel": {
-                "9": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++",
-                    "ncurses-libs",
-                    "openssl-libs"
-                ]
-            },
-            "debian": {
-                "12": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libncurses6",
-                    "libstdc++6",
-                    "libssl3",
-                    "libtinfo6"
-                ]
-            },
-            "ubuntu": {
-                "22.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libncurses6",
-                    "libstdc++6",
-                    "libssl3",
-                    "libtinfo6"
-                ],
-                "24.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libncurses6",
-                    "libstdc++6",
-                    "libssl3",
-                    "libtinfo6"
-                ]
-            }
-        }
-    },
     "cppzmq": {
         "commitish": "v4.8.1",
         "version_string": "4.8.1",
@@ -312,7 +251,7 @@
         ],
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCPPZMQ_BUILD_TESTS=OFF -DCPPZMQ_CMAKECONFIG_INSTALL_DIR=lib/cmake/cppzmq",
+            "cd build; cmake .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DCPPZMQ_BUILD_TESTS=OFF -DCPPZMQ_CMAKECONFIG_INSTALL_DIR=lib/cmake/cppzmq",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -329,7 +268,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJSONCONS_BUILD_TESTS=OFF",
+            "cd build; cmake .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJSONCONS_BUILD_TESTS=OFF",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -347,7 +286,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJWT_BUILD_EXAMPLES=OFF -DJWT_DISABLE_PICOJSON=ON -DJWT_CMAKE_FILES_INSTALL_DIR=lib/cmake/jwt-cpp",
+            "cd build; cmake .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -DJWT_BUILD_EXAMPLES=OFF -DJWT_DISABLE_PICOJSON=ON -DJWT_CMAKE_FILES_INSTALL_DIR=lib/cmake/jwt-cpp",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -384,7 +323,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH ..",
+            "cd build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH ..",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_BOOST_ROOT/lib make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -449,7 +388,7 @@
         ],
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DNANODBC_FORCE_LIBCXX=OFF -DNANODBC_DISABLE_LIBCXX=ON ..",
+            "cd build; rm -f CMakeCache.txt;cmake -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DNANODBC_FORCE_LIBCXX=OFF -DNANODBC_DISABLE_LIBCXX=ON ..",
             "cd build; make nanodbc install"
         ],
         "external_build_steps": [
@@ -498,7 +437,7 @@
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DBUILD_GO=OFF -DBUILD_CPP=ON -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_BENCHMARKS=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
+            "cd build; cmake -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DBUILD_GO=OFF -DBUILD_CPP=ON -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_BENCHMARKS=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",
             "cd build; make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
