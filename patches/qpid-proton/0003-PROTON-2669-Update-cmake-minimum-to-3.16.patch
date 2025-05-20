@@ -1,0 +1,48 @@
+From 6e18a9933906634b0447f8de603b731aed0d29d3 Mon Sep 17 00:00:00 2001
+From: Andrew Stitcher <astitcher@apache.org>
+Date: Fri, 6 Jan 2023 11:59:19 -0500
+Subject: [PATCH] PROTON-2669: Update cmake minimum to 3.16
+
+---
+ CMakeLists.txt | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 27fc443e..8e53a42c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,7 +17,7 @@
+ # under the License.
+ #
+ 
+-cmake_minimum_required (VERSION 2.8.12)
++cmake_minimum_required (VERSION 3.16)
+ 
+ project (Proton C)
+ 
+@@ -140,9 +140,6 @@ endif()
+ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+   set (NOENABLE_WARNING_ERROR ON)
+   set (LIB_SUFFIX "")
+-  if (POLICY CMP0042)
+-    cmake_policy (SET CMP0042 NEW)
+-  endif ()
+ endif ()
+ 
+ # Benchmarks should be disabled by default
+@@ -369,12 +366,6 @@ if(SWIG_FOUND)
+   # Add any new swig bindings here - the directory name must be the same as the binding name
+   list(APPEND BINDINGS python ruby)
+ 
+-  if (POLICY CMP0078)
+-    cmake_policy(SET CMP0078 NEW)
+-  endif()
+-  if (POLICY CMP0086)
+-    cmake_policy(SET CMP0086 NEW)
+-  endif()
+   include(UseSWIG)
+ 
+   # All swig modules should include ${PROTON_HEADERS} in SWIG_MODULE_<name>_EXTRA_DEPS
+-- 
+2.49.0
+

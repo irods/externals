@@ -202,8 +202,6 @@ def build_package(target, build_native_package):
     os.chdir(os.path.join(script_path))
     python_executable = sys.executable
     log.debug('python_executable: [{0}]'.format(python_executable))
-    cmake_executable = get_local_path('cmake',['bin','cmake'])
-    log.debug('cmake_executable: [{0}]'.format(cmake_executable))
 
     # prepare libraries
     cppzmq_root = get_local_path('cppzmq',[])
@@ -212,21 +210,12 @@ def build_package(target, build_native_package):
     log.debug('avro_root: [{0}]'.format(avro_root))
     boost_root = get_local_path('boost',[])
     log.debug('boost_root: [{0}]'.format(boost_root))
-    fmt_root = get_local_path('fmt',[])
-    log.debug('fmt_root: [{0}]'.format(fmt_root))
-    json_root = get_local_path('json',[])
-    log.debug('json_root: [{0}]'.format(json_root))
 
     # build boost install path
     boost_info = get_versions()['boost']
     boost_subdirectory = '{0}{1}-{2}'.format('boost', boost_info['version_string'], boost_info['consortium_build_number'])
     boost_install_prefix = os.path.join(boost_info['externals_root'], boost_subdirectory)
     boost_rpath = os.path.join(boost_install_prefix, 'lib')
-
-    fmt_info = get_versions()['fmt']
-    fmt_subdirectory = '{0}{1}-{2}'.format('fmt', fmt_info['version_string'], fmt_info['consortium_build_number'])
-    fmt_install_prefix = os.path.join(fmt_info['externals_root'], fmt_subdirectory)
-    fmt_rpath = os.path.join(fmt_install_prefix, 'lib')
 
     avro_info = get_versions()['avro']
     avro_subdirectory = '{0}{1}-{2}'.format('avro', avro_info['version_string'], avro_info['consortium_build_number'])
@@ -297,7 +286,7 @@ def build_package(target, build_native_package):
         set_clang_path()
 
     myenv = os.environ.copy()
-    if target not in ['clang','cmake']:
+    if target not in ['clang']:
         clang_bindir = get_local_path('clang',['bin'])
         myenv['CC'] = '{0}/clang'.format(clang_bindir)
         log.debug('CC='+myenv['CC'])
@@ -322,7 +311,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
         i = re.sub("TEMPLATE_CLANG_EXECUTABLE", clang_executable, i)
         i = re.sub("TEMPLATE_CLANGPP_EXECUTABLE", clangpp_executable, i)
-        i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpid_proton_subdirectory, i)
         i = re.sub("TEMPLATE_QPID_PROTON_RPATH", qpid_proton_rpath, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
@@ -331,9 +319,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
-        i = re.sub("TEMPLATE_FMT_PATH", fmt_root, i)
-        i = re.sub("TEMPLATE_FMT_RPATH", fmt_rpath, i)
-        i = re.sub("TEMPLATE_JSON_PATH", json_root, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
     # package

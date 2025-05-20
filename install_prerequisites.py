@@ -80,6 +80,7 @@ def main():
             'libarchive-dev',
             'libbz2-dev',
             'libcurl4-gnutls-dev',
+            'libfmt-dev',
             'libfuse-dev',
             'libicu-dev',
             'liblzma-dev',
@@ -91,6 +92,7 @@ def main():
             'libzstd-dev',
             'lsb-release',
             'make',
+            'nlohmann-json3-dev',
             'patch',
             'procps',
             'pkg-config',
@@ -118,6 +120,7 @@ def main():
             # Starting with EL9, curl is provided by curl-minimal by default.
             # We don't need the full package, so let's just ensure curl-minimal is installed.
             'curl-minimal',
+            'fmt-devel',
             'fuse',
             'fuse-devel',
             'gcc',
@@ -133,6 +136,7 @@ def main():
             'libuuid-devel',
             'libxml2-devel',
             'libzstd-devel',
+            'nlohmann_json-devel',
             'openssl',
             'openssl-devel',
             'patch',
