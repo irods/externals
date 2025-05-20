@@ -1,0 +1,286 @@
+From 5edfbd6842fbfcc54c793ee4dd59c7e83c2c2f44 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jiri=20Dan=C4=9Bk?= <jdanek@redhat.com>
+Date: Wed, 24 Nov 2021 17:06:41 +0100
+Subject: [PATCH] PROTON-2450 Generate correct relocatable pc files (#335)
+
+---
+ CMakeLists.txt                      | 14 +++++------
+ c/CMakeLists.txt                    |  1 +
+ c/examples/Makefile.pkgconfig       | 36 +++++++++++++++++++++++++++++
+ c/src/ProtonConfig.cmake.in         |  6 ++---
+ c/src/libqpid-proton-core.pc.in     |  8 +++----
+ c/src/libqpid-proton-proactor.pc.in |  9 ++++----
+ c/src/libqpid-proton.pc.in          |  8 +++----
+ cpp/CMakeLists.txt                  |  1 +
+ cpp/ProtonCppConfig.cmake.in        |  2 +-
+ cpp/examples/Makefile.pkgconfig     | 36 +++++++++++++++++++++++++++++
+ cpp/libqpid-proton-cpp.pc.in        |  9 ++++----
+ 11 files changed, 103 insertions(+), 27 deletions(-)
+ create mode 100644 c/examples/Makefile.pkgconfig
+ create mode 100644 cpp/examples/Makefile.pkgconfig
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0eb169ac..f82e756f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -276,18 +276,18 @@ set (MAN_INSTALL_DIR share/man CACHE PATH "Manpage directory")
+ 
+ mark_as_advanced (INCLUDE_INSTALL_DIR LIB_INSTALL_DIR SYSCONF_INSTALL_DIR SHARE_INSTALL_DIR MAN_INSTALL_DIR)
+ 
+-# ${PACKAGE_PREFIX_DIR} is expanded from @PACKAGE_INIT@
+-# by configure_package_config_file(), and available in ProtonConfig.cmake
+-macro (pn_relative_install_dir NAME VALUE)
++# Sets variable NAME to contain relative path from ROOT to VALUE
++# if VALUE is already relative, it does nothing
++macro (pn_relative_install_dir NAME ROOT VALUE)
+   if (IS_ABSOLUTE ${VALUE})
+-    message(WARNING "Build was given an absolute path '${VALUE}'. As a result, `make DESTDIR=... install` will not work.")
+-    set (${NAME} "${VALUE}")
++    file(RELATIVE_PATH "${NAME}" "${ROOT}" "${VALUE}")
+   else ()
+-    set (${NAME} "\${PACKAGE_PREFIX_DIR}/${VALUE}")
++    set (${NAME} "${VALUE}")
+   endif ()
+ endmacro ()
+ 
+-pn_relative_install_dir (INCLUDEDIR ${INCLUDE_INSTALL_DIR})
++pn_relative_install_dir (INCLUDEDIR "${CMAKE_INSTALL_PREFIX}" "${INCLUDE_INSTALL_DIR}")
++pn_relative_install_dir (LIBDIR "${CMAKE_INSTALL_PREFIX}" "${LIB_INSTALL_DIR}")
+ 
+ ## LANGUAGE BINDINGS
+ 
+diff --git a/c/CMakeLists.txt b/c/CMakeLists.txt
+index a6cdda37..44012345 100644
+--- a/c/CMakeLists.txt
++++ b/c/CMakeLists.txt
+@@ -635,6 +635,7 @@ include(WriteBasicConfigVersionFile)
+ configure_package_config_file(
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/ProtonConfig.cmake.in
+   ${CMAKE_CURRENT_BINARY_DIR}/ProtonConfig.cmake
++  PATH_VARS INCLUDE_INSTALL_DIR
+   INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/Proton)
+ write_basic_config_version_file(
+   ${CMAKE_CURRENT_BINARY_DIR}/ProtonConfigVersion.cmake
+diff --git a/c/examples/Makefile.pkgconfig b/c/examples/Makefile.pkgconfig
+new file mode 100644
+index 00000000..6ad7af39
+--- /dev/null
++++ b/c/examples/Makefile.pkgconfig
+@@ -0,0 +1,36 @@
++#
++# Licensed to the Apache Software Foundation (ASF) under one
++# or more contributor license agreements.  See the NOTICE file
++# distributed with this work for additional information
++# regarding copyright ownership.  The ASF licenses this file
++# to you under the Apache License, Version 2.0 (the
++# "License"); you may not use this file except in compliance
++# with the License.  You may obtain a copy of the License at
++#
++#   http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing,
++# software distributed under the License is distributed on an
++# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++# KIND, either express or implied.  See the License for the
++# specific language governing permissions and limitations
++# under the License.
++#
++
++# This Makefile demonstrates the use of pkgconfig to compile
++# programs that make use of Qpid Proton C
++
++CFLAGS=-g -Wall -Wextra $(shell pkg-config --cflags libqpid-proton-core --cflags libqpid-proton-proactor)
++LDFLAGS=$(shell pkg-config --libs libqpid-proton-core --libs libqpid-proton-proactor)
++
++SOURCES=$(wildcard *.c)
++EXECUTABLES=$(patsubst %.c,%,$(SOURCES))
++
++all: $(EXECUTABLES)
++
++% : %.c
++	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) -lpthread $<
++
++.PHONY: clean
++clean:
++	rm -f $(EXECUTABLES)
+diff --git a/c/src/ProtonConfig.cmake.in b/c/src/ProtonConfig.cmake.in
+index 24c2e132..f7b8abba 100644
+--- a/c/src/ProtonConfig.cmake.in
++++ b/c/src/ProtonConfig.cmake.in
+@@ -52,17 +52,17 @@ if (Proton_USE_STATIC_LIBS)
+     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH_OLD})
+ endif()
+ 
+-set (Proton_INCLUDE_DIRS @INCLUDEDIR@)
++set (Proton_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+ set (Proton_LIBRARIES Proton::qpid-proton)
+ set (Proton_FOUND True)
+ 
+-set (Proton_Core_INCLUDE_DIRS @INCLUDEDIR@)
++set (Proton_Core_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+ set (Proton_Core_LIBRARIES Proton::core)
+ set (Proton_Core_FOUND True)
+ 
+ set (HAS_PROACTOR @HAS_PROACTOR@)
+ if (HAS_PROACTOR)
+-  set (Proton_Proactor_INCLUDE_DIRS @INCLUDEDIR@)
++  set (Proton_Proactor_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+   set (Proton_Proactor_LIBRARIES Proton::proactor)
+   set (Proton_Proactor_FOUND True)
+ endif()
+diff --git a/c/src/libqpid-proton-core.pc.in b/c/src/libqpid-proton-core.pc.in
+index ff991083..c1d3fc7d 100644
+--- a/c/src/libqpid-proton-core.pc.in
++++ b/c/src/libqpid-proton-core.pc.in
+@@ -17,10 +17,10 @@
+  * under the License.
+  */
+ 
+-prefix=@PREFIX@
+-exec_prefix=@EXEC_PREFIX@
+-libdir=@LIBDIR@
+-includedir=@INCLUDEDIR@
++prefix=${pcfiledir}/../..
++exec_prefix=${prefix}
++libdir=${prefix}/@LIBDIR@
++includedir=${prefix}/@INCLUDEDIR@
+ 
+ Name: Proton Core
+ Description: Qpid Proton C core protocol library
+diff --git a/c/src/libqpid-proton-proactor.pc.in b/c/src/libqpid-proton-proactor.pc.in
+index c9f7ddb2..4d33948f 100644
+--- a/c/src/libqpid-proton-proactor.pc.in
++++ b/c/src/libqpid-proton-proactor.pc.in
+@@ -17,10 +17,10 @@
+  * under the License.
+  */
+ 
+-prefix=@PREFIX@
+-exec_prefix=@EXEC_PREFIX@
+-libdir=@LIBDIR@
+-includedir=@INCLUDEDIR@
++prefix=${pcfiledir}/../..
++exec_prefix=${prefix}
++libdir=${prefix}/@LIBDIR@
++includedir=${prefix}/@INCLUDEDIR@
+ 
+ Name: Proton Proactor
+ Description: Qpid Proton C proactive IO library
+@@ -28,3 +28,4 @@ Version: @PN_VERSION@
+ URL: http://qpid.apache.org/proton/
+ Libs: -L${libdir} -lqpid-proton-proactor
+ Cflags: -I${includedir}
++Requires: libqpid-proton-core
+diff --git a/c/src/libqpid-proton.pc.in b/c/src/libqpid-proton.pc.in
+index a045c3f0..8a631246 100644
+--- a/c/src/libqpid-proton.pc.in
++++ b/c/src/libqpid-proton.pc.in
+@@ -17,10 +17,10 @@
+  * under the License.
+  */
+ 
+-prefix=@PREFIX@
+-exec_prefix=@EXEC_PREFIX@
+-libdir=@LIBDIR@
+-includedir=@INCLUDEDIR@
++prefix=${pcfiledir}/../..
++exec_prefix=${prefix}
++libdir=${prefix}/@LIBDIR@
++includedir=${prefix}/@INCLUDEDIR@
+ 
+ Name: Proton
+ Description: Qpid Proton C library
+diff --git a/cpp/CMakeLists.txt b/cpp/CMakeLists.txt
+index 0376461e..03fe80a6 100644
+--- a/cpp/CMakeLists.txt
++++ b/cpp/CMakeLists.txt
+@@ -202,6 +202,7 @@ include(WriteBasicConfigVersionFile)
+ configure_package_config_file(
+   ${CMAKE_CURRENT_SOURCE_DIR}/ProtonCppConfig.cmake.in
+   ${CMAKE_CURRENT_BINARY_DIR}/ProtonCppConfig.cmake
++  PATH_VARS INCLUDE_INSTALL_DIR
+   INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/ProtonCpp)
+ write_basic_config_version_file(
+   ${CMAKE_CURRENT_BINARY_DIR}/ProtonCppConfigVersion.cmake
+diff --git a/cpp/ProtonCppConfig.cmake.in b/cpp/ProtonCppConfig.cmake.in
+index e8691707..74ddfaaa 100644
+--- a/cpp/ProtonCppConfig.cmake.in
++++ b/cpp/ProtonCppConfig.cmake.in
+@@ -31,7 +31,7 @@ endif()
+ 
+ set (ProtonCpp_VERSION @PN_VERSION@)
+ 
+-set (ProtonCpp_INCLUDE_DIRS @INCLUDEDIR@)
++set (ProtonCpp_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+ set (ProtonCpp_LIBRARIES Proton::cpp)
+ set (ProtonCpp_FOUND True)
+ 
+diff --git a/cpp/examples/Makefile.pkgconfig b/cpp/examples/Makefile.pkgconfig
+new file mode 100644
+index 00000000..2752a8a7
+--- /dev/null
++++ b/cpp/examples/Makefile.pkgconfig
+@@ -0,0 +1,36 @@
++#
++# Licensed to the Apache Software Foundation (ASF) under one
++# or more contributor license agreements.  See the NOTICE file
++# distributed with this work for additional information
++# regarding copyright ownership.  The ASF licenses this file
++# to you under the Apache License, Version 2.0 (the
++# "License"); you may not use this file except in compliance
++# with the License.  You may obtain a copy of the License at
++#
++#   http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing,
++# software distributed under the License is distributed on an
++# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++# KIND, either express or implied.  See the License for the
++# specific language governing permissions and limitations
++# under the License.
++#
++
++# This Makefile demonstrates the use of pkgconfig to compile
++# programs that make use of Qpid Proton Cpp
++
++CFLAGS=-g -Wall -Wextra $(shell pkg-config --cflags libqpid-proton-cpp)
++LDFLAGS=$(shell pkg-config --libs libqpid-proton-cpp)
++
++SOURCES=$(wildcard *.cpp)
++EXECUTABLES=$(patsubst %.cpp,%,$(SOURCES))
++
++all: $(EXECUTABLES)
++
++% : %.cpp
++	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) -lpthread $<
++
++.PHONY: clean
++clean:
++	rm -f $(EXECUTABLES)
+diff --git a/cpp/libqpid-proton-cpp.pc.in b/cpp/libqpid-proton-cpp.pc.in
+index 4b556f42..98012c80 100644
+--- a/cpp/libqpid-proton-cpp.pc.in
++++ b/cpp/libqpid-proton-cpp.pc.in
+@@ -17,10 +17,10 @@
+  * under the License.
+  */
+ 
+-prefix=@PREFIX@
+-exec_prefix=@EXEC_PREFIX@
+-libdir=@LIBDIR@
+-includedir=@INCLUDEDIR@
++prefix=${pcfiledir}/../..
++exec_prefix=${prefix}
++libdir=${prefix}/@LIBDIR@
++includedir=${prefix}/@INCLUDEDIR@
+ 
+ Name: Proton C++
+ Description: Qpid Proton C++ library
+@@ -28,3 +28,4 @@ Version: @PN_VERSION@
+ URL: http://qpid.apache.org/proton/
+ Libs: -L${libdir} -lqpid-proton-cpp
+ Cflags: -I${includedir}
++Requires: libqpid-proton-core, libqpid-proton-proactor
+-- 
+2.49.0
+
