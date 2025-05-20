@@ -1,0 +1,43 @@
+From 9d57bab596b6b3b5c1ca25b06e2c7aede8f32263 Mon Sep 17 00:00:00 2001
+From: "Markus Kitsinger (SwooshyCueb)" <root@swooshalicio.us>
+Date: Mon, 12 Aug 2024 15:23:04 +0800
+Subject: [PATCH] Fix build when cpp_reserved_words_union_typedef.hh is not
+ ready (#3079)
+Author: Po-Chuan Hsieh <sunpoet@sunpoet.net>
+Committer: GitHub <noreply@github.com>
+Commit Date: Mon, 12 Aug 2024 10:23:04 +0300
+
+From: Po-Chuan Hsieh <sunpoet@sunpoet.net>
+
+Here is the build log on FreeBSD.
+```
+[ 95% 96/101] cd /wrkdirs/usr/ports/devel/avro-cpp/work/.build && /wrkdirs/usr/ports/devel/avro-cpp/work/.build/avrogencpp -p - -i /wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/jsonschemas/cpp_reserved_words -o cpp_reserved_words.hh -n cppres
+[ 96% 97/101] /usr/local/libexec/ccache/c++ -DAVRO_VERSION=\"1.12.0\" -DFMT_HEADER_ONLY=1 -I/wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/include/avro -I/wrkdirs/usr/ports/devel/avro-cpp/work/.build -I/wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/include -isystem /usr/local/include -O2 -pipe  -fstack-protector-strong -fno-strict-aliasing   -std=c++17 -O2 -pipe  -fstack-protector-strong -fno-strict-aliasing   -std=c++17  -DNDEBUG -std=gnu++17 -MD -MT CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o -MF CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o.d -o CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o -c /wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/test/AvrogencppTestReservedWords.cc
+FAILED: CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o
+/usr/local/libexec/ccache/c++ -DAVRO_VERSION=\"1.12.0\" -DFMT_HEADER_ONLY=1 -I/wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/include/avro -I/wrkdirs/usr/ports/devel/avro-cpp/work/.build -I/wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/include -isystem /usr/local/include -O2 -pipe  -fstack-protector-strong -fno-strict-aliasing   -std=c++17 -O2 -pipe  -fstack-protector-strong -fno-strict-aliasing   -std=c++17  -DNDEBUG -std=gnu++17 -MD -MT CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o -MF CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o.d -o CMakeFiles/AvrogencppTestReservedWords.dir/test/AvrogencppTestReservedWords.cc.o -c /wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/test/AvrogencppTestReservedWords.cc
+/wrkdirs/usr/ports/devel/avro-cpp/work/avro-cpp-1.12.0/test/AvrogencppTestReservedWords.cc:19:10: fatal error: 'cpp_reserved_words_union_typedef.hh' file not found
+   19 | #include "cpp_reserved_words_union_typedef.hh"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+ninja: build stopped: subcommand failed.
+```
+---
+ lang/c++/CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/lang/c++/CMakeLists.txt b/lang/c++/CMakeLists.txt
+index 19059a41b..1b234e041 100644
+--- a/lang/c++/CMakeLists.txt
++++ b/lang/c++/CMakeLists.txt
+@@ -218,6 +218,8 @@ unittest (AvrogencppTestReservedWords)
+ unittest (CommonsSchemasTests)
+ 
+ add_dependencies (AvrogencppTestReservedWords cpp_reserved_words_hh)
++add_dependencies (AvrogencppTestReservedWords cpp_reserved_words_hh
++    cpp_reserved_words_union_typedef_hh)
+ 
+ add_dependencies (AvrogencppTests bigrecord_hh bigrecord_r_hh bigrecord2_hh
+     tweet_hh
+-- 
+2.49.0
+
