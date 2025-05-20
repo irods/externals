@@ -1,0 +1,42 @@
+From 9ab5f9132bb1edc8e4a2dc0dbd0f08592813c8a1 Mon Sep 17 00:00:00 2001
+From: "Markus Kitsinger (SwooshyCueb)" <root@swooshalicio.us>
+Date: Fri, 30 May 2025 03:01:19 -0500
+Subject: [PATCH] Update for fmtlib 10
+Author: Markus Kitsinger (SwooshyCueb) <root@swooshalicio.us>
+Committer: Markus Kitsinger (SwooshyCueb) <root@swooshalicio.us>
+Commit Date: Fri, 30 May 2025 03:01:19 -0500
+
+---
+ lang/c++/include/avro/Node.hh  | 2 +-
+ lang/c++/include/avro/Types.hh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lang/c++/include/avro/Node.hh b/lang/c++/include/avro/Node.hh
+index f76078b05..84465a152 100644
+--- a/lang/c++/include/avro/Node.hh
++++ b/lang/c++/include/avro/Node.hh
+@@ -219,7 +219,7 @@ inline std::ostream &operator<<(std::ostream &os, const avro::Node &n) {
+ template<>
+ struct fmt::formatter<avro::Name> : fmt::formatter<std::string> {
+     template<typename FormatContext>
+-    auto format(const avro::Name &n, FormatContext &ctx) {
++    constexpr auto format(const avro::Name &n, FormatContext &ctx) const {
+         return fmt::formatter<std::string>::format(n.fullname(), ctx);
+     }
+ };
+diff --git a/lang/c++/include/avro/Types.hh b/lang/c++/include/avro/Types.hh
+index 84a33976e..d02b8006e 100644
+--- a/lang/c++/include/avro/Types.hh
++++ b/lang/c++/include/avro/Types.hh
+@@ -113,7 +113,7 @@ std::ostream &operator<<(std::ostream &os, const Null &null);
+ template<>
+ struct fmt::formatter<avro::Type> : fmt::formatter<std::string> {
+     template<typename FormatContext>
+-    auto format(avro::Type t, FormatContext &ctx) {
++    constexpr auto format(avro::Type t, FormatContext &ctx) const {
+         return fmt::formatter<std::string>::format(avro::toString(t), ctx);
+     }
+ };
+-- 
+2.49.0
+

@@ -1,0 +1,69 @@
+From ce1fd1d89071208296983a61537e42bdc51879c4 Mon Sep 17 00:00:00 2001
+From: "Markus Kitsinger (SwooshyCueb)" <root@swooshalicio.us>
+Date: Thu, 30 Jan 2025 06:51:56 +0100
+Subject: [PATCH] AVRO-4113: [c++] Don't generate tests files if test are not
+ requested (#3298)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Author: Petr Kubánek <pkubanek@gmail.com>
+Committer: Markus Kitsinger (SwooshyCueb) <root@swooshalicio.us>
+Commit Date: Tue, 20 May 2025 17:25:09 -0500
+
+From: Petr Kubánek <pkubanek@gmail.com>
+
+* Don't generate tests files if test are not requested
+
+* Added algorithm include (needed for std::find_if)
+---
+ lang/c++/CMakeLists.txt     | 14 +++++++-------
+ lang/c++/impl/avrogencpp.cc |  1 +
+ 2 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/lang/c++/CMakeLists.txt b/lang/c++/CMakeLists.txt
+index e51c4b237..b7565d291 100644
+--- a/lang/c++/CMakeLists.txt
++++ b/lang/c++/CMakeLists.txt
+@@ -169,6 +169,13 @@ if (AVRO_BUILD_EXECUTABLES)
+ 
+     target_link_libraries (precompile avrocpp_s)
+ 
++    add_executable (avrogencpp impl/avrogencpp.cc)
++    target_link_libraries (avrogencpp avrocpp_s ${Boost_LIBRARIES})
++endif ()
++
++if (AVRO_BUILD_TESTS)
++    enable_testing()
++
+     macro (gen file ns)
+         add_custom_command (OUTPUT ${file}.hh
+             COMMAND avrogencpp
+@@ -198,13 +205,6 @@ if (AVRO_BUILD_EXECUTABLES)
+     gen (cpp_reserved_words cppres)
+     gen (cpp_reserved_words_union_typedef cppres_union)
+ 
+-    add_executable (avrogencpp impl/avrogencpp.cc)
+-    target_link_libraries (avrogencpp avrocpp_s)
+-endif ()
+-
+-if (AVRO_BUILD_TESTS)
+-    enable_testing()
+-
+     macro (unittest name)
+         add_executable (${name} test/${name}.cc)
+         target_link_libraries (${name} avrocpp_s ${Boost_LIBRARIES} ${SNAPPY_LIBRARIES})
+diff --git a/lang/c++/impl/avrogencpp.cc b/lang/c++/impl/avrogencpp.cc
+index 39da7af35..a413ef69e 100644
+--- a/lang/c++/impl/avrogencpp.cc
++++ b/lang/c++/impl/avrogencpp.cc
+@@ -16,6 +16,7 @@
+  * limitations under the License.
+  */
+ 
++#include <algorithm>
+ #include <cctype>
+ #ifndef _WIN32
+ #include <ctime>
+-- 
+2.49.0
+

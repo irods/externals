@@ -1,14 +1,21 @@
 {
     "avro": {
-        "commitish": "release-1.11.0",
-        "version_string": "1.11.0",
+        "commitish": "release-1.12.0",
+        "version_string": "1.12.0",
         "license": "Apache-2.0",
-        "consortium_build_number": "4",
+        "consortium_build_number": "0",
         "package_revision": "0",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "avro/0001-Fix-build-when-cpp_reserved_words_union_typedef-hh-i.patch",
+            "avro/0002-add-two-cmake-options-to-make-it-easier-to-integrate.patch",
+            "avro/0003-AVRO-4113-c++-Dont-generate-tests-files-if-test-are-.patch",
+            "avro/0004-AVRO-3088-C++-Export-CMake-package-config-file.patch",
+            "avro/1001-Update-for-fmtlib-10.patch"
+        ],
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE ..",
+            "cd lang/c++/build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -DFETCHCONTENT_TRY_FIND_PACKAGE_MODE=ALWAYS -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DAVRO_BUILD_EXECUTABLES=ON -DAVRO_BUILD_TESTS=OFF ..",
             "cd lang/c++/build; env LD_LIBRARY_PATH='/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -24,26 +31,30 @@
                 "9": [
                     "glibc",
                     "libgcc",
-                    "libstdc++"
+                    "libstdc++",
+                    "fmt-devel"
                 ]
             },
             "debian": {
                 "12": [
                     "libc6",
                     "libgcc-s1",
-                    "libstdc++6"
+                    "libstdc++6",
+                    "libfmt-dev"
                 ]
             },
             "ubuntu": {
                 "22.04": [
                     "libc6",
                     "libgcc-s1",
-                    "libstdc++6"
+                    "libstdc++6",
+                    "libfmt-dev"
                 ],
                 "24.04": [
                     "libc6",
                     "libgcc-s1",
-                    "libstdc++6"
+                    "libstdc++6",
+                    "libfmt-dev"
                 ]
             }
         }
@@ -433,8 +444,13 @@
         "version_string": "0.36.0",
         "license": "Apache-2.0",
         "consortium_build_number": "3",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
+        "patches": [
+            "qpid-proton/0001-PROTON-2450-Generate-correct-relocatable-pc-files-33.patch",
+            "qpid-proton/0002-PROTON-2583-Fix-build-to-avoid-warnings-for-recent-C.patch",
+            "qpid-proton/0003-PROTON-2669-Update-cmake-minimum-to-3.16.patch"
+        ],
         "build_steps": [
             "mkdir -p build",
             "cd build; cmake -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DENABLE_WARNING_ERROR=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH=True -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_RPATH=/TEMPLATE_QPID_PROTON_RPATH -DBUILD_JAVA=OFF -DBUILD_RUBY=OFF -DBUILD_PYTHON=OFF -DBUILD_GO=OFF -DBUILD_CPP=ON -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_BENCHMARKS=OFF -DSYSINSTALL_BINDINGS=OFF -DENABLE_JSONCPP=OFF -DENABLE_LINKTIME_OPTIMIZATION=NO -DLIB_SUFFIX='' ..",

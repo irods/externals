@@ -1,0 +1,44 @@
+From e47b0805abe5bd25a4f979142d620f498b296407 Mon Sep 17 00:00:00 2001
+From: Andrew Stitcher <astitcher@apache.org>
+Date: Tue, 18 Jan 2022 10:47:09 -0500
+Subject: [PATCH] PROTON-2583: Fix build to avoid warnings for recent CMake
+
+It's not exactly clear but this may need cmake > 3.13
+---
+ CMakeLists.txt        | 4 ++--
+ python/CMakeLists.txt | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a0ca897b..9c075dad 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -371,10 +371,10 @@ if(SWIG_FOUND)
+   list(APPEND BINDINGS python ruby)
+ 
+   if (POLICY CMP0078)
+-    cmake_policy(SET CMP0078 OLD)
++    cmake_policy(SET CMP0078 NEW)
+   endif()
+   if (POLICY CMP0086)
+-    cmake_policy(SET CMP0086 OLD)
++    cmake_policy(SET CMP0086 NEW)
+   endif()
+   include(UseSWIG)
+ 
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index 698ddbe1..cb4649bb 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -203,7 +203,7 @@ endif ()
+ # python test: python/tests/proton-test
+ set (py_src "${CMAKE_CURRENT_SOURCE_DIR}")
+ set (py_bin "${CMAKE_CURRENT_BINARY_DIR}")
+-set (py_dll "$<TARGET_FILE_DIR:_cproton>")
++set (py_dll "$<TARGET_FILE_DIR:cproton>")
+ set (py_bld "$<TARGET_FILE_DIR:qpid-proton-core>") # For windows
+ set (py_tests "${py_src}/tests")
+ set (tests_py "${py_src}/../tests/py")
+-- 
+2.49.0
+
