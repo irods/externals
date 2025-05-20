@@ -202,8 +202,6 @@ def build_package(target, build_native_package):
     os.chdir(os.path.join(script_path))
     python_executable = sys.executable
     log.debug('python_executable: [{0}]'.format(python_executable))
-    cmake_executable = get_local_path('cmake',['bin','cmake'])
-    log.debug('cmake_executable: [{0}]'.format(cmake_executable))
 
     # prepare libraries
     cppzmq_root = get_local_path('cppzmq',[])
@@ -288,7 +286,7 @@ def build_package(target, build_native_package):
         set_clang_path()
 
     myenv = os.environ.copy()
-    if target not in ['clang','cmake']:
+    if target not in ['clang']:
         clang_bindir = get_local_path('clang',['bin'])
         myenv['CC'] = '{0}/clang'.format(clang_bindir)
         log.debug('CC='+myenv['CC'])
@@ -313,7 +311,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
         i = re.sub("TEMPLATE_CLANG_EXECUTABLE", clang_executable, i)
         i = re.sub("TEMPLATE_CLANGPP_EXECUTABLE", clangpp_executable, i)
-        i = re.sub("TEMPLATE_CMAKE_EXECUTABLE", cmake_executable, i)
         i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpid_proton_subdirectory, i)
         i = re.sub("TEMPLATE_QPID_PROTON_RPATH", qpid_proton_rpath, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
