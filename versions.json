@@ -320,54 +320,6 @@
         ],
         "fpm_directories": ["include","lib"]
     },
-    "fmt": {
-        "commitish": "8.1.1",
-        "version_string": "8.1.1",
-        "license": "MIT",
-        "consortium_build_number": "2",
-        "package_revision": "0",
-        "externals_root": "opt/irods-externals",
-        "patches": [
-            "fmt/from-epel/fmt-fix_implicit_ptr_conv.patch"
-        ],
-        "build_steps": [
-            "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;TEMPLATE_CMAKE_EXECUTABLE -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=TRUE -DFMT_TEST=OFF -DFMT_DOC=OFF -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX ..",
-            "cd build; make fmt install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["include", "lib"],
-        "distro_dependencies": {
-            "rhel": {
-                "9": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ]
-            },
-            "debian": {
-                "12": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ]
-            },
-            "ubuntu": {
-                "22.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
-                "24.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ]
-            }
-        }
-    },
     "jsoncons": {
         "commitish": "v0.178.0",
         "version_string": "0.178.0",
@@ -618,54 +570,6 @@
                 ],
                 "24.04": [
                     "libc6"
-                ]
-            }
-        }
-    },
-    "spdlog": {
-        "commitish": "v1.9.2",
-        "version_string": "1.9.2",
-        "license": "MIT",
-        "consortium_build_number": "3",
-        "package_revision": "0",
-        "externals_root": "opt/irods-externals",
-        "build_steps": [
-            "mkdir -p build",
-            "cd build; TEMPLATE_CMAKE_EXECUTABLE .. -G'Unix Makefiles' -DCMAKE_USER_MAKE_RULES_OVERRIDE=TEMPLATE_SCRIPT_PATH/ClangOverrides.txt -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_INSTALL_RPATH=/TEMPLATE_FMT_LIBCXX_RPATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_INSTALL_LIBDIR=lib -Dfmt_DIR=TEMPLATE_FMT_PATH/lib/cmake/fmt -DSPDLOG_FMT_EXTERNAL=ON -DSPDLOG_BUILD_SHARED=ON -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_EXAMPLE=OFF",
-            "cd build; make -jTEMPLATE_JOBS; make install"
-        ],
-        "external_build_steps": [
-            "ls -l TEMPLATE_INSTALL_PREFIX/../* ; cp -rf TEMPLATE_INSTALL_PREFIX/../* ../../ ; ls -l ../../"
-        ],
-        "fpm_directories": ["include","lib"],
-        "interdependencies": [
-            "fmt"
-        ],
-        "distro_dependencies": {
-            "rhel": {
-                "9": [
-                    "glibc",
-                    "libgcc",
-                    "libstdc++"
-                ]
-            },
-            "debian": {
-                "12": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ]
-            },
-            "ubuntu": {
-                "22.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
-                ],
-                "24.04": [
-                    "libc6",
-                    "libgcc-s1",
-                    "libstdc++6"
                 ]
             }
         }

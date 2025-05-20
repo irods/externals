@@ -212,19 +212,12 @@ def build_package(target, build_native_package):
     log.debug('avro_root: [{0}]'.format(avro_root))
     boost_root = get_local_path('boost',[])
     log.debug('boost_root: [{0}]'.format(boost_root))
-    fmt_root = get_local_path('fmt',[])
-    log.debug('fmt_root: [{0}]'.format(fmt_root))
 
     # build boost install path
     boost_info = get_versions()['boost']
     boost_subdirectory = '{0}{1}-{2}'.format('boost', boost_info['version_string'], boost_info['consortium_build_number'])
     boost_install_prefix = os.path.join(boost_info['externals_root'], boost_subdirectory)
     boost_rpath = os.path.join(boost_install_prefix, 'lib')
-
-    fmt_info = get_versions()['fmt']
-    fmt_subdirectory = '{0}{1}-{2}'.format('fmt', fmt_info['version_string'], fmt_info['consortium_build_number'])
-    fmt_install_prefix = os.path.join(fmt_info['externals_root'], fmt_subdirectory)
-    fmt_rpath = os.path.join(fmt_install_prefix, 'lib')
 
     avro_info = get_versions()['avro']
     avro_subdirectory = '{0}{1}-{2}'.format('avro', avro_info['version_string'], avro_info['consortium_build_number'])
@@ -329,8 +322,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
-        i = re.sub("TEMPLATE_FMT_PATH", fmt_root, i)
-        i = re.sub("TEMPLATE_FMT_RPATH", fmt_rpath, i)
         run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
 
     # package
