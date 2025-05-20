@@ -1,4 +1,4 @@
-all : avro boost clang cmake cppzmq jsoncons jwt-cpp mungefs nanodbc qpid-proton redis
+all : avro boost clang cppzmq jsoncons jwt-cpp mungefs nanodbc qpid-proton redis
 
 server : boost clang jsoncons nanodbc
 
@@ -13,7 +13,7 @@ packages.mk : Makefile versions.json build.py
 
 $(all) : packages.mk
 
-$(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CMAKE_PACKAGE) $(CLANG_PACKAGE)
+$(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CLANG_PACKAGE)
 	./build.py $(BUILD_OPTIONS) avro > avro.log 2>&1
 avro : $(AVRO_PACKAGE)
 avro_clean :
@@ -29,21 +29,13 @@ boost_clean :
 	@rm -rf boost*
 	@rm -rf $(BOOST_PACKAGE)
 
-$(CLANG_PACKAGE) : $(CMAKE_PACKAGE)
+$(CLANG_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) clang > clang.log 2>&1
 clang : $(CLANG_PACKAGE)
 clang_clean :
 	@echo "Cleaning clang..."
 	@rm -rf clang*
 	@rm -rf $(CLANG_PACKAGE)
-
-$(CMAKE_PACKAGE) :
-	./build.py $(BUILD_OPTIONS) cmake > cmake.log 2>&1
-cmake : $(CMAKE_PACKAGE)
-cmake_clean :
-	@echo "Cleaning cmake..."
-	@rm -rf cmake*
-	@rm -rf $(CMAKE_PACKAGE)
 
 $(CPPZMQ_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) cppzmq > cppzmq.log 2>&1
@@ -53,7 +45,7 @@ cppzmq_clean :
 	@rm -rf cppzmq*
 	@rm -rf $(CPPZMQ_PACKAGE)
 
-$(JSONCONS_PACKAGE) : $(CMAKE_PACKAGE)
+$(JSONCONS_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) jsoncons > jsoncons.log 2>&1
 jsoncons : $(JSONCONS_PACKAGE)
 jsoncons_clean :
@@ -61,7 +53,7 @@ jsoncons_clean :
 	@rm -rf jsoncons*
 	@rm -rf $(JSONCONS_PACKAGE)
 
-$(JWT-CPP_PACKAGE) : $(CMAKE_PACKAGE)
+$(JWT-CPP_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) jwt-cpp > jwt-cpp.log 2>&1
 jwt-cpp : $(JWT-CPP_PACKAGE)
 jwt-cpp_clean :
@@ -101,7 +93,7 @@ redis_clean :
 	@rm -rf redis*
 	@rm -rf $(REDIS_PACKAGE)
 
-clean : avro_clean boost_clean clang_clean cmake_clean cppzmq_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean
+clean : avro_clean boost_clean clang_clean cppzmq_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
