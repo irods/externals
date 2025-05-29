@@ -164,11 +164,6 @@ def main():
         cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
         build.run_cmd(cmd, check_rc='dnf config-manager failed')
 
-        # Starting with EL9, redhat-lsb-core is in the devel repo, which we don't want to
-        # leave enabled.
-        cmd = ['sudo', 'dnf', '--enablerepo=devel', 'install', '-y', 'redhat-lsb-core']
-        build.run_cmd(cmd, check_rc='dnf install redhat-lsb-core failed')
-
         cmd = ['sudo', 'dnf', 'install', '-y']
         build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
