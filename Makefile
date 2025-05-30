@@ -13,7 +13,7 @@ packages.mk : Makefile versions.json build.py
 
 $(all) : packages.mk
 
-$(AVRO_PACKAGE) : $(BOOST_PACKAGE) $(CLANG_PACKAGE)
+$(AVRO_PACKAGE) : $(BOOST_PACKAGE)
 	./build.py $(BUILD_OPTIONS) avro > avro.log 2>&1
 avro : $(AVRO_PACKAGE)
 avro_clean :
