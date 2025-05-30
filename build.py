@@ -33,18 +33,18 @@ def get_local_path(package_name, path_elements):
 
 def run_cmd(cmd, run_env=None, unsafe_shell=False, check_rc=False, retries=0):
     log = logging.getLogger(__name__)
-    if run_env is not None:
+    if run_env is None:
         run_env = os.environ.copy()
     log.debug('run_env: {0}'.format(run_env))
     log.info('running: {0}, unsafe_shell={1}, check_rc={2}, retries={3}'.format(cmd, unsafe_shell, check_rc, retries))
+    popen_kwargs = {}
     if unsafe_shell == True:
-        p = subprocess.Popen(cmd, env=run_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    else:
-        p = subprocess.Popen(cmd, env=run_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (out, err) = p.communicate()
-    log.info('  stdout: {0}'.format(out.strip().decode('utf-8')))
-    log.info('  stderr: {0}'.format(err.strip().decode('utf-8')))
-    log.info('')
+        popen_kwargs['shell'] = True
+    if not log.isEnabledFor(logging.INFO):
+        popen_kwargs['stdout'] = subprocess.DEVNULL
+        popen_kwargs['stderr'] = subprocess.DEVNULL
+    p = subprocess.Popen(cmd, env=run_env, **popen_kwargs)
+    p.wait()
     if check_rc != False:
         if p.returncode != 0:
             log.error(check_rc)
