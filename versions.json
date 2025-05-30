@@ -4,7 +4,7 @@
         "version_string": "1.12.0",
         "license": "Apache-2.0",
         "consortium_build_number": "0",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "patches": [
             "avro/0001-Fix-build-when-cpp_reserved_words_union_typedef-hh-i.patch",
@@ -15,7 +15,7 @@
         ],
         "build_steps": [
             "mkdir -p lang/c++/build",
-            "cd lang/c++/build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -DFETCHCONTENT_TRY_FIND_PACKAGE_MODE=ALWAYS -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DAVRO_BUILD_EXECUTABLES=ON -DAVRO_BUILD_TESTS=OFF ..",
+            "cd lang/c++/build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -DFETCHCONTENT_TRY_FIND_PACKAGE_MODE=ALWAYS -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DAVRO_BUILD_EXECUTABLES=ON -DAVRO_BUILD_TESTS=OFF ..",
             "cd lang/c++/build; env LD_LIBRARY_PATH='/TEMPLATE_BOOST_ROOT/lib' make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
@@ -330,7 +330,7 @@
         "version_string": "1.0.7",
         "license": "BSD-3-Clause",
         "consortium_build_number": "2",
-        "package_revision": "1",
+        "package_revision": "2",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
