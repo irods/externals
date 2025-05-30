@@ -207,7 +207,8 @@
                     "ncurses-libs",
                     "libxml2",
                     "gcc",
-                    "gcc-c++"
+                    "gcc-c++",
+                    "python3"
                 ]
             },
             "debian": {
@@ -220,7 +221,8 @@
                     "libstdc++6",
                     "libstdc++-12-dev",
                     "libtinfo6",
-                    "libxml2"
+                    "libxml2",
+                    "python3"
                 ]
             },
             "ubuntu": {
@@ -233,7 +235,8 @@
                     "libstdc++6",
                     "libstdc++-11-dev",
                     "libtinfo6",
-                    "libxml2"
+                    "libxml2",
+                    "python3"
                 ],
                 "24.04": [
                     "libc6",
@@ -244,7 +247,8 @@
                     "libstdc++6",
                     "libstdc++-13-dev",
                     "libtinfo6",
-                    "libxml2"
+                    "libxml2",
+                    "python3"
                 ]
             }
         }
