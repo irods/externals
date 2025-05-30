@@ -11,7 +11,9 @@ Currently tested on:
 
 This repository is expected to build in a VM or container environment that is isolated from other software or build environments. Pre-written dockerfiles can be found in the [development environment repository](https://github.com/irods/irods_development_environment/).
 
-The automated scripts run commands as `sudo` and update system libraries and compilers, etc.
+The automated scripts update system libraries and compilers, etc. `install_prerequisites.py` requires permission to use the system package manager and install system packages, so may need to be run as root (via `sudo` or other means).
+
+`build.py` uses [nFPM](https://nfpm.goreleaser.com/) to create the packages once the software has been built. We recommend using at least version [2.41.3](https://github.com/goreleaser/nfpm/releases/tag/v2.41.3). `install_prerequisites.py` will install the latest version if it doesn't find `nfpm` in `$PATH`.
 
 In a new container, run the following:
 
@@ -19,7 +21,7 @@ In a new container, run the following:
 
 ```bash
 apt-get update
-apt-get install -y sudo git python3 python3-distro python3-setuptools
+apt-get install -y git python3 python3-distro python3-setuptools
 ./install_prerequisites.py
 
 make # or "make server" for packages specific to building the iRODS server.
@@ -28,7 +30,7 @@ make # or "make server" for packages specific to building the iRODS server.
 ## RHEL / AlmaLinux / Rocky Linux 9
 
 ```bash
-dnf install -y sudo git python3 python3-distro python3-setuptools
+dnf install -y git python3 python3-distro python3-setuptools
 ./install_prerequisites.py
 make # or "make server" for packages specific to building the iRODS server.
 ```

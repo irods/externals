@@ -164,7 +164,9 @@ def package_architecture_string():
 	else:
 		if package_type() is None:
 			log.warning('Unknown package type, architecture string may be inaccurate.')
-		pkg_arch = platform.machine()
+		pkg_arch = platform.machine().lower()
+		if pkg_arch == 'amd64':
+			pkg_arch = 'x86_64'
 	_cached_package_architecture_string = _CachedValue(pkg_arch)
 	return pkg_arch
 _cached_package_architecture_string = None

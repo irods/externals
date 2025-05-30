@@ -7,42 +7,17 @@ import optparse
 import os
 import distro
 import sys
+from shutil import which
 
 import build
 import distro_info
 from distro_info import DistroVersion
-
-RUBY_VERSION = build.ruby_requirements['ruby']
-RVM_PATH = build.ruby_requirements['path']
-
-def install_rvm_and_ruby():
-    cmd = 'curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -'
-    build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
-    cmd = 'curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg --import -'
-    build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
-    cmd = 'curl -sSL https://get.rvm.io | sudo bash -s stable'
-    build.run_cmd(cmd, unsafe_shell=True, check_rc='curl failed')
-    cmd = "sudo -E su -c '{rvm_path}/rvm reload && {rvm_path}/rvm requirements run && {rvm_path}/rvm install {ruby_version}'".format(
-        ruby_version = RUBY_VERSION,
-        rvm_path = RVM_PATH )
-    build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='rvm ruby install failed')
-
-def install_fpm_gem():
-    build.set_ruby_path()
-    cmd = """sudo -E su -c 'PATH="{PATH}"; export PATH; {rvm_path}/rvm reload && {rvm_path}/rvm use {ruby_version} && gem install -v 1.14.1 fpm'""".format(
-        ruby_version = RUBY_VERSION,
-        rvm_path = RVM_PATH,
-        PATH = os.environ['PATH'] )
-    build.run_cmd(cmd, unsafe_shell=True, run_env=True, check_rc='fpm gem install failed')
-
 
 def main():
     # configure parser
     parser = optparse.OptionParser()
     parser.add_option('-v', '--verbose', action="count", dest='verbosity', default=1, help='print more information to stdout')
     parser.add_option('-q', '--quiet', action='store_const', const=0, dest='verbosity', help='print less information to stdout')
-    parser.add_option('-p', '--package', action='store_true', dest='package', default=True)
-    parser.add_option('-n', '--no-package', action='store_false', dest='package')
     (options, args) = parser.parse_args()
 
     # configure logging
@@ -63,6 +38,8 @@ def main():
     distro_version = distro_info.distribution_version()
 
     log.info('Detected: {0} {1} ({2})'.format(distro_id, str(distro_version), distro_type))
+
+    nfpm_path = which('nfpm')
 
     if distro_type in ['debian', 'ubuntu']:
         package_list = [
@@ -97,6 +74,7 @@ def main():
             'procps',
             'pkg-config',
             'python3-dev',
+            'python3-yaml',
             'rsync',
             'texinfo',
             'unixodbc-dev',
@@ -104,11 +82,31 @@ def main():
             'zlib1g-dev',
         ]
 
-        cmd = ['sudo', 'apt-get', 'update', '-y']
+        apt_env = os.environ.copy()
+        apt_env['DEBIAN_FRONTEND'] = 'noninteractive'
+
+        if nfpm_path is None:
+            repo_list_path = '/etc/apt/sources.list.d/goreleaser.list'
+
+            if not os.path.exists(repo_list_path):
+                # install ca-certificates first
+                cmd = ['apt-get', 'update', '-y']
+                build.run_cmd(cmd, check_rc='getting updates failed')
+
+                cmd = ['apt-get', 'install', '-y', 'ca-certificates']
+                build.run_cmd(cmd, run_env=apt_env, check_rc='installing ca-certificates failed')
+
+                # add goreleaser repo
+                with open(repo_list_path, 'wt', encoding='utf-8') as repo_list:
+                    repo_list.write('deb [trusted=yes] https://repo.goreleaser.com/apt/ /\n')
+
+                package_list.extend(['nfpm'])
+
+        cmd = ['apt-get', 'update', '-y']
         build.run_cmd(cmd, check_rc='getting updates failed')
 
-        cmd = ['sudo', 'DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', '-y']
-        build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
+        cmd = ['apt-get', 'install', '-y']
+        build.run_cmd(cmd + package_list, run_env=apt_env, check_rc='installing prerequisites failed')
 
     elif distro_type in ['rhel', 'scientific']:
         package_list = [
@@ -142,10 +140,9 @@ def main():
             'patch',
             'procps',
             'python3-devel',
+            'python3-pyyaml',
             'rpm-build',
             'rsync',
-            'ruby-devel',
-            'rubygems',
             'texinfo',
             'unixODBC-devel',
             'wget',
@@ -154,27 +151,35 @@ def main():
             'zlib-devel',
         ]
 
-        cmd = ['sudo', 'dnf', 'clean', 'all']
+        cmd = ['dnf', 'clean', 'all']
         build.run_cmd(cmd, check_rc='dnf clean failed')
 
-        cmd = ['sudo', 'dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
+        cmd = ['dnf', 'install', '-y', 'epel-release', 'dnf-plugins-core']
         build.run_cmd(cmd, check_rc='dnf install repos failed')
 
         codeready_repo_name = 'powertools' if distro_version < DistroVersion('9') else 'crb'
-        cmd = ['sudo', 'dnf', 'config-manager', '--set-enabled', codeready_repo_name]
+        cmd = ['dnf', 'config-manager', '--set-enabled', codeready_repo_name]
         build.run_cmd(cmd, check_rc='dnf config-manager failed')
 
-        cmd = ['sudo', 'dnf', 'install', '-y']
+        if nfpm_path is None:
+            yum_repo_path = '/etc/yum.repos.d/goreleaser.repo'
+
+            if not os.path.exists(yum_repo_path):
+                with open(yum_repo_path, 'wt', encoding='utf-8') as yum_repo:
+                    yum_repo.write('[goreleaser]\n')
+                    yum_repo.write('name=GoReleaser\n')
+                    yum_repo.write('baseurl=https://repo.goreleaser.com/yum/\n')
+                    yum_repo.write('enabled=1\n')
+                    yum_repo.write('gpgcheck=0\n')
+
+            package_list.extend(['nfpm'])
+
+        cmd = ['dnf', 'install', '-y']
         build.run_cmd(cmd + package_list, check_rc='installing prerequisites failed')
 
     else:
         log.error('Cannot determine prerequisites for platform [{0}]'.format(distro_id))
         return 1
-
-    # get necessary ruby gems
-    if options.package:
-        install_rvm_and_ruby()
-        install_fpm_gem()
 
 if __name__ == '__main__':
     sys.exit(main())
