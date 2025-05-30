@@ -77,7 +77,7 @@ nanodbc_clean :
 	@rm -rf nanodbc*
 	@rm -rf $(NANODBC_PACKAGE)
 
-$(QPID-PROTON_PACKAGE) : $(CLANG_PACKAGE)
+$(QPID-PROTON_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) qpid-proton > qpid-proton.log 2>&1
 qpid-proton : $(QPID-PROTON_PACKAGE)
 qpid-proton_clean :
