@@ -21,7 +21,7 @@ avro_clean :
 	@rm -rf avro*
 	@rm -rf $(AVRO_PACKAGE)
 
-$(BOOST_PACKAGE) : $(CLANG_PACKAGE)
+$(BOOST_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) boost > boost.log 2>&1
 boost : $(BOOST_PACKAGE)
 boost_clean :
