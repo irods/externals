@@ -17,41 +17,16 @@ import distro_info
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
-ruby_requirements = {
-    'ruby': '3.1.2',
-    'path': '/usr/local/rvm/bin'
-}
-
 def touch(filename):
     try:
         os.utime(filename, None)
     except:
         open(filename, 'a').close()
 
-def get_rvm_path():
-    cmd = ['whereis', 'rvm']
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    _out, _err = p.communicate()
-    index = len(_out.lstrip().split(b': ')) - 1
-    rvm_path = _out.lstrip().split(b': ')[index]
-    return rvm_path.strip().decode('utf-8')
-
 def set_environ_path(bin_path):
     path = os.environ['PATH']
     new_path = bin_path + ':' + path
     os.environ['PATH'] = new_path
-
-def set_rvm_path():
-    rvm_path = get_rvm_path()
-    rvm_bin = os.path.join(rvm_path, 'bin')
-    set_environ_path(rvm_bin)
-
-def set_ruby_path():
-    rvm_path = '/usr/local/rvm'
-    ruby_path = os.path.join(rvm_path, 'rubies/ruby-'+ruby_requirements['ruby'])
-    ruby_bin = os.path.join(ruby_path, 'bin')
-    os.environ['GEM_HOME'] = ruby_path
-    set_environ_path(ruby_bin)
 
 def set_clang_path():
     p = get_versions()['clang']
@@ -68,13 +43,10 @@ def get_local_path(package_name, path_elements):
     log.debug('local path: {0}'.format(local_path))
     return local_path
 
-def run_cmd(cmd, run_env=False, unsafe_shell=False, check_rc=False, retries=0):
+def run_cmd(cmd, run_env=None, unsafe_shell=False, check_rc=False, retries=0):
     log = logging.getLogger(__name__)
-    # run it
-    if run_env == True:
-        set_rvm_path()
-
-    run_env = os.environ.copy()
+    if run_env is not None:
+        run_env = os.environ.copy()
     log.debug('run_env: {0}'.format(run_env))
     log.info('running: {0}, unsafe_shell={1}, check_rc={2}, retries={3}'.format(cmd, unsafe_shell, check_rc, retries))
     if unsafe_shell == True:
@@ -285,16 +257,6 @@ def build_package(target, build_native_package):
     if target == 'boost':
         set_clang_path()
 
-    myenv = os.environ.copy()
-    if target not in ['clang']:
-        clang_bindir = get_local_path('clang',['bin'])
-        myenv['CC'] = '{0}/clang'.format(clang_bindir)
-        log.debug('CC='+myenv['CC'])
-        myenv['CXX'] = '{0}/clang++'.format(clang_bindir)
-        log.debug('CXX='+myenv['CXX'])
-        myenv['PATH'] = '{0}:{1}'.format(clang_bindir, myenv['PATH'])
-        log.debug('PATH='+myenv['PATH'])
-
     # build
     if target == 'clang':
         os.chdir(os.path.join(build_dir, "llvm-project"))
@@ -319,42 +281,68 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
-        run_cmd(i, run_env=myenv, unsafe_shell=True, check_rc='build failed')
+        run_cmd(i, unsafe_shell=True, check_rc='build failed')
 
     # package
     if not build_native_package:
         return
 
-    fpmbinary = 'fpm'
-    fpmbinary = which(fpmbinary)
-    if fpmbinary is None:
-        log.error('fpm not found, try "gem install fpm"')
-        sys.exit(1)
+    import yaml
+
     os.chdir(script_path)
-    package_cmd = [fpmbinary, '-f', '-s', 'dir']
-    package_cmd.extend(['-t', distro_info.package_type()])
-    package_cmd.extend(['-n', 'irods-externals-{0}'.format(package_subdirectory)])
-    for d in get_package_dependencies(v):
-        package_cmd.extend(['-d', d])
-    package_cmd.extend(['-m', '<packages@irods.org>'])
-    package_cmd.extend(['--version', get_package_version(target)])
-    package_cmd.extend(['--iteration', get_package_revision(target)])
-    package_cmd.extend(['--vendor', 'iRODS Consortium'])
-    package_cmd.extend(['--license', v['license']])
-    package_cmd.extend(['--description', 'iRODS Build Dependency'])
-    package_cmd.extend(['--url', 'https://irods.org'])
-    package_cmd.extend(['-C', build_dir])
+
+    nfpmbinary = 'nfpm'
+    nfpmbinary = which(nfpmbinary)
+    if nfpmbinary is None:
+        log.error('nfpm not found, see https://nfpm.goreleaser.com/install/')
+        sys.exit(1)
+
+    # This configuration assumes at least nFPM v2.40
+    # Latest version as of last update is v2.43.0
+    nfpm_cfg_dict = {
+        'name': 'irods-externals-{0}'.format(package_subdirectory),
+        'arch': distro_info.package_architecture_string(),
+        'platform': 'linux',
+        'version_schema': 'none',
+        'version': get_package_version(target),
+        'release': get_package_revision(target),
+        'maintainer': '<packages@irods.org>',
+        'description': 'iRODS Build Dependency',
+        'vendor': 'iRODS Consortium',
+        'homepage': 'https://irods.org',
+        'license': v['license'],
+        distro_info.package_type(): {
+            'arch': distro_info.package_architecture_string()
+        },
+        'contents': []
+    }
+
+    pkg_deps = get_package_dependencies(v)
+    if len(pkg_deps) > 1:
+        nfpm_cfg_dict['depends'] = pkg_deps
+
+    pkg_prefix = os.path.join(v['externals_root'], package_subdirectory)
+    pkg_prefix_src = os.path.join(build_dir, pkg_prefix)
+    pkg_prefix_dst = os.path.join('/', pkg_prefix)
+
     for i in sorted(v['fpm_directories']):
-        addpath = os.path.join(v['externals_root'], package_subdirectory, i)
-        # lib and lib64 might both be necessary for cross-platform builds
-        if i.startswith("lib"):
-            fullpath  = os.path.abspath(os.path.join(install_prefix, i))
-            if os.path.isdir(fullpath):
-                package_cmd.extend([addpath])
-            else:
-                log.debug("skipped ["+fullpath+"] (does not exist)")
-        else:
-            package_cmd.extend([addpath])
+        nfpm_cfg_dict['contents'].append({
+            'src': os.path.join(pkg_prefix_src, i),
+            'dst': os.path.join(pkg_prefix_dst, i),
+            'type': 'tree'
+        })
+
+    nfpm_cfg_fname = target + '-nfpm.yaml'
+    nfpm_cfg_yaml = yaml.dump(nfpm_cfg_dict)
+    with open(nfpm_cfg_fname, 'wt', encoding='utf-8') as nfpm_cfg:
+        log.debug(f'writing to {nfpm_cfg_fname}:\n{nfpm_cfg_yaml}')
+        nfpm_cfg.write(nfpm_cfg_yaml)
+        nfpm_cfg.write('\n')
+
+    package_cmd = [nfpmbinary, 'package']
+    package_cmd.extend(['-p', distro_info.package_type()])
+    package_cmd.extend(['-f', nfpm_cfg_fname])
+    package_cmd.extend(['-t', get_package_filename(target)])
     if len(v['fpm_directories']) > 0:
         run_cmd(package_cmd, check_rc='packaging failed')
     else:
@@ -400,9 +388,7 @@ def main():
             for p in v:
                 f.write('{0}_PACKAGE={1}\n'.format(p.upper(), get_package_filename(p)))
     elif target in get_versions():
-        set_rvm_path()
-        set_ruby_path()
-        build_package(target, options.package )
+        build_package(target, options.package)
     else:
         log.error('build target [{0}] not found in {1}'.format(target, sorted(get_versions().keys())))
         return 1

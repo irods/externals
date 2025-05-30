@@ -498,7 +498,7 @@
         "version_string": "4.0.10",
         "license": "BSD-3-Clause",
         "consortium_build_number": "1",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "make -jTEMPLATE_JOBS",

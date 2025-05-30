@@ -85,7 +85,7 @@ qpid-proton_clean :
 	@rm -rf qpid-proton*
 	@rm -rf $(QPID-PROTON_PACKAGE)
 
-$(REDIS_PACKAGE) : $(CLANG_PACKAGE)
+$(REDIS_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) redis > redis.log 2>&1
 redis : $(REDIS_PACKAGE)
 redis_clean :
