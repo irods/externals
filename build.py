@@ -23,18 +23,6 @@ def touch(filename):
     except:
         open(filename, 'a').close()
 
-def set_environ_path(bin_path):
-    path = os.environ['PATH']
-    new_path = bin_path + ':' + path
-    os.environ['PATH'] = new_path
-
-def set_clang_path():
-    p = get_versions()['clang']
-    path_name = '{0}{1}-{2}'.format('clang', p['version_string'], p['consortium_build_number'])
-    externals_path = os.path.dirname(os.path.dirname(os.getcwd()))
-    clang_binpath = os.path.join(externals_path, path_name, 'bin')
-    set_environ_path(clang_binpath)
-
 def get_local_path(package_name, path_elements):
     log = logging.getLogger(__name__)
     p = get_versions()[package_name]
@@ -252,10 +240,6 @@ def build_package(target, build_native_package):
                 run_cmd(git_cmd, check_rc='git clone failed')
                 os.chdir(target_dir)
             apply_patches()
-
-    # set environment
-    if target == 'boost':
-        set_clang_path()
 
     # build
     if target == 'clang':
