@@ -330,11 +330,11 @@
         "version_string": "1.0.7",
         "license": "BSD-3-Clause",
         "consortium_build_number": "2",
-        "package_revision": "2",
+        "package_revision": "3",
         "externals_root": "opt/irods-externals",
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH ..",
+            "cd build; rm -f CMakeCache.txt;cmake -G 'Unix Makefiles' -Dcppzmq_INCLUDE_DIR=TEMPLATE_CPPZMQ_PATH/include -DAVROCPP_INCLUDE_DIR=TEMPLATE_AVRO_PATH/include -DAVROCPP_LIBRARY=TEMPLATE_AVRO_PATH/lib/libavrocpp.so -DAVROCPP_AVROGEN_EXECUTABLE=TEMPLATE_AVRO_PATH/bin/avrogencpp -DBOOST_ROOT=TEMPLATE_BOOST_ROOT -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DCMAKE_INSTALL_RPATH=/TEMPLATE_BOOST_RPATH\\;/TEMPLATE_AVRO_RPATH ..",
             "cd build; env LD_LIBRARY_PATH=TEMPLATE_BOOST_ROOT/lib make -jTEMPLATE_JOBS; make install"
         ],
         "external_build_steps": [
