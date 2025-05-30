@@ -391,7 +391,7 @@
         "version_string": "2.13.0",
         "license": "MIT",
         "consortium_build_number": "3",
-        "package_revision": "0",
+        "package_revision": "1",
         "externals_root": "opt/irods-externals",
         "patches": [
             "nanodbc/1001-Add-missing-include-279.patch",
@@ -399,7 +399,7 @@
         ],
         "build_steps": [
             "mkdir -p build",
-            "cd build; rm -f CMakeCache.txt;cmake -G'Unix Makefiles' -DCMAKE_CXX_COMPILER=TEMPLATE_CLANGPP_EXECUTABLE -DCMAKE_C_COMPILER=TEMPLATE_CLANG_EXECUTABLE -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DNANODBC_FORCE_LIBCXX=OFF -DNANODBC_DISABLE_LIBCXX=ON ..",
+            "cd build; rm -f CMakeCache.txt;cmake -G'Unix Makefiles' -DBUILD_SHARED_LIBS=ON -DNANODBC_DISABLE_EXAMPLES=ON -DNANODBC_DISABLE_TESTS=ON -DNANODBC_ODBC_VERSION=SQL_OV_ODBC3 -DCMAKE_INSTALL_PREFIX=TEMPLATE_INSTALL_PREFIX -DNANODBC_FORCE_LIBCXX=OFF -DNANODBC_DISABLE_LIBCXX=ON ..",
             "cd build; make nanodbc install"
         ],
         "external_build_steps": [
