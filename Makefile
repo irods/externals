@@ -69,7 +69,7 @@ mungefs_clean :
 	@rm -rf mungefs*
 	@rm -rf $(MUNGEFS_PACKAGE)
 
-$(NANODBC_PACKAGE) : $(CLANG_PACKAGE)
+$(NANODBC_PACKAGE) :
 	./build.py $(BUILD_OPTIONS) nanodbc > nanodbc.log 2>&1
 nanodbc : $(NANODBC_PACKAGE)
 nanodbc_clean :
