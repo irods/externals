@@ -1,4 +1,4 @@
-all : avro boost clang cppzmq jsoncons jwt-cpp mungefs nanodbc qpid-proton redis
+all : avro boost clang cppzmq jsoncons jwt-cpp mungefs nanodbc qpid-proton
 
 server : boost clang jsoncons nanodbc
 
@@ -85,15 +85,7 @@ qpid-proton_clean :
 	@rm -rf qpid-proton*
 	@rm -rf $(QPID-PROTON_PACKAGE)
 
-$(REDIS_PACKAGE) :
-	./build.py $(BUILD_OPTIONS) redis > redis.log 2>&1
-redis : $(REDIS_PACKAGE)
-redis_clean :
-	@echo "Cleaning redis..."
-	@rm -rf redis*
-	@rm -rf $(REDIS_PACKAGE)
-
-clean : avro_clean boost_clean clang_clean cppzmq_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean redis_clean
+clean : avro_clean boost_clean clang_clean cppzmq_clean jsoncons_clean jwt-cpp_clean mungefs_clean nanodbc_clean qpid-proton_clean
 	@echo "Cleaning generated files..."
 	@rm -rf packages.mk
 	@echo "Done."
