@@ -182,13 +182,6 @@ def build_package(target, build_native_package):
     avro_install_prefix = os.path.join(avro_info['externals_root'], avro_subdirectory)
     avro_rpath = os.path.join(avro_install_prefix, 'lib')
 
-    clang_info = get_versions()['clang']
-    clang_subdirectory = '{0}{1}-{2}'.format('clang', clang_info['version_string'], clang_info['consortium_build_number'])
-    clang_executable = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'bin', 'clang')
-    clangpp_executable = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'bin', 'clang++')
-    clang_cpp_headers = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'include', 'c++', 'v1')
-    clang_cpp_libraries = os.path.join(script_path, '{0}'.format(clang_subdirectory), 'lib')
-
     qpid_proton_info = get_versions()['qpid-proton']
     qpid_proton_subdirectory = '{0}{1}-{2}'.format('qpid-proton', qpid_proton_info['version_string'], qpid_proton_info['consortium_build_number'])
     qpid_proton_install_prefix = os.path.join(qpid_proton_info['externals_root'], qpid_proton_subdirectory)
@@ -252,11 +245,6 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_SCRIPT_PATH", script_path, i)
         i = re.sub("TEMPLATE_INSTALL_PREFIX", install_prefix, i)
         i = re.sub("TEMPLATE_GCC_INSTALL_PREFIX", clang_gcc_install_prefix, i)
-        i = re.sub("TEMPLATE_CLANG_CPP_HEADERS", clang_cpp_headers, i)
-        i = re.sub("TEMPLATE_CLANG_CPP_LIBRARIES", clang_cpp_libraries, i)
-        i = re.sub("TEMPLATE_CLANG_SUBDIRECTORY", clang_subdirectory, i)
-        i = re.sub("TEMPLATE_CLANG_EXECUTABLE", clang_executable, i)
-        i = re.sub("TEMPLATE_CLANGPP_EXECUTABLE", clangpp_executable, i)
         i = re.sub("TEMPLATE_QPID_PROTON_SUBDIRECTORY", qpid_proton_subdirectory, i)
         i = re.sub("TEMPLATE_QPID_PROTON_RPATH", qpid_proton_rpath, i)
         i = re.sub("TEMPLATE_PYTHON_EXECUTABLE", python_executable, i)
