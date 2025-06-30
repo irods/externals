@@ -33,6 +33,12 @@
                     "libgcc",
                     "libstdc++",
                     "fmt-devel"
+                ],
+                "10": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "fmt-devel"
                 ]
             },
             "debian": {
@@ -88,6 +94,16 @@
         "distro_dependencies": {
             "rhel": {
                 "9": [
+                    "glibc",
+                    "libgcc",
+                    "zlib",
+                    "libstdc++",
+                    "bzip2-libs",
+                    "xz-libs",
+                    "libzstd",
+                    "libicu"
+                ],
+                "10": [
                     "glibc",
                     "libgcc",
                     "zlib",
@@ -208,6 +224,18 @@
                     "gcc",
                     "gcc-c++",
                     "python3"
+                ],
+                "10": [
+                    "glibc",
+                    "glibc-devel",
+                    "libgcc",
+                    "zlib",
+                    "libstdc++",
+                    "libstdc++-devel",
+                    "libxml2",
+                    "gcc",
+                    "gcc-c++",
+                    "python3"
                 ]
             },
             "debian": {
@@ -310,6 +338,9 @@
             "rhel": {
                 "9": [
                     "nlohmann_json-devel"
+                ],
+                "10": [
+                    "nlohmann_json-devel"
                 ]
             },
             "debian": {
@@ -350,6 +381,14 @@
         "distro_dependencies": {
             "rhel": {
                 "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "libarchive",
+                    "fuse-libs",
+                    "zeromq"
+                ],
+                "10": [
                     "glibc",
                     "libgcc",
                     "libstdc++",
@@ -415,6 +454,12 @@
                     "libgcc",
                     "libstdc++",
                     "unixODBC"
+                ],
+                "10": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "unixODBC"
                 ]
             },
             "debian": {
@@ -465,6 +510,12 @@
         "distro_dependencies": {
             "rhel": {
                 "9": [
+                    "glibc",
+                    "libgcc",
+                    "libstdc++",
+                    "openssl-libs"
+                ],
+                "10": [
                     "glibc",
                     "libgcc",
                     "libstdc++",

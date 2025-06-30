@@ -5,6 +5,7 @@ Currently tested on:
 - Ubuntu 22.04
 - Ubuntu 24.04
 - Rocky Linux 9
+- Rocky Linux 10
 - Debian 12
 
 # Assumptions
@@ -27,7 +28,7 @@ apt-get install -y git python3 python3-distro python3-setuptools
 make # or "make server" for packages specific to building the iRODS server.
 ```
 
-## RHEL / AlmaLinux / Rocky Linux 9
+## RHEL / AlmaLinux / Rocky Linux 9, RHEL / AlmaLinux / Rocky Linux 10
 
 ```bash
 dnf install -y git python3 python3-distro python3-setuptools
