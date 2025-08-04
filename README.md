@@ -7,6 +7,7 @@ Currently tested on:
 - Rocky Linux 9
 - Rocky Linux 10
 - Debian 12
+- Debian 13
 
 # Assumptions
 
@@ -18,7 +19,7 @@ The automated scripts update system libraries and compilers, etc. `install_prere
 
 In a new container, run the following:
 
-## Ubuntu 22.04, Ubuntu 24.04, and Debian 12
+## Ubuntu 22.04, Ubuntu 24.04, Debian 12, Debian 13
 
 ```bash
 apt-get update
