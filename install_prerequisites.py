@@ -43,9 +43,6 @@ def main():
 
     if distro_type in ['debian', 'ubuntu']:
         package_list = [
-            'autoconf',
-            'autoconf2.13',
-            'automake',
             'cmake',
             'curl',
             'fuse',
@@ -110,8 +107,6 @@ def main():
 
     elif distro_type in ['rhel', 'scientific']:
         package_list = [
-            'autoconf',
-            'automake',
             'bzip2-devel',
             'ca-certificates',
             'cmake',
