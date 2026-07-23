@@ -7,7 +7,10 @@ import optparse
 import os
 import distro
 import sys
+import urllib.request
 from shutil import which
+from tempfile import TemporaryDirectory
+from textwrap import dedent
 
 import build
 import distro_info
@@ -82,22 +85,71 @@ def main():
         apt_env = os.environ.copy()
         apt_env['DEBIAN_FRONTEND'] = 'noninteractive'
 
+        # install ca-certificates first
+        cmd = ['apt-get', 'update', '-y']
+        build.run_cmd(cmd, check_rc='getting updates failed')
+
+        cmd = ['apt-get', 'install', '-y', 'ca-certificates']
+        build.run_cmd(cmd, run_env=apt_env, check_rc='installing ca-certificates failed')
+
+        if distro_type == 'ubuntu':
+            if distro_version >= DistroVersion('26.04'):
+                package_list += ['gcc-14', 'g++-14', 'libcrypt-dev']
+
+            elif distro_version == DistroVersion('22.04'):
+                # nanodbc requires slightly newer version of cmake to build
+                repo_list_path = '/etc/apt/sources.list.d/kitware.list'
+                repo_pref_path = '/etc/apt/preferences.d/kitware-cmake-325'
+
+                if not os.path.exists(repo_list_path):
+                    with TemporaryDirectory(prefix='irods-kiware') as kitware_tmp:
+                        kitware_keyring_deb = os.path.join(os.path.abspath(kitware_tmp), 'kitware-archive-keyring.deb')
+
+                        urllib.request.urlretrieve(
+                            'https://apt.kitware.com/ubuntu/pool/main/k/kitware-archive-keyring/kitware-archive-keyring_2026.06.22_all.deb',
+                            kitware_keyring_deb
+                        )
+                        
+                        cmd = ['apt-get', 'install', '-y', kitware_keyring_deb]
+                        build.run_cmd(cmd, run_env=apt_env, check_rc='installing kitware keyring failed')
+
+                    with open(repo_list_path, 'wt', encoding='utf-8') as repo_list:
+                        repo_list.write(
+                            'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main\n'
+                        )
+
+                    # we only want cmake (and updated keyrings) from this repo, so deprioritize everything else
+                    # also, make sure we don't grab a cmake version that's too *new*
+                    with open(repo_pref_path, 'wt', encoding='utf-8') as repo_pref:
+                        repo_pref.write(dedent('''\
+                            Package: *
+                            Pin: origin apt.kitware.com
+                            Pin-Priority: 400
+
+                            Package: src:kitware-archive-keyring:any
+                            Pin: origin apt.kitware.com
+                            Pin-Priority: 550
+
+                            Package: src:cmake:any
+                            Pin: version 3.25.*
+                            Pin-Priority: 500
+                        '''))
+
+                    # update kitware-archive-keyring first
+                    cmd = ['apt-get', 'update', '-y']
+                    build.run_cmd(cmd, check_rc='getting updates failed')
+
+                    cmd = ['apt-get', 'install', '-y', 'kitware-archive-keyring']
+                    build.run_cmd(cmd, run_env=apt_env, check_rc='updating kitware-archive-keyring failed')
+
         if nfpm_path is None:
             repo_list_path = '/etc/apt/sources.list.d/goreleaser.list'
 
             if not os.path.exists(repo_list_path):
-                # install ca-certificates first
-                cmd = ['apt-get', 'update', '-y']
-                build.run_cmd(cmd, check_rc='getting updates failed')
-
-                cmd = ['apt-get', 'install', '-y', 'ca-certificates']
-                build.run_cmd(cmd, run_env=apt_env, check_rc='installing ca-certificates failed')
-
-                # add goreleaser repo
                 with open(repo_list_path, 'wt', encoding='utf-8') as repo_list:
                     repo_list.write('deb [trusted=yes] https://repo.goreleaser.com/apt/ /\n')
 
-                package_list.extend(['nfpm'])
+            package_list.extend(['nfpm'])
 
         cmd = ['apt-get', 'update', '-y']
         build.run_cmd(cmd, check_rc='getting updates failed')

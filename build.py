@@ -14,6 +14,7 @@ import sys
 from shutil import which
 
 import distro_info
+from distro_info import DistroVersion
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -236,8 +237,20 @@ def build_package(target, build_native_package):
 
     # build
     if target == 'clang':
+        distro_type = distro_info.distribution_type()
+        distro_version = distro_info.distribution_version()
+
+        build_cmd_env = os.environ.copy()
+        if distro_type == 'ubuntu' and distro_version >= DistroVersion('26.04'):
+            build_cmd_env['CC'] = 'gcc-14'
+            build_cmd_env['CXX'] = 'g++-14'
+        else:
+            build_cmd_env['CC'] = 'gcc'
+            build_cmd_env['CXX'] = 'g++'
+
         os.chdir(os.path.join(build_dir, "llvm-project"))
     else:
+        build_cmd_env = None
         os.chdir(os.path.join(build_dir,target))
 
     for i in itertools.chain(v['build_steps'], v['external_build_steps']):
@@ -253,7 +266,7 @@ def build_package(target, build_native_package):
         i = re.sub("TEMPLATE_AVRO_RPATH", avro_rpath, i)
         i = re.sub("TEMPLATE_AVRO_PATH", avro_root, i)
         i = re.sub("TEMPLATE_CPPZMQ_PATH", cppzmq_root, i)
-        run_cmd(i, unsafe_shell=True, check_rc='build failed')
+        run_cmd(i, run_env=build_cmd_env, unsafe_shell=True, check_rc='build failed')
 
     # package
     if not build_native_package:
